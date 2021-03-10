@@ -199,7 +199,7 @@ void	sam() {
 }
 
 
-int	main(int argc, char **argv) {
+int	main() {
 	stl_test();
 	constructors_test();
 	iterators_test();
@@ -210,3 +210,4 @@ int	main(int argc, char **argv) {
 	sam();
 	return 0;
 }
+

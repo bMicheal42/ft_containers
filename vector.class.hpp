@@ -8,15 +8,9 @@
 # include <cstddef>
 # include <algorithm>
 
+# include "utils.hpp"
 
 namespace ft {
-
-	template<bool B, class T = void>
-	struct enable_if {};
-
-	template<class T>
-	struct enable_if<true, T>
-	{ typedef T type; };
 
 // =========================================================================
 // --------------------------- VECTOR_ITERATOR -----------------------------
@@ -203,7 +197,6 @@ namespace ft {
 	class vector
 	{
 	public:
-// Typedefs ============================================================
 
 		typedef T                                         value_type;
 		typedef size_t                                    size_type;
@@ -215,12 +208,11 @@ namespace ft {
 		typedef vector_iterator<T, const T*, const T&>    const_iterator;
 		typedef std::reverse_iterator<iterator>  		  reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>     const_reverse_iterator;
-// ===================== CONSTRUCTORS / DESTRUCTOR =====================
-		explicit vector()
-				: array_(0), size_(0), capacity_(0) {}
 
-		explicit vector(size_type n, const value_type &val = value_type())
-				: array_(0), size_(0), capacity_(0)
+		explicit	vector() : array_(0), size_(0), capacity_(0) {}
+
+		explicit	vector(size_type n, const value_type &val = value_type())
+					: array_(0), size_(0), capacity_(0)
 		{
 			if (n == 0)
 				return;
@@ -232,9 +224,10 @@ namespace ft {
 				throw VectorException();
 			}
 		}
+
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last,
-		 typename enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0)
+		 typename ft::enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0)
 				: array_(0), size_(0), capacity_(0)
 		{
 			this->capacity_ = ft::distance(first, last);
@@ -243,54 +236,29 @@ namespace ft {
 				push_back(*first);
 		}
 
-		explicit vector(const vector &x)
-			: array_(0), size_(0), capacity_(0)
-		{
-			*this = x;
-		}
+		vector(const vector &x) : array_(0), size_(0), capacity_(0)	{ *this = x; }
 
-		~vector()
-		{
-			if (this->array_ != 0)
-				delete[] this->array_;
-		}
+		~vector() { delete[] this->array_; }
 
 		// ITERATORS ===============================================================
 
-		iterator       begin() {
-			return (iterator(this->array_));
-		}
+		iterator       			begin() { return (iterator(this->array_)); }
 
-		const_iterator begin() const {
-			return (const_iterator(this->array_));
-		}
+		const_iterator 			begin() const { return (const_iterator(this->array_)); }
 
-		reverse_iterator   rbegin() {
-			return (reverse_iterator(this->end()));
-		}
+		reverse_iterator   		rbegin() { return (reverse_iterator(this->end())); }
 
-		const_reverse_iterator rbegin() const {
-			return (reverse_iterator(this->end()));
-		}
+		const_reverse_iterator 	rbegin() const { return (reverse_iterator(this->end())); }
 
-		iterator end()
-		{
-			return (iterator(this->array_ + this->size_));
-		}
+		iterator				end() { return (iterator(this->array_ + this->size_)); }
 
-		const_iterator end() const {
-			return (const_iterator(this->array_ + this->size_));
-		}
+		const_iterator			end() const { return (const_iterator(this->array_ + this->size_)); }
 
-		reverse_iterator rend() {
-			return (reverse_iterator(this->begin()));
-		}
+		reverse_iterator		rend() { return (reverse_iterator(this->begin())); }
 
-		const_reverse_iterator rend() const {
-			return (reverse_iterator(this->begin()));
-		}
+		const_reverse_iterator	rend() const { return (reverse_iterator(this->begin())); }
+
 		// ======================== OPERATORS =================================
-
 
 		// '='
 		vector &operator=(vector const &other) {
@@ -324,11 +292,9 @@ namespace ft {
 		}
 
 
-		// Member functions ====================================================
-
 		// Element access ------------------------------------------------------
 
-		reference at(size_type pos) {
+		reference		at(size_type pos) {
 			if (pos >= this->size_)
 				throw VectorException();
 			return (this->array_[pos]);
@@ -340,39 +306,38 @@ namespace ft {
 			return (this->array_[pos]);
 		}
 
-		reference front() {
+		reference		front() {
 			return (this->array_[0]);
 		}
 
-		const_reference front() const {
+		const_reference	front() const {
 			return (this->array_[0]);
 		}
 
-		reference back() {
+		reference		back() {
 			return (this->array_[this->size_ - 1]);
 		}
 
-		const_reference back() const {
+		const_reference	back() const {
 			return (this->array_[this->size_ - 1]);
 		}
-		// ---------------------------------------------------------------------
 
 		// Capasity ------------------------------------------------------------
 
-		bool empty() const{
+		bool		empty() const{
 			return (!(this->size_));
 		}
 
-		size_type size() const {
+		size_type	size() const {
 			return (this->size_);
 		}
 
-		size_type max_size() const {
+		size_type	max_size() const {
 			std::allocator<T> allocator;
 			return (allocator.max_size());
 		}
 
-		void resize (size_type n, value_type val = value_type()) {
+		void		resize (size_type n, value_type val = value_type()) {
 			while (this->size_ > n)
 				this->size_--;
 			if (n > this->capacity_)
@@ -381,7 +346,7 @@ namespace ft {
 				push_back(val);
 		}
 
-		void reserve(size_type new_cap) {
+		void		reserve(size_type new_cap) {
 			if (new_cap <= this->capacity_)
 				return;
 
@@ -404,15 +369,11 @@ namespace ft {
 			}
 		}
 
-		size_type capacity() const {
+		size_type	capacity() const {
 			return (this->capacity_);
 		}
-		// ---------------------------------------------------------------------
-
-		//  Modifiers ----------------------------------------------------------
-
 		// Insert --------------------------------------------------------------
-		void insert(iterator position, size_type n, const value_type &val)
+		void		insert(iterator position, size_type n, const value_type &val)
 		{
 			if (n == 0)
 				return;
@@ -426,15 +387,15 @@ namespace ft {
 				this->push_back(*it);
 		}
 
-		iterator insert(iterator position, const value_type &val) {
+		iterator	insert(iterator position, const value_type &val) {
 			size_type save_index = ft::distance(this->begin(), position);
 			insert(position, static_cast<size_type>(1), val);
 			return iterator(&this->array_[save_index]);
 		}
 
 		template<class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last,
-					typename enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0) {
+		void		insert(iterator position, InputIterator first, InputIterator last,
+					typename ft::enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0) {
 			while (first != last) {
 				position = this->insert(position, *first);
 				first++;
@@ -442,39 +403,39 @@ namespace ft {
 			}
 		}
 
-		//Clear ----------------------------------------------------------------
-		void clear() {
+		// CLEAR ----------------------------------------------------------------
+		void		clear() {
 			this->size_ = 0;
 		}
 
-		//Clear ----------------------------------------------------------------
+		// ASSIGN ----------------------------------------------------------------
 		template<class InputIterator>
-		void assign(InputIterator first, InputIterator last,
-					typename enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0) {
+		void		assign(InputIterator first, InputIterator last,
+					typename ft::enable_if< !std::numeric_limits<InputIterator>::is_specialized >::type* = 0) {
 			this->clear();
 			this->insert(this->begin(), first, last);
 		}
 
-		void assign(size_type n, const value_type &val) {
+		void		assign(size_type n, const value_type &val) {
 			this->clear();
 			this->insert(this->begin(), n, val);
 		}
 
-		// Pushback ------------------------------------------------------------
-		void push_back(const value_type &val) {
+		// PUSHBACK ------------------------------------------------------------
+		void		push_back(const value_type &val) {
 			if (this->size_ == this->capacity_)
 				reserve(this->size_ == 0 ? 1 : this->capacity_ * 2);
 			this->array_[this->size_] = val;
 			this->size_++;
 		}
 
-		// Popback -------------------------------------------------------------
-		void pop_back() {
+		// POPBACK -------------------------------------------------------------
+		void		pop_back() {
 			this->size_--;
 		}
 
-		// Erase ---------------------------------------------------------------
-		iterator erase(iterator position) {
+		// ERASE ---------------------------------------------------------------
+		iterator	erase(iterator position) {
 			size_type save_ind = static_cast<size_type>(position - this->begin());
 
 			for (; save_ind < this->size_ - 1; save_ind++)
@@ -483,7 +444,7 @@ namespace ft {
 			return (position);
 		}
 
-		iterator erase(iterator first, iterator last) {
+		iterator	erase(iterator first, iterator last) {
 			size_type save = ft::distance(first, last);
 			std::copy(last, this->end(), first);
 			this->size_ -= save;
@@ -491,14 +452,14 @@ namespace ft {
 		}
 
 		// SWAP
-		void swap(vector &x) {
+		void		swap(vector &x) {
 			std::swap(this->array_, x.array_);
 			std::swap(this->size_, x.size_);
 			std::swap(this->capacity_, x.capacity_);
 		}
 		// Exceptions ==========================================================
 
-		class VectorException : public std::exception {
+		class		VectorException : public std::exception {
 			const char *what() const throw() {
 				return ("vector");
 			}
@@ -511,8 +472,8 @@ namespace ft {
 	};
 
 	template<class InputIterator1, class InputIterator2>
-	bool equalx(InputIterator1 first1, InputIterator1 last1,
-				InputIterator2 first2, InputIterator2 last2) {
+	bool			equalx(InputIterator1 first1, InputIterator1 last1,
+					InputIterator2 first2, InputIterator2 last2) {
 		while ((first1 != last1) && (first2 != last2)) {
 			if (*first1 != *first2)
 				return false;
