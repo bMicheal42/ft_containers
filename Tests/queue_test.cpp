@@ -4,13 +4,13 @@
 
 void	telly() {
 	{
-		ft::queue<int> MyQueue;
+		std::queue<int> MyQueue;
 		std::cout << MyQueue.empty() << std::endl;
 		std::cout << MyQueue.size() << std::endl;
 	}
 	std::cout << std::endl;
 	{
-		ft::queue<int> MyQueue;
+		std::queue<int> MyQueue;
 		std::cout << MyQueue.empty() << std::endl;
 		MyQueue.push(88);
 		std::cout << MyQueue.back() << std::endl;
@@ -25,7 +25,7 @@ void	telly() {
 	}
 	std::cout << std::endl;
 	{
-		ft::queue<int> MyQueue;
+		std::queue<int> MyQueue;
 		std::cout << MyQueue.empty() << std::endl;
 		MyQueue.push(88);
 		std::cout << MyQueue.front() << std::endl;
@@ -39,8 +39,8 @@ void	telly() {
 		std::cout << MyQueue.size() << std::endl;
 	}
 	{
-		ft::queue<int> MyQueue1;
-		ft::queue<int> MyQueue2;
+		std::queue<int> MyQueue1;
+		std::queue<int> MyQueue2;
 
 		MyQueue1.push(100);
 		MyQueue1.push(44);
