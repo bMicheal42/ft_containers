@@ -1,13 +1,14 @@
 #!/bin/bash
 
-#define YELLOW	"\033[1;33m"
-#define WHITE	"\033[1;37m"
-#define RED	"\033[1;31m"
-#define GREEN	"\033[1;32m"
-#define BLUE	"\034[1;32m"
+YELLOW="\033[1;33m"
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+BLUE="\034[1;32m"
+OTHER="\033[5;36m"
+WHITE="\033[0m"
 
 if [ $# -eq 0 ]; then
-    echo -e "\033[1;31m No arguments provided \033[1;37m"
+    echo -e "$RED No arguments provided $WHITE"
     exit 1
 fi
 
@@ -15,28 +16,27 @@ FILE=$1
 if [ -f $FILE ]
 then
   clear
-  echo -e "\033[5;36m ██████╗ ███╗   ███╗██╗ ██████╗██╗  ██╗███████╗ █████╗ ██╗"
-  echo -e "\033[5;36m ██╔══██╗████╗ ████║██║██╔════╝██║  ██║██╔════╝██╔══██╗██║"
-  echo -e "\033[5;36m ██████╔╝██╔████╔██║██║██║     ███████║█████╗  ███████║██║"
-  echo -e "\033[5;36m ██╔══██╗██║╚██╔╝██║██║██║     ██╔══██║██╔══╝  ██╔══██║██║"
-  echo -e "\033[5;36m ██████╔╝██║ ╚═╝ ██║██║╚██████╗██║  ██║███████╗██║  ██║███████╗"
-  echo -e "\033[5;36m ╚═════╝ ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝ \n \033[1;37m"
+  echo -e "$OTHER ██████╗ ███╗   ███╗██╗ ██████╗██╗  ██╗███████╗ █████╗ ██╗"
+  echo -e " ██╔══██╗████╗ ████║██║██╔════╝██║  ██║██╔════╝██╔══██╗██║"
+  echo -e " ██████╔╝██╔████╔██║██║██║     ███████║█████╗  ███████║██║"
+  echo -e " ██╔══██╗██║╚██╔╝██║██║██║     ██╔══██║██╔══╝  ██╔══██║██║"
+  echo -e " ██████╔╝██║ ╚═╝ ██║██║╚██████╗██║  ██║███████╗██║  ██║███████╗"
+  echo -e " ╚═════╝ ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝ \n $WHITE"
 
   if grep -q "ft::$2" $FILE
   then
-    clang++ -Wall -Wextra -Werror -std=c++98 $FILE && ./a.out > my_out
+    clang++  $FILE && ./a.out > my_out
     echo -e " clang++ -Wall -Wextra -Werror -std=c++98 $FILE\n"
     sed -i '' 's/[a-zA-Z]*::'$2'/std::'$2'/g' $FILE
-    echo -e "\033[1;37m change to \033[1;33m std:: \033[1;37m namespace \033[1;37m\n"
+    echo -e " change to $GREEN std:: $WHITE namespace \n"
     clang++ $FILE && ./a.out > std_out
 
-    # check differences
     diff my_out std_out
       ret=$?
       if [[ $ret -eq 0 ]]; then
-          echo -e "\033[1;32m NO differences! Well Done \033[1;37m\n"
+          echo -e "$GREEN NO differences! Well Done $WHITE\n"
       else
-          echo -e "\033[1;31m Test Failed \033[1;37m\n"
+          echo -e "$RED Test Failed $WHITE\n"
       fi
 
     rm a.out my_out std_out
@@ -45,9 +45,9 @@ then
   elif grep -q "std::$2" $FILE
   then
     sed -i '' 's/[a-zA-Z]*::'$2'/ft::'$2'/g' $FILE
-    echo -e "\033[1;37m change back to \033[1;32m ft:: \033[1;37m namespace \033[1;37m\n"
+    echo -e "$WHITE change back to $GREEN ft:: $WHITE namespace \n"
   fi
 
 else
-  echo -e "\033[1;31m $FILE doesn't exist \033[1;37m"
+  echo -e "$RED $FILE doesn't exist $WHITE"
 fi

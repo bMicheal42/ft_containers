@@ -1,6 +1,5 @@
-#include "vector.class.hpp"
-#include "queue.class.hpp"
-#include "list.class.hpp"
+#include "../vector.class.hpp"
+#include <vector>
 #include <iostream>
 
 class   Test {
@@ -35,12 +34,23 @@ public:
 
 int	main() {
 	// Less
-	ft::vector<Test> arr(10, 7);
-	std::cout << arr[9].some << std::endl;
+	std::vector<int> arr(10);
+	std::vector<int> arr2(10);
 
-	arr.insert(arr.end(),2, 3);
-	for (int i = 0; i < 10; ++i) {
-		arr[i].alloc();
-	}
+	for (int i = 0; i < 10; ++i)
+		arr[i] = i + 10; // 10,11,12,13,14,15,16,17,18,19
+
+	for (int i = 0; i < 10; ++i)
+		arr2[i] = i + 70; // 70,71,72,73,74,75,76,77,78,79
+//	std::cout << arr[9].some << std::endl;
+
+//	arr.insert(arr.begin(), 2, 3); // arr: 3,3,10,11,12,13,14,15,16,17,18,19
+//	for (int i = 0; i < 10; ++i) {
+//		arr[i].alloc(); }
+//	arr2.insert(arr2.end(), arr.begin(), arr.begin());
+	arr2.assign(arr2.begin(), arr2.end() - 2);
+	for (size_t i = 0; i < arr2.size(); ++i)
+		std::cout << arr2[i] << " ";
+	std::cout << std::endl;
 	return 0;
 }
