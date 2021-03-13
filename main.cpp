@@ -1,7 +1,8 @@
-#include "vector.class.hpp"
-#include "queue.class.hpp"
-#include "list.class.hpp"
+#include "containers/vector.class.hpp"
+#include "containers/queue.class.hpp"
+#include "containers/list.class.hpp"
 #include <iostream>
+#include <vector>
 
 class   Test {
 public:
@@ -35,12 +36,23 @@ public:
 
 int	main() {
 	// Less
-	ft::vector<Test> arr(10, 7);
-	std::cout << arr[9].some << std::endl;
+//	ft::vector<Test> arr(5, 7);
+//	std::cout << "Before: " << arr[9].some << std::endl;
+//
+////	arr.insert(arr.end(),2, 3);
+//	for (int i = 0; i < 10; ++i) {
+//		arr[i].alloc();
+//	}
+//	arr.erase(arr.begin(), arr.begin() + 1);
+//// 1 2 3 4 . . 7 8 9
+////	std::cout << "AFTER: " << arr[9].some << std::endl;
+//	arr[4].some = 12;
+//	std::cout << arr[4].some << std::endl;
 
-	arr.insert(arr.end(),2, 3);
-	for (int i = 0; i < 10; ++i) {
-		arr[i].alloc();
-	}
+	ft::vector<Test> arr(5, 7);
+	arr.insert(arr.begin() + 2, 2, arr[0]);
+	for (int i = 0; i < arr.size(); i++)
+		std::cout << arr[i].some << " ";
+	std::cout << std::endl;
 	return 0;
 }

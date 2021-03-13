@@ -2,182 +2,15 @@
 
 # include <cstring>
 # include <exception>
-#include <iostream> //
 # include <string>
 # include <memory>
 # include <cstddef>
 # include <algorithm>
 
-# include "utils.hpp"
+# include "../Iterators/vector_iterator.hpp"
+# include "../utils.hpp"
 
 namespace ft {
-
-// =========================================================================
-// --------------------------- VECTOR_ITERATOR -----------------------------
-// =========================================================================
-	template <typename T, typename Pointer = T*, typename  Reference = T&>
-	class vector_iterator
-	{
-
-	public:
-		typedef std::random_access_iterator_tag			iterator_category;
-		typedef T										value_type;
-		typedef Pointer									pointer;
-		typedef Reference								reference;
-		typedef ptrdiff_t								difference_type;
-		typedef size_t									size_type;
-		typedef vector_iterator<T, Pointer, Reference>	iter_type;
-		typedef vector_iterator<T, T*, T&>				iterator;
-		typedef vector_iterator<T, const T*, const T&>	const_iterator;
-
-		// =================== CONSTRUCTORS / DESTRUCTOR =======================
-		vector_iterator() : current_(0)
-		{}
-
-		vector_iterator(const pointer elem)
-			: current_(elem)
-		{}
-
-		vector_iterator(vector_iterator<T, T *, T &> copy)
-				: current_(const_cast<pointer>(copy.base()))
-		{}
-
-		~vector_iterator() {}
-		// MY
-		pointer base() const
-		{
-			return (this->current_);
-		}
-		// Operators ===========================================================
-
-		// '='
-		iter_type &operator=(vector_iterator<T, T *, T &> const &a)
-		{
-			if (this == &a)
-				return (*this);
-			this->current_ = a.current_;
-			return (*this);
-		}
-		// '*'
-		reference operator*() const
-		{
-			return (*this->current_);
-		}
-
-		// '->'
-		pointer operator->()
-		{
-			return (*&this->current_);
-		}
-
-		// '++ pre'
-		iter_type &operator++()
-		{
-			++this->current_;
-			return (*this);
-		}
-
-		// '++ post'
-		iter_type operator++(int)
-		{
-			iter_type tmp(*this);
-			this->current_++;
-			return (tmp);
-		}
-
-		// '-- pre'
-		iter_type &operator--()
-		{
-			--this->current_;
-			return (*this);
-		}
-
-		// '-- post'
-		iter_type operator--(int)
-		{
-			iter_type tmp(*this);
-			this->current_--;
-			return (tmp);
-		}
-
-		// '+'
-		iter_type operator+(difference_type const &a) const
-		{
-			iter_type tmp(*this);
-			return (tmp += a);
-		}
-
-		// '-'
-		iter_type operator-(difference_type const &a) const
-		{
-			iter_type tmp(*this);
-			return (tmp -= a);
-		}
-
-		// '-' 2 iters
-		difference_type operator-(iter_type const &other)
-		{
-			return (this->current_ - other.current_);
-		}
-
-		// '+='
-		iter_type &operator+=(difference_type const &a)
-		{
-			this->current_ += a;
-			return (*this);
-		}
-
-		// '-='
-		iter_type &operator-=(difference_type const &a)
-		{
-			this->current_ -= a;
-			return (*this);
-		}
-
-		// '[]'
-		reference operator[](difference_type index)
-		{
-			return (*(this->current_ + index));
-		}
-	private:
-		pointer current_;
-	};
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator== (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return (lhs.base() == rhs.base());
-	}
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator!= (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return !(lhs.base() == rhs.base());
-	}
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator< (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return (lhs.base() < rhs.base());
-	}
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator> (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return (lhs.base() > rhs.base());
-	}
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator>= (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return (lhs.base() >= rhs.base());
-	}
-
-	template<typename TL, typename ptrL, typename refL, typename  TR, typename ptrR, typename refR>
-	bool operator<= (const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
-	{
-		return (lhs.base() <= rhs.base());
-	}
 
 	template <typename Iterator>
 	ptrdiff_t distance(Iterator first, Iterator last) {
@@ -249,12 +82,11 @@ namespace ft {
 		vector(const vector &x) : alloc_(x.alloc_), size_(x.size_), capacity_(x.capacity_)
 		{
 			array_ = alloc_.allocate(this->capacity_);
-			swap(x);
 			this->alloc_		= x.alloc_;
 			this->size_			= x.size_;
 			this->capacity_		= x.capacity_;
 			for (size_type i = 0; i < this->size_; ++i)
-				alloc_.construct(this->arr_ + i, x[i]);
+				alloc_.construct(this->array_ + i, x[i]);
 		}
 
 
@@ -347,12 +179,13 @@ namespace ft {
 		}
 
 		void		resize (size_type n, value_type val = value_type()) {
+			value_type tmp_val(val);
 			if (n > this->capacity_)
 				my_realloc(n);
-			if (n < this->size_)
+			while (n > this->size_)
+				push_back(tmp_val);
+			while (n < this->size_)
 				pop_back();
-			if (n > this->size_)
-				push_back();
 		}
 
 		void		reserve(size_type new_cap) {
@@ -377,21 +210,28 @@ namespace ft {
 		// Insert --------------------------------------------------------------
 		void		insert(iterator position, size_type n, const value_type &val)
 		{
+			value_type tmp_val(val);
 			if (n == 0)
 				return;
-			size_type start = ft::distance(this->begin(), position);
+			size_type start_pos = ft::distance(this->begin(), position);
+
 			if ((this->size_ + n) > this->capacity_)
-				my_realloc(this->size_ + n);
-			iterator st(&array_[start]);
-			iterator en(&array_[this->size_]);
-			iterator en_new(&array_[this->size_ + n]);
-			std::copy_backward(st, en, en_new);
-			this->size_ += n;
-			for(;n != 0; n--)
+				my_realloc(this->capacity_ == 0 ? n : this->capacity_ * 2);
+			if ((this->size_ + n) > this->capacity_)
+				my_realloc(this->capacity_ + n);
+			iterator new_start(array_ + start_pos);
+			if (new_start != this->end())
 			{
-				alloc_.construct(this->array_ + start, val);
-				start++;
+				ft::pair<iterator, iterator> it(end() - 1, end());
+				for (; it.element2 != new_start; --it.element1, --it.element2)
+				{
+					alloc_.construct(&(*(it.element1 + n)), *it.element1);
+					alloc_.destroy(&(*it.element1));
+				}
 			}
+			this->size_ += n;
+			for(; n != 0; n--, start_pos++)
+				alloc_.construct(this->array_ + start_pos, tmp_val);
 		}
 
 		iterator	insert(iterator position, const value_type &val) {
@@ -451,12 +291,15 @@ namespace ft {
 		iterator	erase(iterator first, iterator last) {
 			if (first == last || first == this->end())
 				return first;
-			size_type index = ft::distance(this->begin(), first);
+			size_type	start_i		= first - this->begin();
+			size_type	tmp_i		= start_i;
+			size_type	n			= last - first;
 
-			size_type save = ft::distance(first, last);
-			std::copy(last, this->end(), first);
-			this->size_ -= save;
-			return (first);
+			for (; first != last; first++, start_i++)
+				this->alloc_.destroy(&array_[start_i]);
+			std::memmove(array_ + tmp_i, array_ + tmp_i + n,  sizeof(value_type) * (this->size_ - tmp_i));
+			this->size_ -= n;
+			return (iterator(this->array_ + tmp_i));
 		}
 
 		// SWAP
@@ -483,6 +326,7 @@ namespace ft {
 				alloc_.construct(new_array + i, this->array_[i]);
 			this->~vector();
 			this->array_		= new_array;
+			this->capacity_ 	= new_cap;
 			this->capacity_ 	= new_cap;
 		}
 

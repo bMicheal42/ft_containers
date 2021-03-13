@@ -4,4 +4,4 @@ project(ft_containers)
 set(CMAKE_CXX_STANDARD 98)
 
 
-add_executable(ft_containers Tests/main.cpp queue.class.hpp vector.class.hpp stack.class.hpp list.class.hpp)
+add_executable(ft_containers main.cpp containers/queue.class.hpp containers/vector.class.hpp containers/stack.class.hpp containers/list.class.hpp)
