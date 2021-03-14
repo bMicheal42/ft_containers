@@ -10,15 +10,15 @@ namespace ft {
 	{
 
 	public:
-		typedef std::random_access_iterator_tag iterator_category;
-		typedef T value_type;
-		typedef Pointer pointer;
-		typedef Reference reference;
-		typedef ptrdiff_t difference_type;
-		typedef size_t size_type;
-		typedef vector_iterator<T, Pointer, Reference> iter_type;
-		typedef vector_iterator<T, T *, T &> iterator;
-		typedef vector_iterator<T, const T *, const T &> const_iterator;
+		typedef std::random_access_iterator_tag				iterator_category;
+		typedef T											value_type;
+		typedef Pointer										pointer;
+		typedef Reference									reference;
+		typedef ptrdiff_t									difference_type;
+		typedef size_t										size_type;
+		typedef vector_iterator<T, Pointer, Reference>		iter_type;
+		typedef vector_iterator<T, T *, T &>				iterator;
+		typedef vector_iterator<T, const T *, const T &> 	const_iterator;
 
 		// =================== CONSTRUCTORS / DESTRUCTOR =======================
 		vector_iterator() : current_(0)

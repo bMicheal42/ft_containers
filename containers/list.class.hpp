@@ -2,6 +2,7 @@
 
 #include <list>
 #include "../utils.hpp"
+#include "../Iterators/list_iterator.hpp"
 
 namespace ft {
 
@@ -35,17 +36,17 @@ namespace ft {
 	public:
 
 		typedef T                                         value_type;
+		typedef Alloc									  allocator_type;
+		typedef size_t                                    size_type;
 		typedef T*                                        pointer;
 		typedef const T*                                  const_pointer;
 		typedef T&                                        reference;
 		typedef const T&                                  const_reference;
-		typedef vector_iterator<T, T*, T&>                iterator;
-		typedef vector_iterator<T, const T*, const T&>    const_iterator;
+		typedef list_iterator<T, T*, T&>                  iterator;
+		typedef list_iterator<T, const T*, const T&>   	  const_iterator;
 		typedef std::reverse_iterator<iterator>  		  reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>     const_reverse_iterator;
-		typedef size_t                                    size_type;
 		typedef ptrdiff_t								  difference_type;
-		typedef Alloc									  allocator_type;
 		typedef Node<T>								      node;
 
 //1
@@ -86,21 +87,42 @@ namespace ft {
 			//erase begin -end or While size > 0 pop
 			//delete
 		}
-
 //6
-		long &operator=(const list &src) {
-			if (*this == src)
-				return *this;
-//			assign(src.begin(), src.end());
-			return *this;
+		list &operator=(const list &other) {
+			list ez(other);
+			swap(ez);
+			return (*this);
 		}
 // ================================== ITERATORS ================================
+
+		iterator       			begin()			{ return (size_ == 0 ? iterator(last_) : iterator(last_->next)); }
+
+		const_iterator 			begin() const	{ return (size_ == 0 ? const_iterator(last_) : const_iterator(last_->next)); }
+
+		reverse_iterator   		rbegin()		{ return (size_ == 0 ? reverse_iterator(last_) : reverse_iterator(last_->prev)); }
+
+		const_reverse_iterator 	rbegin() const	{ return (size_ == 0 ? const_reverse_iterator(last_) : const_reverse_iterator(last_->prev)); }
+
+		iterator				end()			{ return (iterator(last_)); }
+
+		const_iterator			end() const 	{ return (const_iterator(last_)); }
+
+		reverse_iterator		rend()			{ return (reverse_iterator(last_)); }
+
+		const_reverse_iterator	rend() const	{ return (const_reverse_iterator(last_)); }
 
 // =============================== MEMBER FUNCTIONS ===========================
 		bool			empty() const { return (this->size_ == 0); }
 		size_type		size() const { return (this->size_); }
 		size_type		max_size() const { return (std::numeric_limits<size_type>::max() / sizeof(node)); }
 
+//==============================================================================
+		void swap(list& x)
+		{
+			std::swap(size_, x.size_);
+			std::swap(alloc_, x.alloc_);
+			std::swap(last_, x.last_);
+		}
 
 	private:
 		size_type			size_;

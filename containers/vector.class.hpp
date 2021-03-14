@@ -44,6 +44,7 @@ namespace ft {
 		typedef vector_iterator<T, const T*, const T&>    const_iterator;
 		typedef std::reverse_iterator<iterator>  		  reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>     const_reverse_iterator;
+		typedef ptrdiff_t								  difference_type;
 
 
 		explicit	vector(const allocator_type &alloc = allocator_type())
@@ -223,10 +224,10 @@ namespace ft {
 			if (new_start != this->end())
 			{
 				ft::pair<iterator, iterator> it(end() - 1, end());
-				for (; it.element2 != new_start; --it.element1, --it.element2)
+				for (; it.second != new_start; --it.first, --it.second)
 				{
-					alloc_.construct(&(*(it.element1 + n)), *it.element1);
-					alloc_.destroy(&(*it.element1));
+					alloc_.construct(&(*(it.first + n)), *it.first);
+					alloc_.destroy(&(*it.first));
 				}
 			}
 			this->size_ += n;

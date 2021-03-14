@@ -19,15 +19,15 @@ namespace ft {
 	{
 
 	public:
-		E1 element1;
-		E2 element2;
+		E1 first;
+		E2 second;
 
-		pair() :element1(), element2() {}
+		pair() : first(), second() {}
 
-		pair(const E1 &a, const E2 &b) :element1(a), element2(b) {}
+		pair(const E1 &a, const E2 &b) : first(a), second(b) {}
 
 		template <typename C1, typename C2>
-		pair(const pair<C1, C2> &copy) : element1(copy.element1), element2(copy.element2) {};
+		pair(const pair<C1, C2> &copy) : first(copy.first), second(copy.second) {};
 
 		~pair() {};
 
@@ -35,8 +35,8 @@ namespace ft {
 		{
 			if (this != &add)
 			{
-				element1 = add.element1;
-				element2 = add.element2;
+				first = add.first;
+				second = add.second;
 			}
 			return (*this);
 		}
