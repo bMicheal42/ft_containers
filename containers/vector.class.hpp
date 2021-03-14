@@ -97,45 +97,30 @@ namespace ft {
 			alloc_.deallocate(this->array_, this->capacity_);
 		}
 
-		// ITERATORS ===============================================================
+// ================================== ITERATORS ================================
 
 		iterator       			begin()			{ return (iterator(this->array_)); }
-
 		const_iterator 			begin() const	{ return (const_iterator(this->array_)); }
-
 		reverse_iterator   		rbegin()		{ return (reverse_iterator(this->end())); }
-
 		const_reverse_iterator 	rbegin() const	{ return (reverse_iterator(this->end())); }
-
 		iterator				end()			{ return (iterator(this->array_ + this->size_)); }
-
 		const_iterator			end() const 	{ return (const_iterator(this->array_ + this->size_)); }
-
 		reverse_iterator		rend()			{ return (reverse_iterator(this->begin())); }
-
 		const_reverse_iterator	rend() const	{ return (reverse_iterator(this->begin())); }
 
-		// ======================== OPERATORS =================================
+//================================== OPERATORS =================================
 
-		// '='
 		vector &operator=(vector const &other) {
 			vector ez(other);
 			swap (ez);
 			return (*this);
 		};
 
-		// '[]'
-		reference operator[](size_type index) {
-			return (this->array_[index]);
-		}
+		reference operator[](size_type index) { return (this->array_[index]); }
 
-		// '[]'
-		const_reference operator[](size_type index) const {
-			return (this->array_[index]);
-		}
+		const_reference operator[](size_type index) const { return (this->array_[index]); }
 
-
-		// Element access ------------------------------------------------------
+//================================= ELEMENT ACCESS =============================
 
 		reference		at(size_type pos) {
 			if (pos >= this->size_)
@@ -149,21 +134,10 @@ namespace ft {
 			return (this->array_[pos]);
 		}
 
-		reference		front() {
-			return (this->array_[0]);
-		}
-
-		const_reference	front() const {
-			return (this->array_[0]);
-		}
-
-		reference		back() {
-			return (this->array_[this->size_ - 1]);
-		}
-
-		const_reference	back() const {
-			return (this->array_[this->size_ - 1]);
-		}
+		reference				front()			{ return (this->array_[0]); }
+		const_reference			front() const	{ return (this->array_[0]); }
+		reference				back()			{ return (this->array_[this->size_ - 1]); }
+		const_reference			back() const	{ return (this->array_[this->size_ - 1]); }
 
 		// Capasity ------------------------------------------------------------
 

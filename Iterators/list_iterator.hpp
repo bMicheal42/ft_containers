@@ -11,7 +11,7 @@ namespace ft {
 // =========================================================================
 // --------------------------- LIST_ITERATOR -----------------------------
 // =========================================================================
-	template<typename T, typename Pointer = T *, typename Reference = T &>
+	template<typename T, typename Pointer = T*, typename Reference = T&>
 	class list_iterator
 	{
 
@@ -25,17 +25,24 @@ namespace ft {
 		typedef list_iterator<T, Pointer, Reference>	iter_type;
 		typedef list_iterator<T, T *, T &>				iterator;
 		typedef list_iterator<T, const T *, const T &>	const_iterator;
-		typedef Node<T> *								node_ptr;
+		typedef Node<T>									node_ptr;
 
 	private:
-		node_ptr node_;
+		node_ptr										*node_;
 //
 	public:
-		node_ptr get_current() const { return (node_); }
+
+		node_ptr *getNode() const { return (node_); }
+
 //		// =================== CONSTRUCTORS / DESTRUCTOR =======================
-		list_iterator(node_ptr other_node = 0) : node_(other_node) {}
+		list_iterator(iterator other_node = 0) : node_(other_node) {}
+//		list_iterator() {}
+
+		list_iterator(node_ptr *lst) { node_(lst); }
 //
-		list_iterator(const list_iterator<T, T*, T&> &copy) { node_ = copy.get_current(); } // ?? xz
+		list_iterator(list_iterator<T, T*, T&> &copy)
+			:node_(const_cast<pointer>(copy.getNode()))
+		{} // ?? xz
 //
 		~list_iterator() {}
 
@@ -49,9 +56,9 @@ namespace ft {
 			return (*this);
 		}
 	// '*'
-		reference operator*() const { return (*this->node_); }
+		reference operator*() const { return (node_->data); }
 	// '->'
-		pointer operator->() { return (*&this->node_); }
+		pointer operator->() const { return &(node_->data); }
 
 	// '++ pre'
 		iter_type &operator++() {
@@ -61,7 +68,7 @@ namespace ft {
 	// '++ post'
 		iter_type operator++(int)
 		{
-			iter_type tmp(*this);
+			iter_type tmp = *this;
 			node_ = node_->next;
 			return (tmp);
 		}
@@ -75,7 +82,7 @@ namespace ft {
 //		// '-- post'
 		iter_type operator--(int)
 		{
-			iter_type tmp(*this);
+			iter_type tmp = *this;
 			node_ = node_->prev;
 			return (tmp);
 		}
@@ -84,11 +91,11 @@ namespace ft {
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator==(const list_iterator<TL, ptrL, refL> &lhs, const list_iterator<TR, ptrR, refR> &rhs)
 	{
-		return (lhs.get_current() == rhs.get_current());
+		return (lhs.getNode() == rhs.getNode());
 	}
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator!=(const list_iterator<TL, ptrL, refL> &lhs, const list_iterator<TR, ptrR, refR> &rhs)
 	{
-		return !(lhs.get_current() == rhs.get_current());
+		return !(lhs.getNode() == rhs.getNode());
 	}
 }// end of namespace

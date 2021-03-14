@@ -8,7 +8,7 @@
 
 int	main() {
 
-	std::list<int> my_lst;
+	ft::list<int> my_lst;
 
 	my_lst.push_back(5);
 	my_lst.push_back(6);
@@ -16,12 +16,10 @@ int	main() {
 	my_lst.push_back(8);
 	my_lst.push_back(9);
 
-	std::list<int>::iterator omg;
-	std::list<int>::iterator omg2;
-	if (omg == omg2)
-		std::cout << "lol" << std::endl;
-	else
-		std::cout << "nihuia" << std::endl;
-	omg++;
+	my_lst.begin();
+
+//	for (; it != my_lst.end(); it++)
+//		std::cout << *it << ' ';
+//	std::cout << std::endl;
 	return 0;
 }
