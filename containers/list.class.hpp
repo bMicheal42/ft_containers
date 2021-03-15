@@ -1,5 +1,6 @@
 #pragma once
 
+#define	fl std
 #include <list>
 #include "../utils.hpp"
 #include "../Iterators/list_iterator.hpp"
@@ -39,8 +40,8 @@ namespace ft {
 		typedef const T&                                  		const_reference;
 		typedef typename ft::list_iterator<T, Node, false>      iterator;
 		typedef typename ft::list_iterator<T, Node, true>  	    const_iterator;
-		typedef std::reverse_iterator<iterator>  		        reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>           const_reverse_iterator;
+		typedef fl::reverse_iterator<iterator>  		        reverse_iterator;
+		typedef fl::reverse_iterator<const_iterator>            const_reverse_iterator;
 		typedef ptrdiff_t								        difference_type;
 		typedef Node								            node;
 
@@ -125,21 +126,21 @@ namespace ft {
 //
 //		}
 
-		void push_front (const value_type& val)
+		void		push_front (const value_type& val)
 		{
 			node *new_node = new node(val);
 			insert_node(last_, last_->next, new_node);
 		}
 
-		void pop_front() { delete_node(last_->next); }
+		void		pop_front() { delete_node(last_->next); }
 
-		void push_back (const value_type &val) //DONE
+		void		push_back (const value_type &val) //DONE
 		{
 			node *new_node = new node(val);
 			insert_node(last_->prev, last_, new_node);
 		}
 
-		void pop_back() { delete_node(last_->prev); }
+		void		pop_back() { delete_node(last_->prev); }
 
 //		iterator insert (iterator position, const value_type& val);
 
@@ -148,23 +149,25 @@ namespace ft {
 //		template <class InputIterator>
 //		void insert (iterator position, InputIterator first, InputIterator last);
 
-		iterator erase (iterator position)
+		iterator	erase(iterator position)
 		{
 			iterator save_it(position.getNode()->next);
 			delete_node(position.getNode());
 			return (save_it);
 		}
 
-		iterator erase (iterator first, iterator last)
+		iterator	erase(iterator first, iterator last)
 		{
-			iterator save_it(last.getNode()->next);
 			for (; first != last; first++)
 				delete_node((first.getNode()));
-			return (save_it);
+			return (last);
 		}
+
+//		void resize (size_type n, value_type val = value_type());
+
 //==============================================================================
 
-		void			insert_node(node *const prev_node, node *const next_node, node *const new_node)
+		void		insert_node(node *const prev_node, node *const next_node, node *const new_node)
 		{
 			new_node->next	= next_node;
 			new_node->prev	= prev_node;
@@ -173,7 +176,7 @@ namespace ft {
 			this->size_++;
 		}
 
-		void			delete_node(node *to_delete)
+		void		delete_node(node *to_delete)
 		{
 			to_delete->next->prev = to_delete->prev;
 			to_delete->prev->next = to_delete->next;
@@ -181,11 +184,11 @@ namespace ft {
 			this->size_--;
 		}
 
-		void			swap(list& x)
+		void		swap(list& x)
 		{
-			std::swap(size_, x.size_);
-			std::swap(alloc_, x.alloc_);
-			std::swap(last_, x.last_);
+			fl::swap(size_, x.size_);
+			fl::swap(alloc_, x.alloc_);
+			fl::swap(last_, x.last_);
 		}
 
 	private:
@@ -193,5 +196,5 @@ namespace ft {
 		allocator_type		alloc_;
 		node*				last_;
 
-	}; //end of class LIST
-}
+	}; /** end of class LIST */
+} /** end of namespace */

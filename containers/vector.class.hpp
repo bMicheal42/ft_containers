@@ -36,6 +36,7 @@ namespace ft {
 		typedef T                                         value_type;
 		typedef Alloc								      allocator_type;
 		typedef size_t                                    size_type;
+		typedef ptrdiff_t								  difference_type;
 		typedef T*                                        pointer;
 		typedef const T*                                  const_pointer;
 		typedef T&                                        reference;
@@ -44,7 +45,6 @@ namespace ft {
 		typedef vector_iterator<T, const T*, const T&>    const_iterator;
 		typedef std::reverse_iterator<iterator>  		  reverse_iterator;
 		typedef std::reverse_iterator<const_iterator>     const_reverse_iterator;
-		typedef ptrdiff_t								  difference_type;
 
 
 		explicit	vector(const allocator_type &alloc = allocator_type())

@@ -25,17 +25,23 @@ int	main() {
 //	it2++;
 
 	lib::list<int> my = a;
+
+	lib::list<int>::iterator it(--my.end());
+	it--; it--; it--;
+	lib::list<int>::iterator save(--my.end());
+
+	lib::list<int>::iterator check(my.erase(it, --my.end()));
 //	a.pop_front();
 //	a.pop_back();
-	std::cout << "lol";
-
+	if (check == save)
+		std::cout << "Well done" << std::endl;
 
 //	ft::list<int>::const_iterator arr = a.begin();
 //	ft::list<int>::const_iterator arr2(++a.begin());
 
 //	if (arr2 == arr)
 //		std::cout << "non equal" << std::endl;
-
+	std::cout << "lol";
 //	my_lst.push_back(5);
 //	my_lst.push_back(6);
 //	my_lst.push_back(7);
