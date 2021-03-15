@@ -6,17 +6,29 @@
 #include <vector>
 #include <list>
 
+#define lib ft
 
 int	main() {
 
-	ft::list<int> a;
-	a.push_front(2);
-	a.push_front(3);
+	lib::list<int> a(1,3);
+
+	a.push_back(4);
+	a.push_back(5);
+	a.push_back(6);
+	a.push_back(7);
+	a.push_back(8);
+
+//	lib::list<int>::iterator it1(++a.begin());
+//	lib::list<int>::iterator it2(it1);
+//
+//	it2++;
+//	it2++;
+
+	lib::list<int> my = a;
 //	a.pop_front();
-	a.pop_back();
+//	a.pop_back();
 	std::cout << "lol";
-//	a.push_back(4);
-//	a.push_back(5);
+
 
 //	ft::list<int>::const_iterator arr = a.begin();
 //	ft::list<int>::const_iterator arr2(++a.begin());

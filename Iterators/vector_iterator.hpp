@@ -5,7 +5,7 @@ namespace ft {
 // =========================================================================
 // --------------------------- VECTOR_ITERATOR -----------------------------
 // =========================================================================
-	template<typename T, typename Pointer = T *, typename Reference = T &>
+	template<typename T, typename Pointer = T*, typename Reference = T&>
 	class vector_iterator
 	{
 
@@ -16,9 +16,6 @@ namespace ft {
 		typedef Reference									reference;
 		typedef ptrdiff_t									difference_type;
 		typedef size_t										size_type;
-		typedef vector_iterator<T, Pointer, Reference>		iter_type;
-		typedef vector_iterator<T, T *, T &>				iterator;
-		typedef vector_iterator<T, const T *, const T &> 	const_iterator;
 
 		// =================== CONSTRUCTORS / DESTRUCTOR =======================
 		vector_iterator() : current_(0)
@@ -42,7 +39,7 @@ namespace ft {
 		// Operators ===========================================================
 
 		// '='
-		iter_type &operator=(vector_iterator<T, T *, T &> const &a)
+		vector_iterator &operator=(vector_iterator<T, T *, T &> const &a)
 		{
 			if (this == &a)
 				return (*this);
@@ -63,64 +60,64 @@ namespace ft {
 		}
 
 		// '++ pre'
-		iter_type &operator++()
+		vector_iterator &operator++()
 		{
 			++this->current_;
 			return (*this);
 		}
 
 		// '++ post'
-		iter_type operator++(int)
+		vector_iterator operator++(int)
 		{
-			iter_type tmp(*this);
+			vector_iterator tmp(*this);
 			this->current_++;
 			return (tmp);
 		}
 
 		// '-- pre'
-		iter_type &operator--()
+		vector_iterator &operator--()
 		{
 			--this->current_;
 			return (*this);
 		}
 
 		// '-- post'
-		iter_type operator--(int)
+		vector_iterator operator--(int)
 		{
-			iter_type tmp(*this);
+			vector_iterator tmp(*this);
 			this->current_--;
 			return (tmp);
 		}
 
 		// '+'
-		iter_type operator+(difference_type const &a) const
+		vector_iterator operator+(difference_type const &a) const
 		{
-			iter_type tmp(*this);
+			vector_iterator tmp(*this);
 			return (tmp += a);
 		}
 
 		// '-'
-		iter_type operator-(difference_type const &a) const
+		vector_iterator operator-(difference_type const &a) const
 		{
-			iter_type tmp(*this);
+			vector_iterator tmp(*this);
 			return (tmp -= a);
 		}
 
 		// '-' 2 iters
-		difference_type operator-(iter_type const &other)
+		difference_type operator-(vector_iterator const &other)
 		{
 			return (this->current_ - other.current_);
 		}
 
 		// '+='
-		iter_type &operator+=(difference_type const &a)
+		vector_iterator &operator+=(difference_type const &a)
 		{
 			this->current_ += a;
 			return (*this);
 		}
 
 		// '-='
-		iter_type &operator-=(difference_type const &a)
+		vector_iterator &operator-=(difference_type const &a)
 		{
 			this->current_ -= a;
 			return (*this);

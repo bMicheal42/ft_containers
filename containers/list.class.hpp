@@ -56,8 +56,8 @@ namespace ft {
 					: size_(0), alloc_(alloc)
 		{
 			this->last_ = new node();
-		//	while (this->size_ < n)
-		//	push_back(val);
+			while (n--)
+				push_back(val);
 		}
 //3
 		template <class InputIterator>
@@ -66,21 +66,22 @@ namespace ft {
 			: size_(0), alloc_(alloc)
 		{
 			this->last_ = new node();
-		//	for (; first != last; ++first)
-		//	push_back(*first);
+			for (; first != last; ++first)
+				push_back(*first);
 		}
 //4
-		list (const list& x)
-			:size_(x.size_), alloc_(x.alloc_)
+		list (const list &x)
+			:size_(0), alloc_(x.alloc_)
 		{
 			this->last_ = new node();
-			//insert в конец от начала до конца следующего
+			for(const_iterator it = x.begin(); it != x.end(); ++it)
+				push_back(*it);
 		}
 //5
 		~list()
 		{
-			//erase begin -end or While size > 0 pop
-			//delete
+			while (size_ > 0)
+				pop_back();
 		}
 //6
 		list &operator=(const list &other) {
