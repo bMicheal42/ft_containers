@@ -32,8 +32,7 @@ namespace ft {
 				: current_(const_cast<pointer>(copy.base()))
 		{}
 
-		~vector_iterator()
-		{}
+		~vector_iterator() {}
 
 		// MY
 		pointer base() const

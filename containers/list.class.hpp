@@ -6,48 +6,43 @@
 
 namespace ft {
 
-	template <class T>
-	struct  Node {
-		T			data;
-		Node		*next;
-		Node		*prev;
-
-		Node(const T &val = T())
-			:data(val)
-		{
-			this->next = this;
-			this->prev = this;
-		}
-
-		Node(const Node<T> *copy)
-			:data(copy->data) {}
-
-		~Node() {}
-	};
-
 // =============================================================================
-// ------------------------------ LIST CLASS ----------------------------------
+/** ------------------------------ LIST CLASS ---------------------------------*/
 // =============================================================================
 
 	template < class T, class Alloc = std::allocator<T> >
 	class list
 	{
+// ============================ NODE STRUCT ====================================
+		struct  Node
+		{
+			T data;
+			Node *next;
+			Node *prev;
 
+			Node (const T &val = T()) :data(val) {
+				this->prev	=	this;
+				this->next	=	this;
+			}
+			Node (const Node *copy) :data(copy->data) {}
+			~Node () {}
+		};
+// =============================================================================
 	public:
 
-		typedef T                                         value_type;
-		typedef Alloc									  allocator_type;
-		typedef size_t                                    size_type;
-		typedef T*                                        pointer;
-		typedef const T*                                  const_pointer;
-		typedef T&                                        reference;
-		typedef const T&                                  const_reference;
-		typedef list_iterator<T, T*, T&>                  iterator;
-		typedef list_iterator<T, const T*, const T&>   	  const_iterator;
-		typedef std::reverse_iterator<iterator>  		  reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>     const_reverse_iterator;
-		typedef ptrdiff_t								  difference_type;
-		typedef Node<T>								      node;
+		typedef T                                               value_type;
+		typedef Alloc								            allocator_type;
+		typedef size_t                                          size_type;
+		typedef T*                                              pointer;
+		typedef const T*                             			const_pointer;
+		typedef T&                                      		reference;
+		typedef const T&                                  		const_reference;
+		typedef typename ft::list_iterator<T, Node, false>      iterator;
+		typedef typename ft::list_iterator<T, Node, true>  	    const_iterator;
+		typedef std::reverse_iterator<iterator>  		        reverse_iterator;
+		typedef std::reverse_iterator<const_iterator>           const_reverse_iterator;
+		typedef ptrdiff_t								        difference_type;
+		typedef Node								            node;
 
 //1
 		explicit	list (const allocator_type& alloc = allocator_type())
@@ -131,7 +126,7 @@ namespace ft {
 
 		void push_front (const value_type& val)
 		{
-			node new_node(val);
+			node *new_node = new node;
 			insert_node(last_, last_->next, new_node);
 		}
 
@@ -139,8 +134,8 @@ namespace ft {
 
 		void push_back (const value_type &val)
 		{
-			node new_node(val);
-			insert_node(last_->prev, last_, new_node);
+			node *new_node		= new node(val);
+			insert_node(last_->prev->next, last_, new_node);
 		}
 
 		void pop_back() { delete_node(last_->prev); }

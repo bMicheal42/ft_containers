@@ -13,6 +13,28 @@ namespace ft {
 		typedef T type;
 	};
 
+/*
+================================================================================
+*/
+	template <bool isConst, typename isFalse, typename isTrue>
+	struct chooseConst {};
+
+
+	template <typename isFalse, typename isTrue> //non-const
+	struct chooseConst<false, isFalse, isTrue>
+	{
+		typedef isFalse type;
+	};
+
+	template <typename isFalse, typename isTrue> //const
+	struct chooseConst<true, isFalse, isTrue>
+	{
+		typedef isTrue type;
+	};
+
+/*
+================================================================================
+*/
 
 	template <typename E1, typename  E2>
 	class pair
