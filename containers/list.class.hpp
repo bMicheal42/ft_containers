@@ -126,16 +126,16 @@ namespace ft {
 
 		void push_front (const value_type& val)
 		{
-			node *new_node = new node;
+			node *new_node = new node(val);
 			insert_node(last_, last_->next, new_node);
 		}
 
 		void pop_front() { delete_node(last_->next); }
 
-		void push_back (const value_type &val)
+		void push_back (const value_type &val) //DONE
 		{
-			node *new_node		= new node(val);
-			insert_node(last_->prev->next, last_, new_node);
+			node *new_node = new node(val);
+			insert_node(last_->prev, last_, new_node);
 		}
 
 		void pop_back() { delete_node(last_->prev); }
@@ -174,8 +174,8 @@ namespace ft {
 
 		void			delete_node(node *to_delete)
 		{
-			to_delete->next->prev = to_delete->next;
-			to_delete->prev->next = to_delete->prev;
+			to_delete->next->prev = to_delete->prev;
+			to_delete->prev->next = to_delete->next;
 			delete to_delete;
 			this->size_--;
 		}

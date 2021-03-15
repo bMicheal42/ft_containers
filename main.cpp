@@ -10,9 +10,11 @@
 int	main() {
 
 	ft::list<int> a;
-	a.push_back(2);
-//	a.push_back(3);
-std::cout << "lol";
+	a.push_front(2);
+	a.push_front(3);
+//	a.pop_front();
+	a.pop_back();
+	std::cout << "lol";
 //	a.push_back(4);
 //	a.push_back(5);
 
