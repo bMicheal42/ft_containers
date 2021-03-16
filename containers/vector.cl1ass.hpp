@@ -12,6 +12,18 @@
 
 namespace ft {
 
+	template <typename Iterator>
+	ptrdiff_t distance(Iterator first, Iterator last) {
+		ptrdiff_t dist = 0;
+		if (first == last)
+			return 0;
+		while (first != last) {
+			++dist;
+			++first;
+		}
+		return dist;
+	}
+
 // =============================================================================
 /** ------------------------------ VECTOR ----------------------------------- */
 // =============================================================================
@@ -29,8 +41,8 @@ namespace ft {
 		typedef const T										*const_pointer;
 		typedef T											&reference;
 		typedef const T										&const_reference;
-		typedef vector_iterator<T, T*, T&>					iterator;
-		typedef vector_iterator<T, const T *, const T&> 	const_iterator;
+		typedef vector_iterator<T, T *, T &>				iterator;
+		typedef vector_iterator<T, const T *, const T &> 	const_iterator;
 		typedef fl::reverse_iterator<iterator> 				reverse_iterator;
 		typedef fl::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
@@ -60,6 +72,7 @@ namespace ft {
 			array_ = alloc_.allocate(this->capacity_);
 			for (size_type i = 0; i < this->size_; i++)
 				alloc_.construct(array_ + i, val);
+
 		}
 
 		template<class InputIterator>
@@ -68,7 +81,7 @@ namespace ft {
 			   const allocator_type &alloc = allocator_type())
 				: alloc_(alloc), array_(0), size_(0), capacity_(0)
 		{
-			this->size_ = last - first;
+			this->size_ = ft::distance(first, last);
 			this->capacity_ = this->size_;
 			array_ = alloc_.allocate(this->capacity_);
 			for (size_type i = 0; first != last; ++i, ++first)
@@ -85,17 +98,12 @@ namespace ft {
 				alloc_.construct(this->array_ + i, x[i]);
 		}
 
+
 		~vector()
 		{
-			if (array_)
-			{
-				for (iterator it = this->begin(); it != this->end(); ++it)
-					alloc_.destroy(&(*it));
-				alloc_.deallocate(this->array_, this->capacity_);
-				this->capacity_ = 0;
-				this->size_ 	= 0;
-				this->array_ 	= 0;
-			}
+			for (iterator it = this->begin(); it != this->end(); ++it)
+				alloc_.destroy(&(*it));
+			alloc_.deallocate(this->array_, this->capacity_);
 		}
 
 // ================================== ITERATORS ================================
@@ -167,182 +175,140 @@ namespace ft {
 		const_reference back() const
 		{ return (this->array_[this->size_ - 1]); }
 
-		// ------------------------ CAPACITY ----------------------------------
+//================================= CAPACITY ===================================
 
-		bool		empty() const		{ return (!(this->size_)); }
+		bool empty() const
+		{
+			return (!(this->size_));
+		}
 
-		size_type	size() const		{ return (this->size_); }
+		size_type size() const
+		{
+			return (this->size_);
+		}
 
-		size_type	max_size() const	{ return (this->alloc_.max_size()); }
+		size_type max_size() const
+		{
+			return (this->alloc_.max_size());
+		}
 
-		size_type	capacity() const 	{ return (this->capacity_); }
-
-		// ------------------------- RESIZE ------------------------------------
 		void resize(size_type n, value_type val = value_type())
 		{
 			value_type tmp_val(val);
-			try {
-				if (n > this->capacity_)
-					my_realloc(n);
-			}
-			catch (std::exception &e) {
-				throw vector::VectorException();
-			}
+			if (n > this->capacity_)
+				my_realloc(n);
 			while (n > this->size_)
 				push_back(tmp_val);
 			while (n < this->size_)
 				pop_back();
 		}
-		// ------------------------- RESERVE -----------------------------------
+
 		void reserve(size_type new_cap)
 		{
-			size_type  tmp_cap;
-
-			if (new_cap >= vector::max_size())
-				this->array_ = alloc_.allocate(new_cap);
 			if (new_cap <= this->capacity_)
 				return;
 			if (new_cap > this->capacity_)
+				my_realloc(new_cap);
+		}
+
+		size_type capacity() const
+		{
+			return (this->capacity_);
+		}
+
+
+		// Insert --------------------------------------------------------------
+		void insert(iterator position, size_type n, const value_type &val, size_type bm = 0)
+		{
+			size_type before = static_cast<size_type>(position - this->begin());
+
+			if (this->capacity_ > this->size_ + n)
 			{
-				tmp_cap = this->capacity_ * 2;
-				if (new_cap > tmp_cap)
-					tmp_cap = new_cap;
-				my_realloc(tmp_cap);
+				size_type last = (this->size_ == 0) ? 0 : this->size_ - 1;
+
+				for (size_type i = before; i < this->size_; ++i, --last) {
+					memmove (array_ + last + n, array_ + last, sizeof(value_type));
+				}
+				for (size_type i = 0; i < n; ++i) {
+					this->alloc_.construct(this->arr_ + before + i, val);
+				}
+				this->size_ += n;
+			}
+			else
+			{
+				size_type new_capacity = this->capacity_ * 2;
+
+				if (new_capacity < this->size_ + n + bm) {
+					new_capacity = this->size_ + n + bm;
+				}
+
+				pointer   new_arr = this->alloc_.allocate(new_capacity);
+				memcpy(new_arr, array_, sizeof(value_type) * before);
+
+				for (size_type i = 0; i < n; ++i) {
+					this->alloc_.construct(new_arr + before + i, val);
+				}
+				memcpy(new_arr + before + n, array_ + before, sizeof(value_type) * (size_ - before));
+
+				if (this->array_ != 0) {
+					this->alloc_.deallocate(this->array_, this->capacity_);
+				}
+				size_     	+= n;
+				array_     	 = new_arr;
+				capacity_	 = new_capacity;
 			}
 		}
 
-		// ------------------------- INSERT ------------------------------------
-        void insert(iterator position, size_type n, const value_type &val)
-        {
-            if (n == 0)
-                return ;
-            size_type before = static_cast<size_type>(position - this->begin());
+		iterator insert(iterator position, const value_type &val)
+		{
+			size_type save_index = ft::distance(this->begin(), position);
+			insert(position, 1, val);
+			return iterator(this->array_ + save_index);
+		}
 
-            if (this->capacity_ >= this->size_ + n)
-            {
-                size_type last = (this->size_ == 0) ? 0 : this->size_ - 1;
+		template<class InputIterator>
+		void insert(iterator position, InputIterator first, InputIterator last,
+					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0)
+		{
+			difference_type n = last - first;
+			if (n < 0)
+				throw VectorException();
+			for (; first != last; first++, position++)
+				position = insert(position, 1, *first, n - 1);
+		}
 
-                for (size_type i = before; i < this->size_; ++i, --last) {
-                    memmove (array_ + last + n, array_ + last, sizeof(value_type));
-                }
-                for (size_type i = 0; i < n; ++i) {
-                    this->alloc_.construct(this->array_ + before + i, val);
-                }
-                this->size_ += n;
-            }
-            else
-            {
-                size_type new_capacity = this->capacity_ * 2;
-
-                if (new_capacity < this->size_ + n) {
-                    new_capacity = this->size_ + n;
-                }
-
-                pointer   new_arr = this->alloc_.allocate(new_capacity);
-                memcpy(new_arr, array_, sizeof(value_type) * before);
-
-                for (size_type i = 0; i < n; ++i) {
-                    this->alloc_.construct(new_arr + before + i, val);
-                }
-                memcpy(new_arr + before + n, array_ + before, sizeof(value_type) * (size_ - before));
-
-                if (this->array_ != 0) {
-                    this->alloc_.deallocate(this->array_, this->capacity_);
-                }
-                size_         += n;
-                array_        = new_arr;
-                capacity_     = new_capacity;
-            }
-        }
-
-        iterator insert(iterator position, const value_type &val)
-        {
-            size_type save_index = position - this->begin();
-            insert(position, 1, val);
-            return iterator(this->array_ + save_index);
-        }
-
-        template <class InputIterator>
-        void     insert (iterator position, InputIterator first, InputIterator last,
-             typename enable_if < !std::numeric_limits<InputIterator>::is_specialized >::type* = 0)
-         {
-            difference_type n      = last - first;
-            difference_type before = position - this->begin();
-
-            if (n <= 0)
-                return ;
-
-            if (capacity_ >= size_ + n)
-                for (; first != last; ++first, ++position)
-                    insert(position, *first);
-            else
-            {
-                pointer tmp_arr;
-                size_t new_cap = capacity_ * 2;
-                if (size_ + n > new_cap) {
-                    new_cap = size_ + n;
-                }
-                tmp_arr = this->alloc_.allocate(new_cap);
-                  memcpy(tmp_arr, this->array_, sizeof(value_type) * before);
-                std::copy(first, last, tmp_arr + before);
-                memcpy(tmp_arr + before + n, this->array_ + before, sizeof(value_type) * (size_ - before));
-                if (this->array_ != 0) { this->alloc_.deallocate(this->array_, this->capacity_); }
-
-                this->size_        += n;
-                this->array_    = tmp_arr;
-                this->capacity_    = new_cap;
-            }
-        }
-
-		// ---------------------------- CLEAR ----------------------------------
+		// CLEAR ----------------------------------------------------------------
 		void clear()
 		{
 			while (this->size_)
 				pop_back();
 		}
 
-		// --------------------------- ASSIGN ----------------------------------
+		// ASSIGN ----------------------------------------------------------------
 		template<class InputIterator>
 		void assign(InputIterator first, InputIterator last,
 					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0)
 		{
-			size_type n = static_cast<size_type>(last - first);
-			if ((last - first) < 0)
-			{
-				this->~vector();
-				throw vector::VectorException();
-			}
-			vector<T> tmp_vect(first, last);
 			this->clear();
-			if (n > this->capacity_)
-			{
-				this->alloc_.deallocate(this->array_, this->capacity_);
-				this->array_ = alloc_.allocate(n);
-				this->capacity_ = n;
-			}
-			this->insert(this->begin(), tmp_vect.begin(), tmp_vect.end());
+			this->insert(this->begin(), first, last);
 		}
 
 		void assign(size_type n, const value_type &val)
 		{
-			vector<T> tmp_vect(n, val);
 			this->clear();
-			if (n > this->capacity_)
-			{
-				this->alloc_.deallocate(this->array_, this->capacity_);
-				this->array_ = alloc_.allocate(n);
-				this->capacity_ = n;
-			}
 			this->insert(this->begin(), n, val);
 		}
 
-		// --------------------------- PUSH BACK--------------------------------
+		// PUSHBACK ------------------------------------------------------------
 		void push_back(const value_type &val)
 		{
-			insert(this->end(), 1, val);
+			if (this->size_ ==this->capacity_)
+				my_realloc(this->capacity_ == 0 ? 1 : this->capacity_ * 2);
+			this->alloc_.construct(&array_[this->size_], val);
+			this->size_++;
 		}
 
-		// --------------------------- POP BACK--------------------------------
+		// POPBACK -------------------------------------------------------------
 		void pop_back()
 		{
 			if (this->size_)
@@ -352,7 +318,7 @@ namespace ft {
 			}
 		}
 
-		// --------------------------- ERASE -----------------------------------
+		// ERASE ---------------------------------------------------------------
 		iterator erase(iterator position)
 		{
 			return erase(position, position + 1);
@@ -368,12 +334,12 @@ namespace ft {
 
 			for (; first != last; first++, start_i++)
 				this->alloc_.destroy(&array_[start_i]);
-			this->size_ -= n;
 			std::memmove(array_ + tmp_i, array_ + tmp_i + n, sizeof(value_type) * (this->size_ - tmp_i));
+			this->size_ -= n;
 			return (iterator(this->array_ + tmp_i));
 		}
 
-		// --------------------------- SWAP ------------------------------------
+		// SWAP
 		void swap(vector &x)
 		{
 			fl::swap(this->alloc_, x.alloc_);
@@ -381,7 +347,7 @@ namespace ft {
 			fl::swap(this->size_, x.size_);
 			fl::swap(this->capacity_, x.capacity_);
 		}
-//=============================== EXCEPTION ====================================
+// Exceptions ==================================================================
 
 		class VectorException : public std::exception
 		{
@@ -390,20 +356,17 @@ namespace ft {
 				return ("vector");
 			}
 		}; // end of exception class
-
 //==============================================================================
 	private:
 
 		void my_realloc(size_type new_cap)
 		{
-			size_t tmp_size = this->size_;
 			pointer new_array = alloc_.allocate(new_cap);
 			for (size_type i = 0; i < this->size(); ++i)
 				alloc_.construct(new_array + i, this->array_[i]);
 			this->~vector();
-			this->array_ 	= new_array;
+			this->array_ = new_array;
 			this->capacity_ = new_cap;
-			this->size_ 	= tmp_size;
 		}
 	}; /** end of vector class */
 

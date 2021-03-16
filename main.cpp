@@ -31,6 +31,7 @@ int	main() {
 	lib::list<int>::iterator save(--my.end());
 
 	lib::list<int>::iterator check(my.erase(it, --my.end()));
+	std::cout << *check <<std::endl;
 //	a.pop_front();
 //	a.pop_back();
 	if (check == save)

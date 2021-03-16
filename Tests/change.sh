@@ -25,7 +25,7 @@ then
 
   if grep -q "ft::$2" $FILE
   then
-    clang++  $FILE && ./a.out > my_out
+    clang++ -Wall -Wextra -Werror -std=c++98 $FILE && ./a.out > my_out
     echo -e " clang++ -Wall -Wextra -Werror -std=c++98 $FILE\n"
     sed -i '' 's/[a-zA-Z]*::'$2'/std::'$2'/g' $FILE
     echo -e " change to $GREEN std:: $WHITE namespace \n"
