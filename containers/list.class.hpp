@@ -38,14 +38,20 @@ namespace ft {
 		typedef const T*                             			const_pointer;
 		typedef T&                                      		reference;
 		typedef const T&                                  		const_reference;
-		typedef typename ft::list_iterator<T, Node, false>      iterator;
-		typedef typename ft::list_iterator<T, Node, true>  	    const_iterator;
+		typedef list_iterator<T, Node, T*, T&>   			    iterator;
+		typedef list_iterator<T, Node, const T*, const T&> 	    const_iterator;
 		typedef fl::reverse_iterator<iterator>  		        reverse_iterator;
 		typedef fl::reverse_iterator<const_iterator>            const_reverse_iterator;
 		typedef ptrdiff_t								        difference_type;
 		typedef Node								            node;
 
-//1
+	private:
+		size_type			size_;
+		allocator_type		alloc_;
+		node*				last_;
+
+//======================= CONSTRUCTORS / DESTRUCTORS ===========================
+	public:
 		explicit	list (const allocator_type& alloc = allocator_type())
 					: size_(0), alloc_(alloc)
 			{
@@ -116,31 +122,42 @@ namespace ft {
 
 //=================================== MODIFIERS ================================
 
+		// --------------------------- ASSIGN ----------------------------------
 //		template <class InputIterator>
 //		void assign(InputIterator first, InputIterator last) {
-//			for(; first != last; first++)
-//				assign(1, *first);
-//		}
-//
-//		void assign(size_type n, const value_type& val) {
 //
 //		}
 
+		void assign(size_type n, const value_type& val) {
+			value_type tmp_val = val;
+			this->clear();
+			while (this->size_ < n)
+				this->push_back(tmp_val);
+		}
+
+		// --------------------------- PUSH FRONT ------------------------------
 		void		push_front (const value_type& val)
 		{
 			node *new_node = new node(val);
 			insert_node(last_, last_->next, new_node);
 		}
 
-		void		pop_front() { delete_node(last_->next); }
+		// --------------------------- POP FRONT -------------------------------
+		void		pop_front() {
+				delete_node(last_->next);
+		}
 
+		// --------------------------- PUSH BACK--------------------------------
 		void		push_back (const value_type &val) //DONE
 		{
 			node *new_node = new node(val);
 			insert_node(last_->prev, last_, new_node);
 		}
 
-		void		pop_back() { delete_node(last_->prev); }
+		// --------------------------- POP BACK --------------------------------
+		void		pop_back() {
+				delete_node(last_->prev);
+		}
 
 //		iterator insert (iterator position, const value_type& val);
 
@@ -149,6 +166,7 @@ namespace ft {
 //		template <class InputIterator>
 //		void insert (iterator position, InputIterator first, InputIterator last);
 
+		// --------------------------- ERASE -----------------------------------
 		iterator	erase(iterator position)
 		{
 			iterator save_it(position.getNode()->next);
@@ -163,7 +181,21 @@ namespace ft {
 			return (last);
 		}
 
-//		void resize (size_type n, value_type val = value_type());
+		// ------------------------- RESIZE ------------------------------------
+		void resize (size_type n, value_type val = value_type())
+		{
+			value_type tmp_val(val);
+			while (n < this->size_)
+				pop_back();
+			while (n > this->size_)
+				push_back(tmp_val);
+		}
+
+		// ---------------------------- CLEAR ----------------------------------
+		void clear() {
+			while (this->size_)
+				pop_back();
+		}
 
 //==============================================================================
 
@@ -178,6 +210,8 @@ namespace ft {
 
 		void		delete_node(node *to_delete)
 		{
+//			if (!this->size_)
+//				return;
 			to_delete->next->prev = to_delete->prev;
 			to_delete->prev->next = to_delete->next;
 			delete to_delete;
@@ -190,11 +224,6 @@ namespace ft {
 			fl::swap(alloc_, x.alloc_);
 			fl::swap(last_, x.last_);
 		}
-
-	private:
-		size_type			size_;
-		allocator_type		alloc_;
-		node*				last_;
 
 	}; /** end of class LIST */
 } /** end of namespace */

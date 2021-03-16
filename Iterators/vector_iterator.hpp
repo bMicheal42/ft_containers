@@ -20,10 +20,9 @@ namespace ft {
 // ====================== CONSTRUCTORS / DESTRUCTOR ============================
 		vector_iterator() :current_(0) {}
 
-		vector_iterator(const pointer elem) :current_(elem) {}
+		vector_iterator(pointer elem) :current_(elem) {}
 
-		vector_iterator(vector_iterator<T, T *, T &> copy)
-				: current_(const_cast<pointer>(copy.base())) {}
+		vector_iterator(vector_iterator<T, T*, T&> const &copy) :current_(copy.base()) {}
 
 		~vector_iterator() {}
 
@@ -31,11 +30,10 @@ namespace ft {
 // ============================ OPERATORS ======================================
 
 		// '='
-		vector_iterator		&operator=(vector_iterator<T, T *, T &> const &a)
+		vector_iterator		&operator=(vector_iterator const &other)
 		{
-			if (this == &a)
-				return (*this);
-			this->current_ = a.current_;
+			if (&other != this)
+				current_ = other.current_;
 			return (*this);
 		}
 

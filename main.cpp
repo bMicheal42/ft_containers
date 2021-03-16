@@ -1,4 +1,4 @@
-//#include "containers/vector.class.hpp"
+#include "containers/vector.class.hpp"
 //#include "containers/queue.class.hpp"
 #include "containers/list.class.hpp"
 
@@ -8,51 +8,49 @@
 
 #define lib ft
 
-int	main() {
+int	main()
+{
 
-	lib::list<int> a(1,3);
-
-	a.push_back(4);
-	a.push_back(5);
-	a.push_back(6);
-	a.push_back(7);
-	a.push_back(8);
-
-//	lib::list<int>::iterator it1(++a.begin());
-//	lib::list<int>::iterator it2(it1);
+//	lib::vector<const int> it(8, 5);
 //
-//	it2++;
-//	it2++;
+//	lib::vector<const int>::const_iterator it1 = it.begin();
+//	lib::vector<const int>::const_iterator it2(it.end() - 1);
+//	if (it1 != it2)
+//		std::cout << *it1 << " Gdrive privuet " << *it2 << std::endl;
+//	if (it1 == it2)
+//		std::cout << *it1 << " Gdrive pokaaa (error) " << *it2 << std::endl;
+//	 (*it)++; //error check
 
-	lib::list<int> my = a;
+/**	 work with STD code / not working with MY */
 
-	lib::list<int>::iterator it(--my.end());
-	it--; it--; it--;
-	lib::list<int>::iterator save(--my.end());
+//	lib::vector<const int> vec(8, 6);
+//	lib::vector<int>::const_iterator it1 = vec.begin();
+//	lib::vector<int>::const_iterator it2(vec.end() - 1);
+//	if (it1 != it2)
+//		std::cout << *it1 << " Gdrive privuet " << *it2 << std::endl;
+//	if (it1 == it2)
+//		std::cout << *it1 << " Gdrive pokaaa (error) " << *it2 << std::endl;
 
-	lib::list<int>::iterator check(my.erase(it, --my.end()));
-	std::cout << *check <<std::endl;
-//	a.pop_front();
-//	a.pop_back();
-	if (check == save)
-		std::cout << "Well done" << std::endl;
+//	(*vec)++; //error check
+//	vec.insert(vec.begin(), 2, 1); //check error
+//	vec.push_back(1); //check error
 
-//	ft::list<int>::const_iterator arr = a.begin();
-//	ft::list<int>::const_iterator arr2(++a.begin());
 
-//	if (arr2 == arr)
-//		std::cout << "non equal" << std::endl;
-	std::cout << "lol";
-//	my_lst.push_back(5);
-//	my_lst.push_back(6);
-//	my_lst.push_back(7);
-//	my_lst.push_back(8);
-//	my_lst.push_back(9);
-
-//	my_lst.begin();
-
-//	for (; it != my_lst.end(); it++)
-//		std::cout << *it << ' ';
-//	std::cout << std::endl;
+//	lib::list<const int> lst;
+//	lib::list<const int>::const_iterator it1 = lst.begin();
+//	lib::list<const int>::const_iterator it2(lst.begin());
+//	it2--;
+//	if (it1 != it2)
+//		std::cout << *it1 << " Gdrive privuet " << *it2 << std::endl;
+//	lst.erase(lst.begin());
+	lib::list<int> lst(3,3);
+	lst.push_back(4);
+	lst.push_back(5);
+	lst.assign(0,666);
+//	lst.resize(5); std::cout << "size: "<< lst.size() << std::endl;
+//	lst.resize(10, 5); 		std::cout << "size: "<< lst.size() << std::endl;
+//	lst.resize(5, 5); 		std::cout << "size: "<< lst.size() << std::endl;
+//	lst.resize(0, 5); 		std::cout << "size: "<< lst.size() << std::endl;
+//	lst.clear();					std::cout << "size: "<< lst.size() << std::endl;
 	return 0;
 }

@@ -25,12 +25,12 @@ namespace ft {
 		typedef Alloc										allocator_type;
 		typedef size_t										size_type;
 		typedef ptrdiff_t									difference_type;
-		typedef T											*pointer;
-		typedef const T										*const_pointer;
-		typedef T											&reference;
-		typedef const T										&const_reference;
-		typedef vector_iterator<T, T*, T&>					iterator;
-		typedef vector_iterator<T, const T *, const T&> 	const_iterator;
+		typedef T*											pointer;
+		typedef const T*									const_pointer;
+		typedef T&											reference;
+		typedef const T&									const_reference;
+		typedef ft::vector_iterator<T, T*, T&>				iterator;
+		typedef ft::vector_iterator<T, const T*, const T&> 	const_iterator;
 		typedef fl::reverse_iterator<iterator> 				reverse_iterator;
 		typedef fl::reverse_iterator<const_iterator> 		const_reverse_iterator;
 
@@ -177,6 +177,7 @@ namespace ft {
 
 		size_type	capacity() const 	{ return (this->capacity_); }
 
+//=================================== MODIFIERS ================================
 		// ------------------------- RESIZE ------------------------------------
 		void resize(size_type n, value_type val = value_type())
 		{
@@ -193,6 +194,7 @@ namespace ft {
 			while (n < this->size_)
 				pop_back();
 		}
+
 		// ------------------------- RESERVE -----------------------------------
 		void reserve(size_type new_cap)
 		{
@@ -339,7 +341,8 @@ namespace ft {
 		// --------------------------- PUSH BACK--------------------------------
 		void push_back(const value_type &val)
 		{
-			insert(this->end(), 1, val);
+			value_type tmp_val = val;
+			insert(this->end(), 1, tmp_val);
 		}
 
 		// --------------------------- POP BACK--------------------------------

@@ -9,15 +9,15 @@ namespace ft {
 /** ------------------------------ LIST_ITERATOR ------------------------------*/
 // =============================================================================
 
-	template<typename T, typename  Node, bool Bool>
+	template<typename T, typename Node, typename Pointer = T*, typename Reference = T&>
 	class list_iterator
 	{
 
 	public:
 		typedef std::bidirectional_iterator_tag						iterator_category;
 		typedef T 													value_type;
-		typedef typename chooseConst<Bool, T*, const T*>::type		pointer;
-		typedef typename chooseConst<Bool, T&, const T&>::type		reference;
+		typedef Pointer												pointer;
+		typedef Reference											reference;
 		typedef ptrdiff_t											difference_type;
 		typedef size_t												size_type;
 		typedef Node												*node_ptr;
@@ -33,14 +33,14 @@ namespace ft {
 
 		list_iterator(node_ptr node = 0) :node_(node) {}
 
-		list_iterator(const list_iterator<T, Node, false> &copy) :node_(copy.getNode()) {}
+		list_iterator(list_iterator<T, Node, T*, T&> const &copy) :node_(copy.getNode()) {}
 
 		~list_iterator() {}
 
 //================================ OPERATORS ===================================
 
 	// '='
-		list_iterator	&operator=(const list_iterator &other)
+		list_iterator	&operator=(list_iterator &other)
 		{
 			if (&other != this)
 				node_ = other.node_;
@@ -80,8 +80,8 @@ namespace ft {
 			return (tmp);
 		}
 
-		bool operator==(const list_iterator &it) const  { return (it.node_ == node_); }
-		bool operator!=(const list_iterator &it) const  { return (it.node_ != node_); }
+		bool operator==(list_iterator<T, Node, T*, T&> &it) const  { return (it.node_ == node_); }
+		bool operator!=(list_iterator<T, Node, T*, T&> &it) const  { return (it.node_ != node_); }
 
 	}; /** end of class */
 
