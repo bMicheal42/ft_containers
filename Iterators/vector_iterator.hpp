@@ -18,28 +18,20 @@ namespace ft {
 		typedef size_t										size_type;
 
 // ====================== CONSTRUCTORS / DESTRUCTOR ============================
-		vector_iterator() : current_(0)
-		{}
+		vector_iterator() :current_(0) {}
 
-		vector_iterator(const pointer elem)
-				: current_(elem)
-		{}
+		vector_iterator(const pointer elem) :current_(elem) {}
 
 		vector_iterator(vector_iterator<T, T *, T &> copy)
-				: current_(const_cast<pointer>(copy.base()))
-		{}
+				: current_(const_cast<pointer>(copy.base())) {}
 
 		~vector_iterator() {}
 
-		// MY
-		pointer base() const
-		{
-			return (this->current_);
-		}
-		// Operators ===========================================================
+		pointer base() const { return (this->current_); }
+// ============================ OPERATORS ======================================
 
 		// '='
-		vector_iterator &operator=(vector_iterator<T, T *, T &> const &a)
+		vector_iterator		&operator=(vector_iterator<T, T *, T &> const &a)
 		{
 			if (this == &a)
 				return (*this);
@@ -48,26 +40,20 @@ namespace ft {
 		}
 
 		// '*'
-		reference operator*() const
-		{
-			return (*this->current_);
-		}
+		reference			operator*() const { return (*this->current_); }
 
 		// '->'
-		pointer operator->()
-		{
-			return (*&this->current_);
-		}
+		pointer				operator->() { return (*&this->current_); }
 
 		// '++ pre'
-		vector_iterator &operator++()
+		vector_iterator 	&operator++()
 		{
 			++this->current_;
 			return (*this);
 		}
 
 		// '++ post'
-		vector_iterator operator++(int)
+		vector_iterator		operator++(int)
 		{
 			vector_iterator tmp(*this);
 			this->current_++;
@@ -75,14 +61,14 @@ namespace ft {
 		}
 
 		// '-- pre'
-		vector_iterator &operator--()
+		vector_iterator		&operator--()
 		{
 			--this->current_;
 			return (*this);
 		}
 
 		// '-- post'
-		vector_iterator operator--(int)
+		vector_iterator		operator--(int)
 		{
 			vector_iterator tmp(*this);
 			this->current_--;
@@ -90,48 +76,46 @@ namespace ft {
 		}
 
 		// '+'
-		vector_iterator operator+(difference_type const &a) const
+		vector_iterator		operator+(difference_type const &a) const
 		{
 			vector_iterator tmp(*this);
 			return (tmp += a);
 		}
 
 		// '-'
-		vector_iterator operator-(difference_type const &a) const
+		vector_iterator		operator-(difference_type const &a) const
 		{
 			vector_iterator tmp(*this);
 			return (tmp -= a);
 		}
 
 		// '-' 2 iters
-		difference_type operator-(vector_iterator const &other)
+		difference_type		operator-(vector_iterator const &other)
 		{
 			return (this->current_ - other.current_);
 		}
 
 		// '+='
-		vector_iterator &operator+=(difference_type const &a)
+		vector_iterator		&operator+=(difference_type const &a)
 		{
 			this->current_ += a;
 			return (*this);
 		}
 
 		// '-='
-		vector_iterator &operator-=(difference_type const &a)
+		vector_iterator		&operator-=(difference_type const &a)
 		{
 			this->current_ -= a;
 			return (*this);
 		}
 
 		// '[]'
-		reference operator[](difference_type index)
-		{
-			return (*(this->current_ + index));
-		}
+		reference			operator[](difference_type index) { return (*(this->current_ + index)); }
 
 	private:
 		pointer current_;
-	};
+
+	}; /** end of class */
 
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator==(const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
