@@ -369,7 +369,7 @@ namespace ft {
 			for (; first != last; first++, start_i++)
 				this->alloc_.destroy(&array_[start_i]);
 			this->size_ -= n;
-			std::memmove(array_ + tmp_i, array_ + tmp_i + n, sizeof(value_type) * (this->size_ - tmp_i));
+			memmove(array_ + tmp_i, array_ + tmp_i + n, sizeof(value_type) * (this->size_ - tmp_i));
 			return (iterator(this->array_ + tmp_i));
 		}
 
