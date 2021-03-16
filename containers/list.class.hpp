@@ -127,9 +127,9 @@ namespace ft {
 		template <class InputIterator>
 		void		assign(InputIterator first, InputIterator last,
 					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
-//			ft::list<T> tmp_list(first, last);
-//			this->clear();
-//			insert
+			ft::list<T> tmp_list(first, last);
+			this->clear();
+			insert(this->begin(), tmp_list.begin(), tmp_list.end());
 		}
 
 		void		assign(size_type n, const value_type& val) {
@@ -183,9 +183,7 @@ namespace ft {
 //			std::cout << "iters: " << *it1 << " " << *it2 << std::endl;
 
 			for (; it1 != it2; ++it1)
-			{
 				insert(position, *it1);
-			}
 			insert(position, *it1);
 		}
 

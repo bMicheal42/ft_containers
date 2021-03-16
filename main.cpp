@@ -6,7 +6,19 @@
 #include <vector>
 #include <list>
 
-#define lib std
+#define lib ft
+
+
+void	printf_list(lib::list<int> &list, std::string bef_aft)
+{
+	std::cout << "\n======================================================" << std::endl;
+	std::cout << bef_aft; // List before/ after
+	for (lib::list<int>::iterator iter(list.begin()); iter != list.end(); iter++)
+		std::cout << *iter << " ";
+	std::cout << std::endl;
+	std::cout << bef_aft << " size: " << list.size() << std::endl;
+	std::cout << "======================================================\n" << std::endl;
+}
 
 int	main()
 {
@@ -49,11 +61,9 @@ int	main()
 	lst.push_back(6);
 	lst.push_back(7);
 	lst.push_back(8);
-	std::cout << "list before: ";
-	for (lib::list<int>::iterator iter(lst.begin()); iter != lst.end(); iter++)
-		std::cout << *iter << " ";
-	std::cout << std::endl;
-//	lst.insert(it, 666);
+
+	printf_list(lst, "List before: ");
+
 	lib::list<int>::iterator position(lst.begin());
 	position++; position++; position++; // pos = 6;
 
@@ -67,11 +77,11 @@ int	main()
 
 	lst.insert(position,it, it2);
 
-	std::cout << "list after: ";
-	for (lib::list<int>::iterator iter(lst.begin()); iter != lst.end(); iter++)
-		std::cout << *iter << " ";
-	std::cout << std::endl;
-	std::cout << "lists size after: " << lst.size() << std::endl;
+	printf_list(lst, "List after: ");
+
+	lst.assign(it2, it);
+
+	printf_list(lst, "List after: ");
 //	lst.assign(0,666);
 //	lst.resize(5); std::cout << "size: "<< lst.size() << std::endl;
 //	lst.resize(10, 5); 		std::cout << "size: "<< lst.size() << std::endl;
