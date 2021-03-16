@@ -5,57 +5,57 @@
 
 
 template< typename T >
-void	print_container_content(std::vector<T> &vec, std::string name = "container") {
+void	print_container_content(ft::vector<T> &vec, std::string name = "container") {
 	std::cout << name << " contains:";
-	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+	for (ft::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
 		std::cout << ' ' << *it;
 	std::cout << " $" << std::endl;
 }
 
 template< typename T >
-void	reverse_print_container_content(std::vector<T> &vec, const std::string& name = "container") {
+void	reverse_print_container_content(ft::vector<T> &vec, const std::string& name = "container") {
 	std::cout << name << " contains:";
-	for (std::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
+	for (ft::vector<int>::reverse_iterator it = vec.rbegin(); it != vec.rend(); it++)
 		std::cout << ' ' << *it;
 	std::cout << " $" << std::endl;
 }
 
 void	constructors_test() {
 	int i = 8;
-	std::vector<int> def;
+	ft::vector<int> def;
 	print_container_content(def, "default constructor");
-	std::vector<int>	fill(i, 42);
+	ft::vector<int>	fill(i, 42);
 	for (int i = 0; i < 8; i++)
 		fill.push_back( i );
 	print_container_content(fill, "fill constructor");
-	std::vector<int> range(fill.begin(), fill.end());
+	ft::vector<int> range(fill.begin(), fill.end());
 	print_container_content(range, "range constructor");
-	std::vector<int> copy(range);
+	ft::vector<int> copy(range);
 	print_container_content(copy, "copy constructor");
 	copy = def;
 	print_container_content(copy, "assignation operator");
 }
 
 void	iterators_test() {
-	std::vector<int> hats;
+	ft::vector<int> hats;
 	for (int i = 0; i < 72; i++)
 		hats.push_back(i * 10);
-	std::vector<int>::iterator		it = hats.begin();
-	std::vector<int>::iterator		ite = hats.end();
+	ft::vector<int>::iterator		it = hats.begin();
+	ft::vector<int>::iterator		ite = hats.end();
 	ite--;
-	std::vector<int>::iterator test = 5 + it;
+	ft::vector<int>::iterator test = 5 + it;
 	std::cout << "*test = " << *test << std::endl;
 	std::cout << "*it = " << *it << ", *ite = " << *ite << std::endl;
-	std::vector<int>::const_iterator	cit = hats.begin();
-	std::vector<int>::const_iterator	cite = hats.end();
+	ft::vector<int>::const_iterator	cit = hats.begin();
+	ft::vector<int>::const_iterator	cite = hats.end();
 	cite--;
 	std::cout << "sfhkdsfh" << std::endl;
 	std::cout << "*cit = " << *cit << ", *cite = " << *cite << std::endl;
-	std::vector<int>::reverse_iterator		rit = hats.rbegin();
-	std::vector<int>::reverse_iterator		rite = hats.rend();
+	ft::vector<int>::reverse_iterator		rit = hats.rbegin();
+	ft::vector<int>::reverse_iterator		rite = hats.rend();
 	(void)rite;
-	std::vector<int>::const_reverse_iterator	crit = hats.rbegin();
-	std::vector<int>::const_reverse_iterator	crite = hats.rend();
+	ft::vector<int>::const_reverse_iterator	crit = hats.rbegin();
+	ft::vector<int>::const_reverse_iterator	crite = hats.rend();
 	std::cout << "regular iterators:" << std::endl;
 	std::cout << "reg: operator==(): " << std::boolalpha << (it == cit) << ", " << (cit == it) << std::endl;
 	std::cout << "reg: operator!=(): " << std::boolalpha << (it != cite) << ", " << (cite != it) << std::endl;
@@ -85,7 +85,7 @@ void	iterators_test() {
 }
 
 void	capacity_test() {
-	std::vector<int>	papajohns;
+	ft::vector<int>	papajohns;
 
 	std::cout << "papajohns.empty(): " << std::boolalpha<< papajohns.empty() << std::endl;
 	for (int i = 0; i < 10; ++i)
@@ -98,12 +98,12 @@ void	capacity_test() {
 }
 
 void	element_access_test() {
-	std::vector<int> kokkita;
+	ft::vector<int> kokkita;
 
 	for (int i = 0; i < 10; ++i)
 		kokkita.push_back(-3 * i);
 
-	const std::vector<int> constkita(kokkita);
+	const ft::vector<int> constkita(kokkita);
 	std::cout << "kokkita[3]: " << kokkita[3] << ", constkita[4]: " << constkita[4] << std::endl;
 	try {
 		std::cout << "the [] operator does not check if the input value is inbounds of the array" << std::endl;
@@ -121,10 +121,10 @@ void	element_access_test() {
 
 void	modifiers_test() {
 
-	std::vector<int>	tocopy;
+	ft::vector<int>	tocopy;
 	for (int i = 0; i < 14; ++i)
 		tocopy.push_back(14 * i);
-	std::vector<int> wap;
+	ft::vector<int> wap;
 	wap.assign(5, 69);
 	print_container_content(wap, "after the first assign, wapwap");
 	wap.assign(tocopy.begin(), tocopy.end());
@@ -132,7 +132,7 @@ void	modifiers_test() {
 	while (!(tocopy.empty()))
 		tocopy.pop_back();
 	print_container_content(wap, "wap");
-	std::vector<int>::iterator it = wap.begin() + 2;
+	ft::vector<int>::iterator it = wap.begin() + 2;
 	std::cout << "*it = " << *it << std::endl;
 	wap.insert(it, 2, 800);
 	it = wap.insert(wap.begin() + 1, 9999);
@@ -151,8 +151,8 @@ void	modifiers_test() {
 }
 
 void	relational_operators_test() {
-	std::vector<int>	a;
-	std::vector<int>	b;
+	ft::vector<int>	a;
+	ft::vector<int>	b;
 	for (int i = 0; i < 8; i++) {
 		a.push_back(i);
 		b.push_back(i);
@@ -167,8 +167,8 @@ void	relational_operators_test() {
 
 void	stl_test() {
 	// checking if I can also assign items from STL iterators
-	std::vector<int>		wap;
-	std::vector<int>	stl;
+	ft::vector<int>		wap;
+	ft::vector<int>	stl;
 	for (int i = 0; i < 12; i++)
 		stl.push_back(i * 4);
 	wap.assign(stl.begin(), stl.end());
@@ -177,7 +177,7 @@ void	stl_test() {
 }
 
 void	sam() {
-	std::vector<int>	sam(8, 123);
+	ft::vector<int>	sam(8, 123);
 	// int ret = sam.end() - sam.begin();
 	int ret = sam.end() - sam.begin();
 	std::cout << "ret = " << ret << std::endl;
