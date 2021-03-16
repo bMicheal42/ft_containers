@@ -327,7 +327,7 @@ namespace ft {
 
 		void assign(size_type n, const value_type &val)
 		{
-			vector<T> tmp_vect(n, val);
+			ft::vector<T> tmp_vect(n, val);
 			this->clear();
 			if (n > this->capacity_)
 			{

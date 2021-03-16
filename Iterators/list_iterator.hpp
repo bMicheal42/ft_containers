@@ -40,7 +40,7 @@ namespace ft {
 //================================ OPERATORS ===================================
 
 	// '='
-		list_iterator	&operator=(list_iterator &other)
+		list_iterator	&operator=(const list_iterator &other)
 		{
 			if (&other != this)
 				node_ = other.node_;
@@ -80,9 +80,18 @@ namespace ft {
 			return (tmp);
 		}
 
-		bool operator==(list_iterator<T, Node, T*, T&> &it) const  { return (it.node_ == node_); }
-		bool operator!=(list_iterator<T, Node, T*, T&> &it) const  { return (it.node_ != node_); }
-
 	}; /** end of class */
+
+	template<typename tL, typename nL, typename ptrL, typename refL, typename tR, typename nR, typename ptrR, typename refR>
+	bool operator==(const list_iterator<tL, nL, ptrL, refL> &lhs, const list_iterator<tR, nR, ptrR, refR> &rhs)
+	{
+		return (lhs.getNode() == rhs.getNode());
+	}
+
+	template<typename tL, typename nL, typename ptrL, typename refL, typename tR, typename nR, typename ptrR, typename refR>
+	bool operator!=(const list_iterator<tL, nL, ptrL, refL> &lhs, const list_iterator<tR, nR, ptrR, refR> &rhs)
+	{
+		return !(lhs.getNode() == rhs.getNode());
+	}
 
 } /** end of namespace */

@@ -4,6 +4,7 @@
 #include <list>
 #include "../utils.hpp"
 #include "../Iterators/list_iterator.hpp"
+#include <iostream> //
 
 namespace ft {
 
@@ -123,12 +124,15 @@ namespace ft {
 //=================================== MODIFIERS ================================
 
 		// --------------------------- ASSIGN ----------------------------------
-//		template <class InputIterator>
-//		void assign(InputIterator first, InputIterator last) {
-//
-//		}
+		template <class InputIterator>
+		void		assign(InputIterator first, InputIterator last,
+					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
+//			ft::list<T> tmp_list(first, last);
+//			this->clear();
+//			insert
+		}
 
-		void assign(size_type n, const value_type& val) {
+		void		assign(size_type n, const value_type& val) {
 			value_type tmp_val = val;
 			this->clear();
 			while (this->size_ < n)
@@ -136,35 +140,54 @@ namespace ft {
 		}
 
 		// --------------------------- PUSH FRONT ------------------------------
-		void		push_front (const value_type& val)
-		{
-			node *new_node = new node(val);
-			insert_node(last_, last_->next, new_node);
-		}
+		void		push_front (const value_type& val)	{ insert_node(last_, last_->next, val); }
 
 		// --------------------------- POP FRONT -------------------------------
-		void		pop_front() {
-				delete_node(last_->next);
-		}
+		void		pop_front()							{ delete_node(last_->next); }
 
 		// --------------------------- PUSH BACK--------------------------------
-		void		push_back (const value_type &val) //DONE
-		{
-			node *new_node = new node(val);
-			insert_node(last_->prev, last_, new_node);
-		}
+		void		push_back (const value_type &val)	{ insert_node(last_->prev, last_, val); }
 
 		// --------------------------- POP BACK --------------------------------
-		void		pop_back() {
-				delete_node(last_->prev);
+		void		pop_back()							{ delete_node(last_->prev); }
+
+		// ---------------------------- INSERT ---------------------------------
+		iterator	insert (iterator position, const value_type& val)
+		{
+			insert_node(position.getNode()->prev, position.getNode(), val);
+			return (--position);
 		}
 
-//		iterator insert (iterator position, const value_type& val);
+		void 		insert (iterator position, size_type n, const value_type& val)
+		{
+			while (n-- > 0)
+				position = insert(position, val);
+		}
 
-//		void insert (iterator position, size_type n, const value_type& val);
 
-//		template <class InputIterator>
-//		void insert (iterator position, InputIterator first, InputIterator last);
+		template <class InputIterator>
+		void		insert (iterator position, InputIterator first, InputIterator last,
+							typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0)
+		{
+			last_->data = this->size();
+			ft::list<T> tmp_list(first, last);
+
+//			std::cout << "tmp_list: ";
+//			for (ft::list<int>::iterator iter(tmp_list.begin()); iter != tmp_list.end(); iter++)
+//				std::cout << *iter << " ";
+//			std::cout << std::endl;
+//
+			iterator it1 = tmp_list.begin();
+			iterator it2 = --tmp_list.end();
+
+//			std::cout << "iters: " << *it1 << " " << *it2 << std::endl;
+
+			for (; it1 != it2; ++it1)
+			{
+				insert(position, *it1);
+			}
+			insert(position, *it1);
+		}
 
 		// --------------------------- ERASE -----------------------------------
 		iterator	erase(iterator position)
@@ -182,7 +205,7 @@ namespace ft {
 		}
 
 		// ------------------------- RESIZE ------------------------------------
-		void resize (size_type n, value_type val = value_type())
+		void		resize (size_type n, value_type val = value_type())
 		{
 			value_type tmp_val(val);
 			while (n < this->size_)
@@ -192,15 +215,16 @@ namespace ft {
 		}
 
 		// ---------------------------- CLEAR ----------------------------------
-		void clear() {
+		void		clear() {
 			while (this->size_)
 				pop_back();
 		}
 
 //==============================================================================
 
-		void		insert_node(node *const prev_node, node *const next_node, node *const new_node)
+		void		insert_node(node *const prev_node, node *const next_node, value_type val)
 		{
+			node *new_node	= new node(val);
 			new_node->next	= next_node;
 			new_node->prev	= prev_node;
 			prev_node->next	= new_node;
@@ -224,6 +248,37 @@ namespace ft {
 			fl::swap(alloc_, x.alloc_);
 			fl::swap(last_, x.last_);
 		}
-
 	}; /** end of class LIST */
+
+	template<class T, typename Node>
+	bool operator==(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		if (lhs.size() != rhs.size())
+			return (false);
+		return (ft::equalx(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template<class T, typename Node>
+	bool operator!=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		return (!(lhs == rhs));
+	}
+
+	template<class T, typename Node>
+	bool operator<(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		return (fl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	}
+
+	template<class T, typename Node>
+	bool operator>(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		return (fl::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
+	}
+
+	template<class T, typename Node>
+	bool operator>=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		return (!(lhs < rhs));
+	}
+
+	template<class T, typename Node>
+	bool operator<=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+		return (!(lhs > rhs));
+	}
 } /** end of namespace */
