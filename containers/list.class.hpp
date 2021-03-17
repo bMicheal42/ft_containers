@@ -90,6 +90,7 @@ namespace ft {
 		{
 			while (size_ > 0)
 				pop_back();
+			delete this->last_;
 		}
 //6
 		list &operator=(const list &other) {
@@ -127,12 +128,14 @@ namespace ft {
 		template <class InputIterator>
 		void		assign(InputIterator first, InputIterator last,
 					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0) {
+			last_->data = this->size();
 			ft::list<T> tmp_list(first, last);
 			this->clear();
 			insert(this->begin(), tmp_list.begin(), tmp_list.end());
 		}
 
 		void		assign(size_type n, const value_type& val) {
+			last_->data = this->size();
 			value_type tmp_val = val;
 			this->clear();
 			while (this->size_ < n)
@@ -154,6 +157,7 @@ namespace ft {
 		// ---------------------------- INSERT ---------------------------------
 		iterator	insert (iterator position, const value_type& val)
 		{
+			last_->data = this->size();
 			insert_node(position.getNode()->prev, position.getNode(), val);
 			return (--position);
 		}
@@ -172,15 +176,8 @@ namespace ft {
 			last_->data = this->size();
 			ft::list<T> tmp_list(first, last);
 
-//			std::cout << "tmp_list: ";
-//			for (ft::list<int>::iterator iter(tmp_list.begin()); iter != tmp_list.end(); iter++)
-//				std::cout << *iter << " ";
-//			std::cout << std::endl;
-//
 			iterator it1 = tmp_list.begin();
 			iterator it2 = --tmp_list.end();
-
-//			std::cout << "iters: " << *it1 << " " << *it2 << std::endl;
 
 			for (; it1 != it2; ++it1)
 				insert(position, *it1);
@@ -188,23 +185,21 @@ namespace ft {
 		}
 
 		// --------------------------- ERASE -----------------------------------
-		iterator	erase(iterator position)
-		{
+		iterator	erase(iterator position) {
 			iterator save_it(position.getNode()->next);
 			delete_node(position.getNode());
 			return (save_it);
 		}
 
-		iterator	erase(iterator first, iterator last)
-		{
-			for (; first != last; first++)
-				delete_node((first.getNode()));
-			return (last);
+		iterator	erase(iterator first, iterator last) { //STD seg if first > last
+			while (first != last) {
+				first = erase(first);
+			}
+			return first;
 		}
 
 		// ------------------------- RESIZE ------------------------------------
-		void		resize (size_type n, value_type val = value_type())
-		{
+		void		resize (size_type n, value_type val = value_type()) {
 			value_type tmp_val(val);
 			while (n < this->size_)
 				pop_back();
@@ -217,11 +212,67 @@ namespace ft {
 			while (this->size_)
 				pop_back();
 		}
+		// --------------------------- SWAP ------------------------------------
+		void		swap(list& x) {
+			fl::swap(size_, x.size_);
+			fl::swap(alloc_, x.alloc_);
+			fl::swap(last_, x.last_);
+		}
+
+
+//============================== OPERATIONS ====================================
+
+		// ----------------------- SPLICE --------------------------------------
+		void		splice (iterator position, list &x) {
+			while(x.size_)
+				splice(position, x, x.begin());
+		}
+
+		void		splice (iterator position, list &x, iterator i) {
+			node *new_node						= i.getNode();
+
+			i.getNode()->prev->next 			= i.getNode()->next;
+			i.getNode()->next->prev 			= i.getNode()->prev;
+
+			new_node->next						= position.getNode();
+			new_node->prev						= position.getNode()->prev;
+			position.getNode()->prev->next		= new_node;
+			position.getNode()->prev			= new_node;
+
+			--x.size_;
+			++this->size_;
+		}
+
+		void		splice (iterator position, list &x, iterator first, iterator last) {
+			if (first == last)
+				return;
+
+//			if (last.getNode() == first.getNode()->next)
+//			{
+//				splice(position, x, first);
+//				return;
+//			}
+			iterator new_last(last.getNode()->prev);
+
+			size_type  n  = 0;
+			for (iterator tmp(first); tmp != last; ++tmp, ++n);
+
+			first.getNode()->prev->next			= last.getNode();
+			last.getNode()->prev				= first.getNode()->prev;
+
+			position.getNode()->prev			= new_last.getNode();
+			position.getNode()->prev->next		= first.getNode();
+
+			first.getNode()->prev				= position.getNode()->prev;
+			new_last.getNode()->next			= position.getNode();
+
+			x.size_		-= n;
+			this->size_ += n;
+		}
 
 //==============================================================================
 
-		void		insert_node(node *const prev_node, node *const next_node, value_type val)
-		{
+		void		insert_node(node *const prev_node, node *const next_node, value_type val) {
 			node *new_node	= new node(val);
 			new_node->next	= next_node;
 			new_node->prev	= prev_node;
@@ -232,20 +283,12 @@ namespace ft {
 
 		void		delete_node(node *to_delete)
 		{
-//			if (!this->size_)
-//				return;
 			to_delete->next->prev = to_delete->prev;
 			to_delete->prev->next = to_delete->next;
 			delete to_delete;
 			this->size_--;
 		}
 
-		void		swap(list& x)
-		{
-			fl::swap(size_, x.size_);
-			fl::swap(alloc_, x.alloc_);
-			fl::swap(last_, x.last_);
-		}
 	}; /** end of class LIST */
 
 	template<class T, typename Node>
