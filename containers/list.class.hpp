@@ -192,9 +192,8 @@ namespace ft {
 		}
 
 		iterator	erase(iterator first, iterator last) { //STD seg if first > last
-			while (first != last) {
+			while (first != last)
 				first = erase(first);
-			}
 			return first;
 		}
 
@@ -247,11 +246,6 @@ namespace ft {
 			if (first == last)
 				return;
 
-//			if (last.getNode() == first.getNode()->next)
-//			{
-//				splice(position, x, first);
-//				return;
-//			}
 			iterator new_last(last.getNode()->prev);
 
 			size_type  n  = 0;
@@ -270,7 +264,187 @@ namespace ft {
 			this->size_ += n;
 		}
 
-//==============================================================================
+		// ----------------------- REMOVE --------------------------------------
+		void		remove (const value_type &val) {
+			value_type tmp_val = val;
+			for (iterator tmp(begin()); tmp != this->end(); ++tmp)
+				if (tmp.getNode().data == tmp_val)
+					delete_node(tmp.getNode());
+		}
+
+		template <class Predicate>
+		void		remove_if (Predicate pred) {
+			for (iterator tmp(begin()); tmp != this->end(); ++tmp)
+				if (pred(tmp.getNode().data) == true)
+					delete_node(tmp.getNode());
+		}
+		// ----------------------- UNIQUE --------------------------------------
+		void		unique() {
+			for (iterator tmp(begin()); tmp != this->end(); ++tmp) /**   NEED A CHECK */
+				if (*tmp == tmp.getNode()->next->data)
+					delete_node(tmp.getNode()->next);
+		}
+
+		template <class BinaryPredicate>
+		void		unique (BinaryPredicate binary_pred) {
+			for (iterator tmp(begin()); tmp != this->end(); ++tmp) /**   NEED A CHECK */
+				if (binary_pred(tmp.getNode()->next->data, tmp.getNode()->next->next->data))
+					delete_node(tmp.getNode()->next->next);
+		}
+
+		// ----------------------- MERGE --------------------------------------
+		void merge (list &x) {
+			if (&x == this)
+				return ;
+
+			iterator it1	= this->begin();
+			iterator it_x1	= x.begin();
+
+			while (it1 != this->end() && it_x1 != x.end())
+			{
+				if ((*it_x1) < (*it1))
+				{
+					++it_x1;
+					relink(it1.getNode()->prev, it1.getNode(), it_x1.getNode()->prev);
+				}
+				else
+					++it1;
+			}
+			if (it_x1 != x.end())
+			{
+				it_x1.getNode()->prev			= it1.getNode()->prev;
+				it1.getNode()->prev->next		= it_x1.getNode();
+				x.end().getNode()->prev->next	= last_;
+				last_->prev						= x.end().getNode()->prev;
+			}
+			this->size_		+= x.size_;
+			x.size_			= 0;
+			x.last_->next	= x.last_;
+			x.last_->prev	= x.last_;
+		}
+
+		template <class Compare>
+		void merge (list &x, Compare comp) {
+			if (&x == this)
+				return ;
+
+			iterator it1	= this->begin();
+			iterator it_x1	= x.begin();
+
+			while (it1 != this->end() && it_x1 != x.end())
+			{
+				if (comp(*it_x1, *it1) == true)
+				{
+					++it_x1;
+					relink(it1.getNode()->prev, it1.getNode(), it_x1.getNode()->prev);
+				}
+				else
+					++it1;
+			}
+			if (it_x1 != x.end())
+			{
+				it_x1.getNode()->prev			= it1.getNode()->prev;
+				it1.getNode()->prev->next		= it_x1.getNode();
+				x.end().getNode()->prev->next	= last_;
+				last_->prev						= x.end().getNode()->prev;
+			}
+			this->size_		+= x.size_;
+			x.size_			= 0;
+			x.last_->next	= x.last_;
+			x.last_->prev	= x.last_;
+		}
+
+		// ------------------------- SORT --------------------------------------
+
+		void		sort() {
+			merge_sort(this->begin(), this->end());
+		}
+
+
+		template <class Compare>
+		void sort (Compare comp) {
+
+		}
+
+
+		// ----------------------- REVERSE -------------------------------------
+//		void		reverse() {
+//
+//		}
+
+
+//================================== MY ========================================
+	private:
+
+		iterator	split_lists(iterator first, iterator last)
+		{
+			iterator fast	= first;
+			iterator slow	= first;
+
+			while (fast.getNode()->next != last.getNode() && fast.getNode()->next->next != last.getNode())
+			{
+				++fast; ++fast;
+				++slow;
+			}
+			return(++slow);
+		}
+
+		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2)
+		{
+			iterator  ret = first1;
+			node *node1;
+			node *node2;
+
+			while (first2 != last2)
+			{
+				if (*first1 > *first2)
+				{
+					if (ret == first1)
+						ret = first2;
+					node1 = first1.getNode();
+					node2 = first2.getNode();
+
+					node2->prev->next		= node2->next;
+					node2->next->prev		= node2->prev;
+
+					node1->prev->next		= node2;
+					node2->prev				= node1->prev;
+
+					node2->next				= node1;
+					node1->prev				= node2;
+					if (first2 == last1)
+					{
+						++first2;
+						last1 = first2;
+					}
+					else
+						++first2;
+				}
+				else if (first1 != last1)
+					++first1;
+				else
+					++first2;
+			}
+			return ret;
+		}
+
+
+		iterator	merge_sort(iterator first, iterator last)
+		{
+			iterator half;
+
+			half = split_lists(first, last);
+
+			if (half == last)
+				return first;
+			first		= merge_sort(first, half);
+			half		= merge_sort(half, last);
+
+			first = merge_sorted_lists(first, half, half, last);
+			return first;
+		}
+
+		//======================================================================
 
 		void		insert_node(node *const prev_node, node *const next_node, value_type val) {
 			node *new_node	= new node(val);
@@ -279,6 +453,13 @@ namespace ft {
 			prev_node->next	= new_node;
 			next_node->prev = new_node;
 			this->size_++;
+		}
+
+		void		relink(node *const prev_node, node *const next_node, node *new_node) {
+			new_node->next	= next_node;
+			new_node->prev	= prev_node;
+			prev_node->next	= new_node;
+			next_node->prev = new_node;
 		}
 
 		void		delete_node(node *to_delete)
@@ -291,35 +472,42 @@ namespace ft {
 
 	}; /** end of class LIST */
 
+//=================== Non-member function overloads ============================
+	template <class T, class Alloc>
+	void swap(list<T,Alloc> &x, list<T,Alloc> &y) {
+		 fl::swap(x, y);
+	}
+
+//==============================================================================
 	template<class T, typename Node>
-	bool operator==(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator==(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		if (lhs.size() != rhs.size())
 			return (false);
 		return (ft::equalx(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template<class T, typename Node>
-	bool operator!=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator!=(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		return (!(lhs == rhs));
 	}
 
 	template<class T, typename Node>
-	bool operator<(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator<(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		return (fl::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 	}
 
 	template<class T, typename Node>
-	bool operator>(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator>(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		return (fl::lexicographical_compare(rhs.begin(), rhs.end(), lhs.begin(), lhs.end()));
 	}
 
 	template<class T, typename Node>
-	bool operator>=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator>=(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		return (!(lhs < rhs));
 	}
 
 	template<class T, typename Node>
-	bool operator<=(const ft::vector<T, Node> &lhs, const ft::vector<T, Node> &rhs) {
+	bool operator<=(const ft::list<T, Node> &lhs, const ft::list<T, Node> &rhs) {
 		return (!(lhs > rhs));
 	}
 } /** end of namespace */

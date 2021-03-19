@@ -4,9 +4,11 @@
 # include <exception>
 # include <string>
 # include <memory>
+# include <iterator>
 # include <cstddef>
 # include <algorithm>
 # define fl std
+# define ft ft
 # include "../Iterators/vector_iterator.hpp"
 # include "../utils.hpp"
 
@@ -68,7 +70,7 @@ namespace ft {
 			   const allocator_type &alloc = allocator_type())
 				: alloc_(alloc), array_(0), size_(0), capacity_(0)
 		{
-			this->size_ = last - first;
+			this->size_ = fl::distance(first, last);
 			this->capacity_ = this->size_;
 			array_ = alloc_.allocate(this->capacity_);
 			for (size_type i = 0; first != last; ++i, ++first)
@@ -268,12 +270,11 @@ namespace ft {
         void     insert (iterator position, InputIterator first, InputIterator last,
              typename enable_if < !std::numeric_limits<InputIterator>::is_specialized >::type* = 0)
          {
-            difference_type n      = last - first;
-            difference_type before = position - this->begin();
+			difference_type n		= fl::distance(first, last);
+            difference_type before	= position - this->begin();
 
             if (n <= 0)
                 return ;
-
             if (capacity_ >= size_ + n)
                 for (; first != last; ++first, ++position)
                     insert(position, *first);
@@ -285,7 +286,7 @@ namespace ft {
                     new_cap = size_ + n;
                 }
                 tmp_arr = this->alloc_.allocate(new_cap);
-                  memcpy(tmp_arr, this->array_, sizeof(value_type) * before);
+                memcpy(tmp_arr, this->array_, sizeof(value_type) * before);
                 std::copy(first, last, tmp_arr + before);
                 memcpy(tmp_arr + before + n, this->array_ + before, sizeof(value_type) * (size_ - before));
                 if (this->array_ != 0) { this->alloc_.deallocate(this->array_, this->capacity_); }
@@ -308,8 +309,9 @@ namespace ft {
 		void assign(InputIterator first, InputIterator last,
 					typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0)
 		{
-			size_type n = static_cast<size_type>(last - first);
-			if ((last - first) < 0)
+			difference_type n = std::distance(first, last);
+//			size_type n = static_cast<size_type>(last - first);
+			if (n < 0)
 			{
 				this->~vector();
 				throw vector::VectorException();
