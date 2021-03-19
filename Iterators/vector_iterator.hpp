@@ -114,7 +114,6 @@ namespace ft {
 		pointer current_;
 
 	}; /** end of class */
-
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator==(const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
 	{
@@ -150,4 +149,5 @@ namespace ft {
 	{
 		return (lhs.base() <= rhs.base());
 	}
+
 }

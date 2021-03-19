@@ -2,6 +2,15 @@
 
 namespace ft {
 
+	template <typename T>
+	bool	my_comp(const T &a, const T &b) {
+		return (a > b);
+	}
+
+/*
+================================================================================
+*/
+
 	template<bool B, class T = void>
 	struct enable_if
 	{

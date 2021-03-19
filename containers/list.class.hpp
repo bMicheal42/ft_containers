@@ -293,7 +293,7 @@ namespace ft {
 		}
 
 		// ----------------------- MERGE --------------------------------------
-		void merge (list &x) {
+		void		merge (list &x) {
 			if (&x == this)
 				return ;
 
@@ -324,7 +324,7 @@ namespace ft {
 		}
 
 		template <class Compare>
-		void merge (list &x, Compare comp) {
+		void		merge (list &x, Compare comp) {
 			if (&x == this)
 				return ;
 
@@ -357,24 +357,42 @@ namespace ft {
 		// ------------------------- SORT --------------------------------------
 
 		void		sort() {
-			merge_sort(this->begin(), this->end());
+			merge_sort(this->begin(), this->end(), ft::my_comp<value_type>);
 		}
 
 
 		template <class Compare>
 		void sort (Compare comp) {
-
+			merge_sort(this->begin(), this->end(), comp);
 		}
 
 
 		// ----------------------- REVERSE -------------------------------------
-//		void		reverse() {
-//
-//		}
+		void		reverse()
+		{
+			node *current = last_;
+			node *next		= current->next;
+			current->next	= current->prev;
+			current->prev	= next;
+			current			= next;
+			while (current != last_)
+			{
+				next			= current->next;
+				current->next	= current->prev;
+				current->prev	= next;
+				current			= next;
+			}
+		}
 
 
 //================================== MY ========================================
 	private:
+
+		// ------------ STAFF for RECURSIVE MERGE SORT -------------------------
+		bool		my_comp(value_type x, value_type y)
+		{
+			return (x > y);
+		}
 
 		iterator	split_lists(iterator first, iterator last)
 		{
@@ -389,7 +407,8 @@ namespace ft {
 			return(++slow);
 		}
 
-		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2)
+		template <class Compare>
+		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2, Compare comp)
 		{
 			iterator  ret = first1;
 			node *node1;
@@ -397,7 +416,7 @@ namespace ft {
 
 			while (first2 != last2)
 			{
-				if (*first1 > *first2)
+				if (comp(*first2, *first1))
 				{
 					if (ret == first1)
 						ret = first2;
@@ -428,8 +447,8 @@ namespace ft {
 			return ret;
 		}
 
-
-		iterator	merge_sort(iterator first, iterator last)
+		template <class Compare>
+		iterator	merge_sort(iterator first, iterator last, Compare comp)
 		{
 			iterator half;
 
@@ -437,10 +456,10 @@ namespace ft {
 
 			if (half == last)
 				return first;
-			first		= merge_sort(first, half);
-			half		= merge_sort(half, last);
+			first		= merge_sort(first, half, comp);
+			half		= merge_sort(half, last, comp);
 
-			first = merge_sorted_lists(first, half, half, last);
+			first = merge_sorted_lists(first, half, half, last, comp);
 			return first;
 		}
 
