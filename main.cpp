@@ -16,22 +16,33 @@ bool comp(int a, int b) {
 #include <ctime>
 
 void ft_sort_comp_test() {
-	std::cout << "sort_comp_test" << std::endl;
 
 	lib::list<int> mouse;
 	for (int i = 1000; i > 0; --i)
 		mouse.push_back(i);
+
+	size_t full_time = 0;
+
+	unsigned  int time;
+
+	for (int i = 0; i < 3000; ++i)
+	{
+		time = clock();
+
+		mouse.sort();
+
+		full_time += (clock() - time);
+		mouse.reverse();
+	}
+
+	std::cout << "Average time is: " << full_time / 3000 << std::endl;
+
 //	mouse.push_back(3);
 //	mouse.push_back(5);
 //	mouse.push_back(13);
 //	mouse.push_back(9);
 //	mouse.push_back(6);
 
-	unsigned  int time = clock();
-
-	mouse.sort();
-
-	std::cout << clock() - time <<std::endl;
 //	for (lib::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
 //		std::cout << *it << " ";
 //	}
