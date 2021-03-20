@@ -82,7 +82,10 @@ namespace ft {
 			:size_(0), alloc_(x.alloc_)
 		{
 			this->last_ = new node();
-			for(const_iterator it = x.begin(); it != x.end(); ++it)
+
+			iterator x_end(x.end()); //for complexity
+
+			for(const_iterator it = x.begin(); it != x_end; ++it)
 				push_back(*it);
 		}
 //5
@@ -503,11 +506,42 @@ namespace ft {
 
 			if (new_list.size_ == 0)
 				return ;
-
+//
+//			if (current.size_ == 2)
+//			{
+//				node *node1 = current.begin().getNode();
+//				node *node2 = node1->next;
+//				if (node1->data < node2->data)
+//				{
+//					node2->next->prev = node2->prev;
+//					node2->prev->next = node2->next;
+//					node1->prev->next = node2;
+//					node2->prev = node1->prev;
+//					node1->prev = node2;
+//					node2->next = node1;
+//				}
+//				return;
+//			}
+			if (current.size_ == 1)
+			{
+				node *node1 = current.begin().getNode();
+				node *node2 = node1->next;
+				if (node1->data < node2->data)
+				{
+					node2->next->prev = node2->prev;
+					node2->prev->next = node2->next;
+					node1->prev->next = node2;
+					node2->prev = node1->prev;
+					node1->prev = node2;
+					node2->next = node1;
+				}
+				current.merge(new_list);
+			}
+	else {
 			current.sort();
 			new_list.sort();
 
-			current.merge(new_list);
+			current.merge(new_list); }
 		}
 
 		//======================================================================
