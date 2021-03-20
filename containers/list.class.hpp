@@ -469,33 +469,36 @@ namespace ft {
 			merge_sort(*this);
 		}
 
-		list		split_lists(iterator first, iterator last, size_type x)
+		list		split_lists(list &current)
 		{
 			list new_list;
 
-			if (x == 1)
+			if (current.size_ == 1)
 				return (new_list);
-			iterator fast = first;
-			iterator slow = first;
-			while (fast != last)
+
+			iterator fast(current.begin());
+			iterator slow(fast);
+			iterator end(current.end());
+
+			while (fast != end)
 			{
 				++fast;
-				if (fast != last)
+				if (fast != end)
 				{
 					++fast;
 					++slow;
 				}
 			}
-			if (x % 2 != 0)
+			if (current.size_ % 2 != 0)
 				++slow;
-			new_list = list(slow, last);
-			erase(slow, last);
+			new_list = list(slow, end);
+			erase(slow, end);
 			return (new_list);
 		}
 
 		list	merge_sort(list &current)
 		{
-			list	new_list(split_lists(current.begin(), current.end(), current.size_));
+			list	new_list(split_lists(current));
 			if (new_list.size_ == 0)
 				return current;
 
