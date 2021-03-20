@@ -469,12 +469,12 @@ namespace ft {
 			merge_sort(*this);
 		}
 
-		list		split_lists(list &current)
+		iterator		split_lists(list &current)
 		{
-			list new_list;
+//			list new_list;
 
 			if (current.size_ == 1)
-				return (new_list);
+				return (current.end());
 
 			iterator fast(current.begin());
 			iterator slow(fast);
@@ -491,14 +491,17 @@ namespace ft {
 			}
 			if (current.size_ % 2 != 0)
 				++slow;
-			new_list = list(slow, end);
-			erase(slow, end);
-			return (new_list);
+			return (slow);
 		}
 
 		list	merge_sort(list &current)
 		{
-			list	new_list(split_lists(current));
+			iterator save_slow	= split_lists(current);
+			iterator save_end	= current.end();
+
+			list	new_list(save_slow, save_end);
+			erase(save_slow, save_end);
+
 			if (new_list.size_ == 0)
 				return current;
 
