@@ -471,8 +471,6 @@ namespace ft {
 
 		iterator		split_lists(list &current)
 		{
-//			list new_list;
-
 			if (current.size_ == 1)
 				return (current.end());
 
@@ -480,36 +478,30 @@ namespace ft {
 			iterator slow(fast);
 			iterator end(current.end());
 
-			while (fast != end)
+			while (fast != end && ++fast != end)
 			{
-				++fast;
-				if (fast != end)
-				{
 					++fast;
 					++slow;
-				}
 			}
 			if (current.size_ % 2 != 0)
 				++slow;
 			return (slow);
 		}
 
-		list	merge_sort(list &current)
+		void	merge_sort(list &current)
 		{
 			iterator save_slow	= split_lists(current);
 			iterator save_end	= current.end();
 
 			list	new_list(save_slow, save_end);
 			erase(save_slow, save_end);
-
 			if (new_list.size_ == 0)
-				return current;
+				return ;
 
 			current.sort();
 			new_list.sort();
 
 			current.merge(new_list);
-			return current;
 		}
 
 		//======================================================================

@@ -35,7 +35,10 @@ void ft_sort_comp_test() {
 		mouse.reverse();
 	}
 
+	mouse.sort();
 	std::cout << "Average time is: " << full_time / 3000 << std::endl;
+
+
 
 //	mouse.push_back(3);
 //	mouse.push_back(5);
