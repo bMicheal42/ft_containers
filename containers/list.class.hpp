@@ -298,9 +298,11 @@ namespace ft {
 				return ;
 
 			iterator it1	= this->begin();
+			iterator end	= this->end();
 			iterator it_x1	= x.begin();
+			iterator x_end	= x.end();
 
-			while (it1 != this->end() && it_x1 != x.end())
+			while (it1 != end && it_x1 != x_end)
 			{
 				if ((*it_x1) < (*it1))
 				{
@@ -310,12 +312,12 @@ namespace ft {
 				else
 					++it1;
 			}
-			if (it_x1 != x.end())
+			if (it_x1 != x_end)
 			{
 				it_x1.getNode()->prev			= it1.getNode()->prev;
 				it1.getNode()->prev->next		= it_x1.getNode();
-				x.end().getNode()->prev->next	= last_;
-				last_->prev						= x.end().getNode()->prev;
+				x_end.getNode()->prev->next		= last_;
+				last_->prev						= x_end.getNode()->prev;
 			}
 			this->size_		+= x.size_;
 			x.size_			= 0;
@@ -494,7 +496,11 @@ namespace ft {
 			iterator save_end	= current.end();
 
 			list	new_list(save_slow, save_end);
-			erase(save_slow, save_end);
+			for(; save_slow != save_end; ++save_slow)
+			{
+				delete_node(save_slow.getNode());
+			}
+
 			if (new_list.size_ == 0)
 				return ;
 
