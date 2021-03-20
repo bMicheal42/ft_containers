@@ -13,21 +13,29 @@ bool comp(int a, int b) {
 	return a < b;
 }
 
+#include <ctime>
+
 void ft_sort_comp_test() {
 	std::cout << "sort_comp_test" << std::endl;
+
 	lib::list<int> mouse;
-	mouse.push_back(7);
-	mouse.push_back(3);
-	mouse.push_back(5);
-	mouse.push_back(13);
-	mouse.push_back(9);
+	for (int i = 1000; i > 0; --i)
+		mouse.push_back(i);
+//	mouse.push_back(3);
+//	mouse.push_back(5);
+//	mouse.push_back(13);
+//	mouse.push_back(9);
 //	mouse.push_back(6);
 
+	unsigned  int time = clock();
+
 	mouse.sort();
-	for (lib::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
+
+	std::cout << clock() - time <<std::endl;
+//	for (lib::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
+//		std::cout << *it << " ";
+//	}
+//	std::cout << std::endl;
 //
 //	lib::list<int> empty;
 //
