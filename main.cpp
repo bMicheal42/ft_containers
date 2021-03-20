@@ -17,7 +17,7 @@ bool comp(int a, int b) {
 
 void ft_sort_comp_test() {
 
-	ft::list<int> mouse;
+	std::list<int> mouse;
 	for (int i = 1000; i > 0; --i)
 		mouse.push_back(i);
 
@@ -39,27 +39,27 @@ void ft_sort_comp_test() {
 	std::cout << "Average time is: " << full_time / 3000 << std::endl;
 
 
-//(void)time;
+(void)time;
 //	mouse.push_back(3);
 //	mouse.push_back(5);
 //	mouse.push_back(13);
 //	mouse.push_back(9);
 //	mouse.push_back(6);
 
-//	for (ft::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
-//		std::cout << *it << " ";
-//	}
-//	std::cout << std::endl;
+	for (std::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
 //
-//	ft::list<int> empty;
+//	std::list<int> empty;
 //
 //	empty.sort(comp);
-//	for (ft::list<int>::iterator it = empty.begin(); it != empty.end(); ++it) {
+//	for (std::list<int>::iterator it = empty.begin(); it != empty.end(); ++it) {
 //		std::cout << *it << " ";
 //	}
 //	std::cout << std::endl;
 //
-//	ft::list<int> reverse;
+//	std::list<int> reverse;
 //	reverse.push_back(10);
 //	reverse.push_back(9);
 //	reverse.push_back(8);
@@ -68,7 +68,7 @@ void ft_sort_comp_test() {
 //	reverse.push_back(5);
 //
 //	reverse.sort(comp);
-//	for (ft::list<int>::iterator it = reverse.begin(); it != reverse.end(); ++it) {
+//	for (std::list<int>::iterator it = reverse.begin(); it != reverse.end(); ++it) {
 //		std::cout << *it << " ";
 //	}
 //	std::cout << std::endl;
