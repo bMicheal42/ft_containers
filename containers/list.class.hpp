@@ -356,15 +356,16 @@ namespace ft {
 
 		// ------------------------- SORT --------------------------------------
 
-		void		sort() {
-			merge_sort(this->begin(), this->end(), ft::my_comp<value_type>);
-		}
+//		void		sort() {
+//			merge_sort(this->begin(), this->end(), ft::my_comp<value_type>);
+//		}
 
 
-		template <class Compare>
-		void sort (Compare comp) {
-			merge_sort(this->begin(), this->end(), comp);
-		}
+
+//		template <class Compare>
+//		void sort (Compare comp) {
+//			merge_sort(this->begin(), this->end(), comp);
+//		}
 
 
 		// ----------------------- REVERSE -------------------------------------
@@ -386,81 +387,123 @@ namespace ft {
 
 
 //================================== MY ========================================
-	private:
+//	private:
 
 		// ------------ STAFF for RECURSIVE MERGE SORT -------------------------
-		bool		my_comp(value_type x, value_type y)
-		{
-			return (x > y);
+//		bool		my_comp(value_type x, value_type y)
+//		{
+//			return (x > y);
+//		}
+//
+//		iterator	split_lists(iterator first, iterator last)
+//		{
+//			iterator fast	= first;
+//			iterator slow	= first;
+//
+//			while (fast.getNode()->next != last.getNode() && fast.getNode()->next->next != last.getNode())
+//			{
+//				++fast; ++fast;
+//				++slow;
+//			}
+//			return(++slow);
+//		}
+//
+//		template <class Compare>
+//		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2, Compare comp)
+//		{
+//			iterator  ret = first1;
+//			node *node1;
+//			node *node2;
+//
+//			while (first2 != last2)
+//			{
+//				if (comp(*first2, *first1))
+//				{
+//					if (ret == first1)
+//						ret = first2;
+//					node1 = first1.getNode();
+//					node2 = first2.getNode();
+//
+//					node2->prev->next		= node2->next;
+//					node2->next->prev		= node2->prev;
+//
+//					node1->prev->next		= node2;
+//					node2->prev				= node1->prev;
+//
+//					node2->next				= node1;
+//					node1->prev				= node2;
+//					if (first2 == last1)
+//					{
+//						++first2;
+//						last1 = first2;
+//					}
+//					else
+//						++first2;
+//				}
+//				else if (first1 != last1)
+//					++first1;
+//				else
+//					++first2;
+//			}
+//			return ret;
+//		}
+//
+//		template <class Compare>
+//		iterator	merge_sort(iterator first, iterator last, Compare comp)
+//		{
+////			iterator half;
+////
+////			half = split_lists(first, last);
+////
+////			if (half == last)
+////				return first;
+////			first		= merge_sort(first, half, comp);
+////			half		= merge_sort(half, last, comp);
+////
+////			first = merge_sorted_lists(first, half, half, last, comp);
+////			return first;
+//
+//		}
+
+		void		sort() {
+			merge_sort(*this);
 		}
 
-		iterator	split_lists(iterator first, iterator last)
+		list		split_lists(iterator first, iterator last, size_type x)
 		{
-			iterator fast	= first;
-			iterator slow	= first;
+			list new_list;
 
-			while (fast.getNode()->next != last.getNode() && fast.getNode()->next->next != last.getNode())
+			if (x == 1)
+				return (new_list);
+			iterator fast = first;
+			iterator slow = first;
+			while (fast != last)
 			{
-				++fast; ++fast;
-				++slow;
-			}
-			return(++slow);
-		}
-
-		template <class Compare>
-		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2, Compare comp)
-		{
-			iterator  ret = first1;
-			node *node1;
-			node *node2;
-
-			while (first2 != last2)
-			{
-				if (comp(*first2, *first1))
+				++fast;
+				if (fast != last)
 				{
-					if (ret == first1)
-						ret = first2;
-					node1 = first1.getNode();
-					node2 = first2.getNode();
-
-					node2->prev->next		= node2->next;
-					node2->next->prev		= node2->prev;
-
-					node1->prev->next		= node2;
-					node2->prev				= node1->prev;
-
-					node2->next				= node1;
-					node1->prev				= node2;
-					if (first2 == last1)
-					{
-						++first2;
-						last1 = first2;
-					}
-					else
-						++first2;
+					++fast;
+					++slow;
 				}
-				else if (first1 != last1)
-					++first1;
-				else
-					++first2;
 			}
-			return ret;
+			if (x % 2 != 0)
+				++slow;
+			new_list = list(slow, last);
+			erase(slow, last);
+			return (new_list);
 		}
 
-		template <class Compare>
-		iterator	merge_sort(iterator first, iterator last, Compare comp)
+		list	merge_sort(list &current)
 		{
-			iterator half;
+			list	new_list(split_lists(current.begin(), current.end(), current.size_));
+			if (new_list.size_ == 0)
+				return current;
 
-			half = split_lists(first, last);
+			current.sort();
+			new_list.sort();
 
-			if (half == last)
-				return first;
-			first		= merge_sort(first, half, comp);
-			half		= merge_sort(half, last, comp);
-
-			first = merge_sorted_lists(first, half, half, last, comp);
-			return first;
+			current.merge(new_list);
+			return current;
 		}
 
 		//======================================================================
@@ -486,7 +529,7 @@ namespace ft {
 			to_delete->next->prev = to_delete->prev;
 			to_delete->prev->next = to_delete->next;
 			delete to_delete;
-			this->size_--;
+			size_--;
 		}
 
 	}; /** end of class LIST */
