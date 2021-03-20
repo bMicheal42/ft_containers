@@ -509,12 +509,29 @@ namespace ft {
 				current.merge(new_list);
 				return;
 			}
-//
-//			if (current.size_ == 2)
+
+			if (current.size_ == 2)
+			{
+				node *node1 = current.begin().getNode();
+				node *node2 = node1->next;
+				if (node1->data > node2->data)
+				{
+					node2->next->prev = node2->prev;
+					node2->prev->next = node2->next;
+					node1->prev->next = node2;
+					node2->prev = node1->prev;
+					node1->prev = node2;
+					node2->next = node1;
+				}
+				new_list.sort();
+				current.merge(new_list);
+				return;
+			}
+//			if (new_list.size_ == 2)
 //			{
-//				node *node1 = current.begin().getNode();
+//				node *node1 = new_list.begin().getNode();
 //				node *node2 = node1->next;
-//				if (node1->data < node2->data)
+//				if (node1->data > node2->data)
 //				{
 //					node2->next->prev = node2->prev;
 //					node2->prev->next = node2->next;
@@ -524,21 +541,7 @@ namespace ft {
 //					node2->next = node1;
 //				}
 //				current.merge(new_list);
-//			}
-//			if (current.size_ == 1)
-//			{
-//				node *node1 = current.begin().getNode();
-//				node *node2 = node1->next;
-//				if (node1->data < node2->data)
-//				{
-//					node2->next->prev = node2->prev;
-//					node2->prev->next = node2->next;
-//					node1->prev->next = node2;
-//					node2->prev = node1->prev;
-//					node1->prev = node2;
-//					node2->next = node1;
-//				}
-//				current.merge(new_list);
+//				return;
 //			}
 			current.sort();
 			new_list.sort();
