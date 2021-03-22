@@ -360,17 +360,14 @@ namespace ft {
 
 		// ------------------------- SORT --------------------------------------
 
-//		void		sort() {
-//			merge_sort(this->begin(), this->end(), ft::my_comp<value_type>);
-//		}
+		template <class Compare>
+		void sort (Compare comp) {
+			merge_sort(*this, comp);
+		}
 
-
-
-//		template <class Compare>
-//		void sort (Compare comp) {
-//			merge_sort(this->begin(), this->end(), comp);
-//		}
-
+		void		sort() {
+			merge_sort(*this,  ft::my_comp<value_type>);
+		}
 
 		// ----------------------- REVERSE -------------------------------------
 		void		reverse()
@@ -390,56 +387,37 @@ namespace ft {
 		}
 
 //================================== MY ========================================
-//	private:
-
-
-		void		sort() {
-			merge_sort(*this);
-		}
+	private:
 
 		iterator		split_lists(list &current)
 		{
 			if (current.size_ == 1)
 				return (current.end());
 
-//			iterator fast(current.begin());
-//			iterator slow(fast);
-//			iterator end(current.end());
-
-//			while (fast != end && ++fast != end)
-//			{
-//					++fast;
-//					++slow;
-//			}
-//			if (current.size_ % 2 != 0)
-//				++slow;
-//			return (slow);
 			Node* fast = current.begin().getNode();
 			Node* slow = fast;
-			while
-					(
-					fast != current.last_ &&
-					fast->next != current.last_
-					) {
+			while (fast != current.last_ && fast->next != current.last_)
+			{
 				fast = fast->next->next;
 				slow = slow->next;
 			}
-			if (current.size_ % 2 != 0) {
+			if (current.size_ % 2 != 0)
 				slow = slow->next;
-			}
 			return (iterator(slow));
 		}
 
-		void	merge_sort(list &current)
+		template<class Compare>
+		void	merge_sort(list &current, Compare comp)
 		{
-			
 			iterator save_slow	= split_lists(current);
 			iterator save_end	= current.end();
 
 			list	new_list(save_slow, save_end);
-			for(; save_slow != save_end; ++save_slow)
+			while(save_slow != save_end)
 			{
-				delete_node(save_slow.getNode());
+				node *tmp_node(save_slow.getNode());
+				++save_slow;
+				delete_node(tmp_node);
 			}
 
 			if (current.size_ == 1)
@@ -453,7 +431,7 @@ namespace ft {
 			{
 				node *node1 = current.begin().getNode();
 				node *node2 = node1->next;
-				if (node1->data > node2->data)
+				if (comp(node1->data, node2->data))
 				{
 					node2->next->prev = node2->prev;
 					node2->prev->next = node2->next;
@@ -462,15 +440,12 @@ namespace ft {
 					node1->prev = node2;
 					node2->next = node1;
 				}
-				if (new_list.size_ > 1)
-					new_list.sort();
-				if (new_list.size_ > 0)
-					current.merge(new_list);
+				new_list.sort();
+				current.merge(new_list);
 				return;
 			}
 			current.sort();
-			if (new_list.size_ > 1)
-				new_list.sort();
+			new_list.sort();
 
 			current.merge(new_list);
 		}
@@ -495,10 +470,13 @@ namespace ft {
 
 		void		delete_node(node *to_delete)
 		{
-			to_delete->next->prev = to_delete->prev;
-			to_delete->prev->next = to_delete->next;
-			delete to_delete;
-			size_--;
+			if (to_delete)
+			{
+				to_delete->next->prev = to_delete->prev;
+				to_delete->prev->next = to_delete->next;
+				delete to_delete;
+				size_--;
+			}
 		}
 
 	}; /** end of class LIST */
