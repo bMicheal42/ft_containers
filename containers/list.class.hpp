@@ -4,7 +4,6 @@
 #include <list>
 #include "../utils.hpp"
 #include "../Iterators/list_iterator.hpp"
-#include <iostream> //
 
 namespace ft {
 
@@ -390,85 +389,9 @@ namespace ft {
 			}
 		}
 
-
 //================================== MY ========================================
 //	private:
 
-		// ------------ STAFF for RECURSIVE MERGE SORT -------------------------
-//		bool		my_comp(value_type x, value_type y)
-//		{
-//			return (x > y);
-//		}
-//
-//		iterator	split_lists(iterator first, iterator last)
-//		{
-//			iterator fast	= first;
-//			iterator slow	= first;
-//
-//			while (fast.getNode()->next != last.getNode() && fast.getNode()->next->next != last.getNode())
-//			{
-//				++fast; ++fast;
-//				++slow;
-//			}
-//			return(++slow);
-//		}
-//
-//		template <class Compare>
-//		iterator	merge_sorted_lists(iterator first1, iterator last1, iterator first2, iterator last2, Compare comp)
-//		{
-//			iterator  ret = first1;
-//			node *node1;
-//			node *node2;
-//
-//			while (first2 != last2)
-//			{
-//				if (comp(*first2, *first1))
-//				{
-//					if (ret == first1)
-//						ret = first2;
-//					node1 = first1.getNode();
-//					node2 = first2.getNode();
-//
-//					node2->prev->next		= node2->next;
-//					node2->next->prev		= node2->prev;
-//
-//					node1->prev->next		= node2;
-//					node2->prev				= node1->prev;
-//
-//					node2->next				= node1;
-//					node1->prev				= node2;
-//					if (first2 == last1)
-//					{
-//						++first2;
-//						last1 = first2;
-//					}
-//					else
-//						++first2;
-//				}
-//				else if (first1 != last1)
-//					++first1;
-//				else
-//					++first2;
-//			}
-//			return ret;
-//		}
-//
-//		template <class Compare>
-//		iterator	merge_sort(iterator first, iterator last, Compare comp)
-//		{
-////			iterator half;
-////
-////			half = split_lists(first, last);
-////
-////			if (half == last)
-////				return first;
-////			first		= merge_sort(first, half, comp);
-////			half		= merge_sort(half, last, comp);
-////
-////			first = merge_sorted_lists(first, half, half, last, comp);
-////			return first;
-//
-//		}
 
 		void		sort() {
 			merge_sort(*this);
@@ -479,22 +402,37 @@ namespace ft {
 			if (current.size_ == 1)
 				return (current.end());
 
-			iterator fast(current.begin());
-			iterator slow(fast);
-			iterator end(current.end());
+//			iterator fast(current.begin());
+//			iterator slow(fast);
+//			iterator end(current.end());
 
-			while (fast != end && ++fast != end)
-			{
-					++fast;
-					++slow;
+//			while (fast != end && ++fast != end)
+//			{
+//					++fast;
+//					++slow;
+//			}
+//			if (current.size_ % 2 != 0)
+//				++slow;
+//			return (slow);
+			Node* fast = current.begin().getNode();
+			Node* slow = fast;
+			while
+					(
+					fast != current.last_ &&
+					fast->next != current.last_
+					) {
+				fast = fast->next->next;
+				slow = slow->next;
 			}
-			if (current.size_ % 2 != 0)
-				++slow;
-			return (slow);
+			if (current.size_ % 2 != 0) {
+				slow = slow->next;
+			}
+			return (iterator(slow));
 		}
 
 		void	merge_sort(list &current)
 		{
+			
 			iterator save_slow	= split_lists(current);
 			iterator save_end	= current.end();
 
@@ -506,7 +444,8 @@ namespace ft {
 
 			if (current.size_ == 1)
 			{
-				current.merge(new_list);
+				if (new_list.size_ > 0)
+					current.merge(new_list);
 				return;
 			}
 
@@ -523,31 +462,17 @@ namespace ft {
 					node1->prev = node2;
 					node2->next = node1;
 				}
-				new_list.sort();
-				current.merge(new_list);
+				if (new_list.size_ > 1)
+					new_list.sort();
+				if (new_list.size_ > 0)
+					current.merge(new_list);
 				return;
 			}
-//			if (new_list.size_ == 2)
-//			{
-//				node *node1 = new_list.begin().getNode();
-//				node *node2 = node1->next;
-//				if (node1->data > node2->data)
-//				{
-//					node2->next->prev = node2->prev;
-//					node2->prev->next = node2->next;
-//					node1->prev->next = node2;
-//					node2->prev = node1->prev;
-//					node1->prev = node2;
-//					node2->next = node1;
-//				}
-//				current.merge(new_list);
-//				return;
-//			}
 			current.sort();
-			new_list.sort();
+			if (new_list.size_ > 1)
+				new_list.sort();
 
 			current.merge(new_list);
-
 		}
 
 		//======================================================================

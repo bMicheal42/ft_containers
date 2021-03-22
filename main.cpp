@@ -32,7 +32,7 @@ void ft_sort_comp_test() {
 		mouse.sort();
 
 		full_time += (clock() - time);
-		mouse.reverse();
+
 	}
 
 	mouse.sort();
@@ -46,10 +46,10 @@ void ft_sort_comp_test() {
 //	mouse.push_back(9);
 //	mouse.push_back(6);
 
-	for (std::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
-		std::cout << *it << " ";
-	}
-	std::cout << std::endl;
+//	for (std::list<int>::iterator it = mouse.begin(); it != mouse.end(); ++it) {
+//		std::cout << *it << " ";
+//	}
+//	std::cout << std::endl;
 //
 //	std::list<int> empty;
 //
