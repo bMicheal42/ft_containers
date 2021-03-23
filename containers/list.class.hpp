@@ -1,6 +1,5 @@
 #pragma once
 
-#define	fl std
 #include <list>
 #include "../utils.hpp"
 #include "../Iterators/list_iterator.hpp"
@@ -17,9 +16,9 @@ namespace ft {
 // ============================ NODE STRUCT ====================================
 		struct  Node
 		{
-			T data;
-			Node *next;
-			Node *prev;
+			T		data;
+			Node	*next;
+			Node	*prev;
 
 			Node (const T &val = T()) :data(val) {
 				this->prev	=	this;
@@ -372,7 +371,7 @@ namespace ft {
 
 		void		sort() {
 			if (size_)
-				merge_sort(*this,  ft::my_comp<value_type>);
+				merge_sort(*this, ft::less<value_type>);
 		}
 
 		// ----------------------- REVERSE -------------------------------------

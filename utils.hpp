@@ -2,7 +2,6 @@
 
 namespace ft {
 
-
 	template<class InputIterator1, class InputIterator2>
 	bool			equalx(InputIterator1 first1, InputIterator1 last1,
 						   InputIterator2 first2, InputIterator2 last2) {
@@ -19,7 +18,7 @@ namespace ft {
 */
 
 	template <typename T>
-	bool	my_comp(const T &a, const T &b) {
+	bool	less(const T &a, const T &b) {
 		return (a > b);
 	}
 
@@ -87,5 +86,9 @@ namespace ft {
 			}
 			return (*this);
 		}
-	};
+	}; //end of pair class
+
 } // end of namespace
+
+# define fl std
+# define ft ft

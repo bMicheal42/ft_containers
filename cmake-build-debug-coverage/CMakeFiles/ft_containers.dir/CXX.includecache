@@ -22,6 +22,12 @@ list
 ../Iterators/list_iterator.hpp
 /Users/bmicheal/Projects/bMicheal_containers/Iterators/list_iterator.hpp
 
+/Users/bmicheal/Projects/bMicheal_containers/containers/multiset.class.hpp
+../utils.hpp
+/Users/bmicheal/Projects/bMicheal_containers/utils.hpp
+vector.class.hpp
+/Users/bmicheal/Projects/bMicheal_containers/containers/vector.class.hpp
+
 /Users/bmicheal/Projects/bMicheal_containers/containers/vector.class.hpp
 cstring
 -
@@ -47,6 +53,8 @@ containers/vector.class.hpp
 /Users/bmicheal/Projects/bMicheal_containers/containers/vector.class.hpp
 containers/list.class.hpp
 /Users/bmicheal/Projects/bMicheal_containers/containers/list.class.hpp
+containers/multiset.class.hpp
+/Users/bmicheal/Projects/bMicheal_containers/containers/multiset.class.hpp
 iostream
 -
 vector

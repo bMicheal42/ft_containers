@@ -92,7 +92,10 @@
 		<Unit filename="/Users/bmicheal/Projects/bMicheal_containers/Iterators/vector_iterator.hpp">
 			<Option target="ft_containers"/>
 		</Unit>
-		<Unit filename="/Users/bmicheal/Projects/bMicheal_containers/containers">
+		<Unit filename="/Users/bmicheal/Projects/bMicheal_containers/containers/list.class.hpp">
+			<Option target="ft_containers"/>
+		</Unit>
+		<Unit filename="/Users/bmicheal/Projects/bMicheal_containers/containers/multiset.class.hpp">
 			<Option target="ft_containers"/>
 		</Unit>
 		<Unit filename="/Users/bmicheal/Projects/bMicheal_containers/containers/queue.class.hpp">

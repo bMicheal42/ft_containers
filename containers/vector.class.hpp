@@ -7,8 +7,6 @@
 # include <iterator>
 # include <cstddef>
 # include <algorithm>
-# define fl std
-# define ft ft
 # include "../Iterators/vector_iterator.hpp"
 # include "../utils.hpp"
 
@@ -102,36 +100,31 @@ namespace ft {
 
 // ================================== ITERATORS ================================
 
-		iterator begin()
-		{ return (iterator(this->array_)); }
+		iterator				begin()			{ return (iterator(this->array_)); }
 
-		const_iterator begin() const
-		{ return (const_iterator(this->array_)); }
+		const_iterator			begin() const	{ return (const_iterator(this->array_)); }
 
-		reverse_iterator rbegin()
-		{ return (reverse_iterator(this->end())); }
+		reverse_iterator		rbegin()		{ return (reverse_iterator(this->end())); }
 
-		const_reverse_iterator rbegin() const
-		{ return (reverse_iterator(this->end())); }
+		const_reverse_iterator	rbegin() const	{ return (reverse_iterator(this->end())); }
 
-		iterator end()
-		{ return (iterator(this->array_ + this->size_)); }
+		iterator				end() 			{ return (iterator(this->array_ + this->size_)); }
 
-		const_iterator end() const
-		{ return (const_iterator(this->array_ + this->size_)); }
+		const_iterator			end() const		{ return (const_iterator(this->array_ + this->size_)); }
 
-		reverse_iterator rend()
-		{ return (reverse_iterator(this->begin())); }
+		reverse_iterator		rend()			{ return (reverse_iterator(this->begin())); }
 
-		const_reverse_iterator rend() const
-		{ return (reverse_iterator(this->begin())); }
+		const_reverse_iterator	rend() const	{ return (reverse_iterator(this->begin())); }
 
 //================================== OPERATORS =================================
 
 		vector &operator=(vector const &other)
 		{
-			vector ez(other);
-			swap(ez);
+			if (this != &other)
+			{
+				vector ez(other);
+				swap(ez);
+			}
 			return (*this);
 		}
 
@@ -397,6 +390,7 @@ namespace ft {
 		}; // end of exception class
 
 //==============================================================================
+
 	private:
 
 		void my_realloc(size_type new_cap)
