@@ -82,7 +82,7 @@ namespace ft {
 		{
 			this->last_ = new node();
 
-			iterator x_end(x.end()); //for complexity
+			const_iterator x_end(x.end()); //for complexity
 
 			for(const_iterator it = x.begin(); it != x_end; ++it)
 				push_back(*it);
@@ -159,7 +159,6 @@ namespace ft {
 		// ---------------------------- INSERT ---------------------------------
 		iterator	insert (iterator position, const value_type& val)
 		{
-			last_->data = this->size();
 			insert_node(position.getNode()->prev, position.getNode(), val);
 			return (--position);
 		}
@@ -175,7 +174,6 @@ namespace ft {
 		void		insert (iterator position, InputIterator first, InputIterator last,
 							typename ft::enable_if<!std::numeric_limits<InputIterator>::is_specialized>::type * = 0)
 		{
-			last_->data = this->size();
 			ft::list<T> tmp_list(first, last);
 
 			iterator it1 = tmp_list.begin();
@@ -247,51 +245,58 @@ namespace ft {
 		void		splice (iterator position, list &x, iterator first, iterator last) {
 			if (first == last)
 				return;
-
-			iterator new_last(last.getNode()->prev);
-
-			size_type  n  = 0;
-			for (iterator tmp(first); tmp != last; ++tmp, ++n);
-
-			first.getNode()->prev->next			= last.getNode();
-			last.getNode()->prev				= first.getNode()->prev;
-
-			position.getNode()->prev			= new_last.getNode();
-			position.getNode()->prev->next		= first.getNode();
-
-			first.getNode()->prev				= position.getNode()->prev;
-			new_last.getNode()->next			= position.getNode();
-
-			x.size_		-= n;
-			this->size_ += n;
+			while(first != last)
+				splice(position, x, first++);
 		}
 
 		// ----------------------- REMOVE --------------------------------------
-		void		remove (const value_type &val) {
-			value_type tmp_val = val;
-			for (iterator tmp(begin()); tmp != this->end(); ++tmp)
-				if (tmp.getNode().data == tmp_val)
-					delete_node(tmp.getNode());
-		}
+        void        remove (const value_type &val) {
+            value_type tmp_val = val;
+            iterator tmp(begin());
+            while(tmp != this->end())
+            {
+                if (tmp.getNode()->data == tmp_val)
+                    tmp = erase(tmp);
+                ++tmp;
+            }
+        }
 
-		template <class Predicate>
-		void		remove_if (Predicate pred) {
-			for (iterator tmp(begin()); tmp != this->end(); ++tmp)
-				if (pred(tmp.getNode().data) == true)
-					delete_node(tmp.getNode());
-		}
+        template <class Predicate>
+        void        remove_if (Predicate pred) {
+            iterator tmp(begin());
+            while (tmp != this->end())
+            {
+                if (pred(tmp.getNode()->data) == true)
+                    tmp = erase(tmp);
+                ++tmp;
+            }
+        }
 		// ----------------------- UNIQUE --------------------------------------
 		void		unique() {
-			for (iterator tmp(begin()); tmp != this->end(); ++tmp) /**   NEED A CHECK */
-				if (*tmp == tmp.getNode()->next->data)
-					delete_node(tmp.getNode()->next);
+			if (this->size_ < 2)
+				return;
+			iterator tmp(begin());
+			++tmp;
+			while (tmp !=this->end())
+			{
+				if (*tmp == tmp.getNode()->prev->data)
+					delete_node(tmp.getNode()->prev);
+				++tmp;
+			}
 		}
 
 		template <class BinaryPredicate>
 		void		unique (BinaryPredicate binary_pred) {
-			for (iterator tmp(begin()); tmp != this->end(); ++tmp) /**   NEED A CHECK */
-				if (binary_pred(tmp.getNode()->next->data, tmp.getNode()->next->next->data))
-					delete_node(tmp.getNode()->next->next);
+			if (this->size_ < 2)
+				return;
+			iterator tmp(begin());
+			++tmp;
+			while (tmp !=this->end())
+			{
+				if (binary_pred(*tmp, tmp.getNode()->prev->data))
+					delete_node(tmp.getNode()->prev);
+				++tmp;
+			}
 		}
 
 		// ----------------------- MERGE --------------------------------------
@@ -359,14 +364,15 @@ namespace ft {
 		}
 
 		// ------------------------- SORT --------------------------------------
-
 		template <class Compare>
 		void sort (Compare comp) {
-			merge_sort(*this, comp);
+			if (size_)
+				merge_sort(*this, comp);
 		}
 
 		void		sort() {
-			merge_sort(*this,  ft::my_comp<value_type>);
+			if (size_)
+				merge_sort(*this,  ft::my_comp<value_type>);
 		}
 
 		// ----------------------- REVERSE -------------------------------------
@@ -470,13 +476,10 @@ namespace ft {
 
 		void		delete_node(node *to_delete)
 		{
-			if (to_delete)
-			{
-				to_delete->next->prev = to_delete->prev;
-				to_delete->prev->next = to_delete->next;
-				delete to_delete;
-				size_--;
-			}
+			to_delete->next->prev = to_delete->prev;
+			to_delete->prev->next = to_delete->next;
+			delete to_delete;
+			size_--;
 		}
 
 	}; /** end of class LIST */

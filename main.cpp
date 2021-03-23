@@ -18,14 +18,14 @@ bool comp(int a, int b) {
 void ft_sort_comp_test() {
 
 	ft::list<int> mouse;
-	for (int i = 1000; i > 0; --i)
+	for (int i = 1000000; i > 0; --i)
 		mouse.push_back(i);
 
 	size_t full_time = 0;
 
 	unsigned  int time;
 
-	for (int i = 0; i < 3000; ++i)
+	for (int i = 0; i < 1; ++i)
 	{
 		time = clock();
 
@@ -36,7 +36,7 @@ void ft_sort_comp_test() {
 	}
 
 //	mouse.sort();
-	std::cout << "Average time is: " << full_time / 3000 << std::endl;
+	std::cout << "Average time is: " << full_time / 1 << std::endl;
 }
 
 int main()

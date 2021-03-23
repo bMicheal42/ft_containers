@@ -7,8 +7,8 @@ BLUE="\034[1;32m"
 OTHER="\033[5;36m"
 WHITE="\033[0m"
 
-if [ $# -eq 0 ]; then
-    echo -e "$RED No arguments provided $WHITE"
+if [ $# -ne 2 ]; then
+    echo -e "$RED Wrong number of arguments $WHITE"
     exit 1
 fi
 
@@ -23,31 +23,37 @@ then
   echo -e " ██████╔╝██║ ╚═╝ ██║██║╚██████╗██║  ██║███████╗██║  ██║███████╗"
   echo -e " ╚═════╝ ╚═╝     ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚══════╝ \n $WHITE"
 
-  if grep -q "ft::$2" $FILE
+  if grep -q "ft::$2" $FILE                                                    # заменяем первоначальное значение на второе
   then
-    clang++ -Wall -Wextra -Werror -std=c++98 $FILE && ./a.out > my_out
-    echo -e " clang++ -Wall -Wextra -Werror -std=c++98 $FILE\n"
+    clang++ -Wall -Wextra -Werror -std=c++98 -fsanitize=address $FILE && ./a.out > my_out
+    echo -e " clang++ -Wall -Wextra -Werror -std=c++98 -fsanitize=address $FILE\n"
     sed -i '' 's/[a-zA-Z]*::'$2'/std::'$2'/g' $FILE
     echo -e " change to $GREEN std:: $WHITE namespace \n"
     clang++ $FILE && ./a.out > std_out
 
-    diff my_out std_out
-      ret=$?
-      if [[ $ret -eq 0 ]]; then
-          echo -e "$GREEN NO differences! Well Done $WHITE\n"
-      else
-          echo -e "$RED Test Failed $WHITE\n"
-      fi
+#============================ DIFF =============================================
+    diff my_out std_out > logs.txt
+        ret=$?
+        if [[ $ret -eq 0 ]]; then
+            echo -e "$GREEN NO differences! Well Done $WHITE\n"
+            rm logs.txt
+        else
+            echo -e "$RED Test Failed \n Open logs.txt for more details.$WHITE\n"
+        fi
 
-    rm a.out
+# ======================== BACK & remove trash =================================
+        sed -i '' 's/[a-zA-Z]*::'$2'/ft::'$2'/g' $FILE                         # обратный реверс к первоначальному состоянию
+        echo -e "$WHITE change back to $GREEN ft:: $WHITE namespace \n"
+        rm a.out my_out std_out
 
-# ==============================================================================
+# ============================= IF STD =========================================
   elif grep -q "std::$2" $FILE
   then
     sed -i '' 's/[a-zA-Z]*::'$2'/ft::'$2'/g' $FILE
     echo -e "$WHITE change back to $GREEN ft:: $WHITE namespace \n"
-  fi
+  fi # end of main grep block
 
+# ============================= IF NO FILE =====================================
 else
   echo -e "$RED $FILE doesn't exist $WHITE"
 fi
