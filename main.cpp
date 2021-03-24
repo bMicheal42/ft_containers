@@ -132,37 +132,24 @@ void	binary_index_test()
 int main ()
 {
 	ft::multiset<int> mymultiset;
-	ft::multiset<int>::iterator it;
 
-	// insert some values:
-	mymultiset.insert (40);                            // 40
-	mymultiset.insert (40);                            // 40
-	mymultiset.insert (40);                            // 40
-	for (int i=1; i<7; i++) mymultiset.insert(i*10);   // 10 20 30 40 40 50 60
-//	print_array(mymultiset);
-	it=mymultiset.begin();
-	it++;                                              //    ^
+	mymultiset.insert (11);
+	mymultiset.insert (42);
+	mymultiset.insert (11);
 
-	mymultiset.erase(it);                             // 10 30 40 40 50 60
-//	print_array(mymultiset);
-	mymultiset.erase (40);                             // 10 30 50 60
-
-	for (it=mymultiset.begin(); it!=mymultiset.end(); ++it)
+	std::cout << "mymultiset contains:";
+	for (ft::multiset<int>::iterator it=mymultiset.begin(); it!=mymultiset.end(); ++it)
 		std::cout << ' ' << *it;
 	std::cout << '\n';
-//	print_array(mymultiset);
 
-	mymultiset.insert (40);
-	mymultiset.insert (70);
-	mymultiset.insert (70);
-	mymultiset.insert (5);
-	mymultiset.insert (5);
-	mymultiset.insert (5);
-	mymultiset.erase ( it, --mymultiset.end() );         // 10 30
+	mymultiset.clear();
+	mymultiset.insert (200);
+	mymultiset.insert (100);
 
-//	print_array(mymultiset);
-	for (it=mymultiset.begin(); it!=mymultiset.end(); ++it)
+	std::cout << "mymultiset contains:";
+	for (ft::multiset<int>::iterator it=mymultiset.begin(); it!=mymultiset.end(); ++it)
 		std::cout << ' ' << *it;
+
 	std::cout << '\n';
 
 	return 0;

@@ -90,5 +90,5 @@ namespace ft {
 
 } // end of namespace
 
-# define fl std
-# define ft ft
+# define fl std //for peers
+# define ft ft //classic

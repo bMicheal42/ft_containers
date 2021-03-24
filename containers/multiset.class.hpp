@@ -89,9 +89,8 @@ namespace ft {
 		reverse_iterator			rend()					{ return reverse_iterator(this->mset_.begin().base()); }
 
 		const_reverse_iterator		rend() const			{ return reverse_iterator(this->mset_.begin().base()); }
-// =============================================================================
 
-// --------------------------------- CAPACITY ----------------------------------
+// ================================== CAPACITY =================================
 
 		bool empty() const
 		{
@@ -134,6 +133,7 @@ namespace ft {
 					return (half);
 		}
 
+// ================================== Modifiers ================================
 
 		// --------------------------- INSERT ----------------------------------
 
@@ -181,6 +181,22 @@ namespace ft {
 			for (;first != last; --last)
 				erase(first);
 		}
+		// --------------------------- SWAP ------------------------------------
+
+		void swap (multiset &x)
+		{
+			mset_.swap(x.mset_);
+			fl::swap(compare_, x.compare_);
+			fl::swap(alloc_, x.alloc_);
+		}
+		// ---------------------------- CLEAR ----------------------------------
+
+		void clear()
+		{
+			mset_.clear();
+		}
+
+//================================ Observers ===================================
 
 	};//enf of multiset class
 }// end of namespace
