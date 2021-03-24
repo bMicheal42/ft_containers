@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 #include "../utils.hpp"
 #include "vector.class.hpp"
 #include "../Iterators/multiset_iterator.hpp"
@@ -47,8 +47,10 @@ namespace ft {
 		multiset (InputIterator first, InputIterator last,
 				  const key_compare& comp = key_compare(),
 				  const allocator_type& alloc = allocator_type())
-				:mset_(first, last), alloc_(alloc), compare_(comp)
-		{}
+				:alloc_(alloc), compare_(comp)
+		{
+			insert(first, last);
+		}
 
 		multiset (const multiset &x)
 				:mset_(x.mset_), alloc_(x.alloc_), compare_(x.compare_)
@@ -106,32 +108,12 @@ namespace ft {
 			return mset_.max_size();
 		}
 
-
-
-
-//		iterator find_pos(const value_type &val, size_type index, size_type size)
-//		{
-//
-//			if (size == 1)
-//				return (iterator(&this->mset_[index]));
-//
-//			size_type half(index);
-//
-//			for (size_type i = 0; i < size / 2; ++i, ++half)
-//				;
-//			if (compare_(val, this->mset_[half]))
-//				return (find_pos(val, index, size % 2 + size / 2));
-//
-//			else if (compare_(this->mset_[half], val))
-//				return (find_pos(val, half + (size % 2 != 0), size / 2));
-//
-//			else
-//				return iterator(&this->mset_[half]);
-//		}
-
 		size_type find_pos(const value_type &val, size_type start, size_type size)
 		{
-				if (val > mset_[size])
+				if (mset_.size()  == 0)
+					return 0;
+
+				if (val > mset_[mset_.size() - 1])
 					return size + 1;
 
 				if (val < mset_[start])
@@ -147,29 +129,59 @@ namespace ft {
 				if (val < mset_[half])
 					return find_pos(val, start, half - start);
 				else if (mset_[half] < val)
-					return find_pos(val, half, size - start);
+					return find_pos(val, half, size);
 				else
 					return (half);
 		}
-// --------------------------------- INSERT ------------------------------------
 
-//		iterator insert (const value_type& val)
-//		{
-//			iterator it(&this->mset_[find_pos(val, 0, mset_.size() - 1)]);
-//			mset_.
-//
-//		}
-//
-//		iterator insert (iterator position, const value_type& val)
-//		{
-//			return (inse)
-//		}
-//
-//		template <class InputIterator>
-//		void insert (InputIterator first, InputIterator last)
-//		{
-//
-//		}
+
+		// --------------------------- INSERT ----------------------------------
+
+		iterator insert (const value_type & val)
+		{
+			iterator it(&mset_[find_pos(val, 0, mset_.size() - 1)]);
+			mset_.insert(it.getIt(), val);
+			return it;
+		}
+
+		iterator insert (iterator position, const value_type& val)
+		{
+			(void)position; // thanks for a hint!
+			return insert(val);
+		}
+
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(*first);
+				++first;
+			}
+		}
+		// --------------------------- ERASE -----------------------------------
+
+		void erase (iterator position)
+		{
+			mset_.erase(position.getIt());
+		}
+
+		size_type erase (const value_type& val)
+		{
+			value_type tmp = val;
+			size_type n = 0;
+			iterator it(&mset_[find_pos(val, 0, mset_.size() - 1)]);
+			for(; *it == tmp; ++n)
+				erase(it);
+			return n;
+		}
+
+		void erase (iterator first, iterator last)
+		{
+			for (;first != last; --last)
+				erase(first);
+		}
+
 	};//enf of multiset class
 }// end of namespace
 

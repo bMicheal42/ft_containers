@@ -311,7 +311,7 @@ namespace ft {
 			}
 			vector<T> tmp_vect(first, last);
 			this->clear();
-			if (n > this->capacity_)
+			if (n > (difference_type) this->capacity_)
 			{
 				this->alloc_.deallocate(this->array_, this->capacity_);
 				this->array_ = alloc_.allocate(n);

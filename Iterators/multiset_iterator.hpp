@@ -1,5 +1,7 @@
 #pragma once
 
+#include "vector_iterator.hpp"
+
 namespace ft {
 
 // =============================================================================
@@ -18,35 +20,39 @@ namespace ft {
 		typedef size_t										size_type;
 
 // ====================== CONSTRUCTORS / DESTRUCTOR ============================
-		multiset_iterator() :current_(0) {}
 
-		multiset_iterator(pointer elem) :current_(elem) {}
+		multiset_iterator() :it() {}
 
-		multiset_iterator(multiset_iterator<T, T*, T&> const &copy) :current_(copy.base()) {}
+		multiset_iterator(pointer elem) :it(elem) {}
+
+		multiset_iterator(multiset_iterator<T, T*, T&> const &copy) :it(copy.getIt()) {}
 
 		~multiset_iterator() {}
-
-		pointer base() const { return (this->current_); }
 // ============================ OPERATORS ======================================
+
+		vector_iterator<T>	getIt() const
+		{
+			return this->it;
+		}
 
 		// '='
 		multiset_iterator		&operator=(multiset_iterator const &other)
 		{
 			if (&other != this)
-				current_ = other.current_;
+				it = other.it;
 			return (*this);
 		}
 
 		// '*'
-		reference			operator*() const { return (*this->current_); }
+		reference			operator*() const { return (*this->it); }
 
 		// '->'
-		pointer				operator->() { return (*&this->current_); }
+		pointer				operator->() { return (this->it.base()); }
 
 		// '++ pre'
 		multiset_iterator 	&operator++()
 		{
-			++this->current_;
+			++this->it;
 			return (*this);
 		}
 
@@ -54,14 +60,14 @@ namespace ft {
 		multiset_iterator		operator++(int)
 		{
 			multiset_iterator tmp(*this);
-			this->current_++;
+			++this->it;
 			return (tmp);
 		}
 
 		// '-- pre'
 		multiset_iterator		&operator--()
 		{
-			--this->current_;
+			--this->it;
 			return (*this);
 		}
 
@@ -69,24 +75,25 @@ namespace ft {
 		multiset_iterator		operator--(int)
 		{
 			multiset_iterator tmp(*this);
-			this->current_--;
+			--this->it;
 			return (tmp);
 		}
 
 	private:
-		pointer current_;
+		ft::vector_iterator<T>		it;
+
 
 	}; /** end of class */
 
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator==(const multiset_iterator<TL, ptrL, refL> &lhs, const multiset_iterator<TR, ptrR, refR> &rhs)
 	{
-		return (lhs.base() == rhs.base());
+		return lhs.getIt() == rhs.getIt();
 	}
 
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator!=(const multiset_iterator<TL, ptrL, refL> &lhs, const multiset_iterator<TR, ptrR, refR> &rhs)
 	{
-		return !(lhs.base() == rhs.base());
+		return !(lhs.getIt() == rhs.getIt());
 	}
 }
