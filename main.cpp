@@ -9,15 +9,16 @@
 #include <list>
 #define lib ft
 
-
-
-bool comp(int a, int b) {
-	return a < b;
-}
-
 #include <ctime>
 
-void ft_sort_comp_test() {
+void	print_array(ft::multiset<int> set)
+{
+	for (ft::multiset<int>::iterator it(set.begin()); it != set.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+};
+
+void	ft_sort_comp_test() {
 
 	ft::list<int> mouse;
 	for (int i = 1000000; i > 0; --i)
@@ -40,37 +41,63 @@ void ft_sort_comp_test() {
 //	mouse.sort();
 	std::cout << "Average time is: " << full_time / 1 << std::endl;
 }
-#include <vector>
+
+//void	binary_iters_test()
+//{
+//	std::vector<int> vec;
+//	for (int i = 0; i < 1000000; i++)
+//	vec.push_back(i);
+//
+//	ft::multiset<int> mset1(vec.begin(), vec.end());
+//
+//	unsigned  int time;
+//	size_t full_time = 0;
+//
+//	for (int i = 0; i < 100; ++i)
+//	{
+//		time = clock();
+//		mset1.find_pos(900000, 0, mset1.size());
+//		full_time += clock() - time;
+//	}
+//	std::cout << "min val Average time is: " << full_time / 100 << std::endl;
+//}
+
+void	binary_index_test()
+{
+	std::vector<int> vec;
+	for (int i = 1; i < 6; i++) {
+		vec.push_back(i * 10);
+	}
+
+	ft::multiset<int> mset1(vec.begin(), vec.end());
+
+	unsigned  int time;
+	size_t full_time = 0;
+
+	print_array(mset1);
+//	for (int i = 1; i < 101; ++i)
+//	{
+		time = clock();
+
+		size_t pos;
+		std::cout << mset1.find_pos(30, 0, mset1.size() - 1) << std::endl;
+//		ft::multiset<int>::iterator it(&mset1[pos]);
+
+//		std::cout << *it << std::endl;
+		full_time += clock() - time;
+//	}
+	std::cout << "Average time is: " << full_time << std::endl;
+}
+
 int main()
 {
 //	ft_sort_comp_test();
-	std::vector<int> vec;
-	for (int i = 0; i < 1000; i++) {
-		vec.push_back(i);
-	}
+//	binary_iters_test();
+	binary_index_test();
 
 
-
-	ft::multiset<int> mset1(vec.begin(), vec.end());
-//	ft::multiset<int> mset2(myints + 1, myints + 2);
-
-	for (ft::multiset<int>::iterator it(mset1.begin()); it != mset1.end(); ++it)
-		std::cout << *(it) << " ";
-	std::cout << std::endl;
-
-	unsigned  int time;
-	time = clock();
-	mset1.find_pos(43, 0, mset1.size());
-	time == (clock() - time);
-	std::cout << "Average time is: " << full_time / 1 << std::endl;
-
-//	mset2 = mset1;
-//	std::cout << *mset1.begin() << std::endl;
-//	std::cout << *(++mset1.rbegin()) << std::endl;
-//	std::cout << *(--mset1.end()) << std::endl;
-//	std::cout << *(--mset1.rend()) << std::endl;
+//	int arr[] = {10, 40, 20, 30, 50, 0};
 //
-//	ft::multiset<int>::reverse_iterator it = mset1.rbegin();
-//	std::cout << *(it) << " LALKA" << std::endl;
+
 }
 

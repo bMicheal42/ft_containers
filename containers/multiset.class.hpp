@@ -51,7 +51,7 @@ namespace ft {
 		{}
 
 		multiset (const multiset &x)
-				:mset_(x.mset_), alloc_(x.alloc_), compare_(x.comp_)
+				:mset_(x.mset_), alloc_(x.alloc_), compare_(x.compare_)
 		{}
 
 		multiset& operator= (const multiset &x)
@@ -109,30 +109,54 @@ namespace ft {
 
 
 
-		iterator find_pos(const value_type &val, size_type index, size_type size)
+//		iterator find_pos(const value_type &val, size_type index, size_type size)
+//		{
+//
+//			if (size == 1)
+//				return (iterator(&this->mset_[index]));
+//
+//			size_type half(index);
+//
+//			for (size_type i = 0; i < size / 2; ++i, ++half)
+//				;
+//			if (compare_(val, this->mset_[half]))
+//				return (find_pos(val, index, size % 2 + size / 2));
+//
+//			else if (compare_(this->mset_[half], val))
+//				return (find_pos(val, half + (size % 2 != 0), size / 2));
+//
+//			else
+//				return iterator(&this->mset_[half]);
+//		}
+
+		size_type find_pos(const value_type &val, size_type start, size_type size)
 		{
-//			iterator start = &mset_[0];
+				if (val > mset_[size])
+					return size + 1;
 
-			if (size == 1)
-				return (iterator(&this->mset_[index]));
+				if (val < mset_[start])
+					return start + (val > mset_[start]);
 
-			size_type half(index);
+				size_type half = start + size / 2;
 
-			for (size_type i = 0; i < size / 2; ++i, ++half)
-				;
-			if (compare_(val, this->mset_[half]))
-				return (find_pos(val, index, size % 2 + size / 2));
-			else if (compare_(this->mset_[half], val))
-				return (find_pos(val, half + (size % 2 != 0), size / 2));
-			else
-				return iterator(&this->mset_[half]);
+				if (size == 1)
+				{
+					return start + (val > mset_[start]);
+				}
 
+				if (val < mset_[half])
+					return find_pos(val, start, half - start);
+				else if (mset_[half] < val)
+					return find_pos(val, half, size - start);
+				else
+					return (half);
 		}
-
 // --------------------------------- INSERT ------------------------------------
 
 //		iterator insert (const value_type& val)
 //		{
+//			iterator it(&this->mset_[find_pos(val, 0, mset_.size() - 1)]);
+//			mset_.
 //
 //		}
 //
