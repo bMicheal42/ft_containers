@@ -369,10 +369,10 @@ namespace ft {
 				merge_sort(*this, comp);
 		}
 
-		void		sort() {
-			if (size_)
-				merge_sort(*this, ft::less<value_type>);
-		}
+//		void		sort() {
+//			if (size_)
+//				merge_sort(*this, less);
+//		}
 
 		// ----------------------- REVERSE -------------------------------------
 		void		reverse()

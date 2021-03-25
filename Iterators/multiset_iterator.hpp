@@ -23,8 +23,7 @@ namespace ft {
 
 		multiset_iterator() :it() {}
 
-		multiset_iterator(pointer elem) :it(elem) {}
-
+		multiset_iterator(vector_iterator<T> v_it) :it(v_it) {}
 		multiset_iterator(multiset_iterator<T, T*, T&> const &copy) :it(copy.getIt()) {}
 
 		~multiset_iterator() {}
@@ -81,7 +80,6 @@ namespace ft {
 
 	private:
 		ft::vector_iterator<T>		it;
-
 
 	}; /** end of class */
 

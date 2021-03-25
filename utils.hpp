@@ -17,10 +17,22 @@ namespace ft {
 ================================================================================
 */
 
-	template <typename T>
-	bool	less(const T &a, const T &b) {
-		return (a > b);
-	}
+	template<class T>
+	class less {
+	public:
+
+		less() {};
+
+		less(const less & x) {(void)(x);}
+
+		~less() {};
+
+		less & operator=(const less & x) {(void)(x); return *this;}
+
+		bool  operator()(const T & a, const T & b) const {
+			return a < b;
+		}
+	};
 
 /*
 ================================================================================
@@ -91,4 +103,4 @@ namespace ft {
 } // end of namespace
 
 # define fl std //for peers
-# define ft ft //classic
+//# define ft ft //classic

@@ -106,42 +106,19 @@ namespace ft {
 		{
 			return mset_.max_size();
 		}
-
-		size_type find_pos(const value_type &val, size_type start, size_type size)
-		{
-				if (mset_.size()  == 0)
-					return 0;
-
-				if (val > mset_[mset_.size() - 1])
-					return size + 1;
-
-				if (val < mset_[start])
-					return start + (val > mset_[start]);
-
-				size_type half = start + size / 2;
-
-				if (size == 1)
-				{
-					return start + (val > mset_[start]);
-				}
-
-				if (val < mset_[half])
-					return find_pos(val, start, half - start);
-				else if (mset_[half] < val)
-					return find_pos(val, half, size);
-				else
-					return (half);
-		}
-
 // ================================== Modifiers ================================
 
 		// --------------------------- INSERT ----------------------------------
 
 		iterator insert (const value_type & val)
 		{
-			iterator it(&mset_[find_pos(val, 0, mset_.size() - 1)]);
-			mset_.insert(it.getIt(), val);
-			return it;
+			if (mset_.size() == 0)
+				return iterator (mset_.insert(mset_.begin(), val));
+			value_type  tmp = val;
+			iterator it(find_pos(tmp));
+			if (compare_(*it, val))
+				++it;
+			return iterator(mset_.insert(it.getIt(), val));
 		}
 
 		iterator insert (iterator position, const value_type& val)
@@ -169,11 +146,14 @@ namespace ft {
 		size_type erase (const value_type& val)
 		{
 			value_type tmp = val;
-			size_type n = 0;
-			iterator it(&mset_[find_pos(val, 0, mset_.size() - 1)]);
-			for(; *it == tmp; ++n)
+			iterator   it(find_pos(val));
+			size_type  i = 0;
+			for (; !compare_(*it, tmp) && !compare_(tmp, *it); ++i)
+			{
 				erase(it);
-			return n;
+				it = find_pos(tmp);
+			}
+			return i;
 		}
 
 		void erase (iterator first, iterator last)
@@ -196,7 +176,109 @@ namespace ft {
 			mset_.clear();
 		}
 
-//================================ Observers ===================================
+//================================ OBSERVES ====================================
+
+		key_compare key_comp() const
+		{
+			return compare_;
+		}
+
+		value_compare value_comp() const
+		{
+			return compare_;
+		}
+//================================ OPERATIONS ==================================
+
+		iterator find (const value_type& val)
+		{
+			iterator it (find_pos(val));
+			if (compare_(val, *it) || compare_(*it, val))
+				return this->end();
+			return iterator (find_pos(val));
+		}
+
+		size_type count (const value_type& val)
+		{
+			iterator it (find_pos(val));
+			if (compare_(val, *it) || compare_(*it, val))
+				return 0;
+			size_type	n = 1;
+
+
+			iterator last = it;
+			for (; *it == val && it != this->begin(); --it)
+				;
+
+			if (*it != val)
+				++it;
+
+			for (; it != last; ++it, ++n)
+				;
+			return n;
+		}
+
+		iterator lower_bound (const value_type& val)
+		{
+			iterator it (find_pos(val));
+			if (compare_(val, *it) || compare_(*it, val))
+				return this->end();
+
+			iterator last = it;
+			for (; *it == val && it != this->begin(); --it)
+				;
+
+			if (*it != val)
+				++it;
+
+			return it;
+		}
+
+		iterator upper_bound (const value_type& val)
+		{
+			iterator it (find_pos(val));
+			if (compare_(val, *it) || compare_(*it, val))
+				return this->end();
+
+			iterator last = it;
+			for (; *it == val && it != this->begin(); --it)
+				;
+
+			if (*it != val)
+				++it;
+
+			for (; it != last; ++it)
+				;
+			return ++it;
+		}
+
+		std::pair<iterator,iterator> equal_range (const value_type& val)
+		{
+			iterator first	= lower_bound(val);
+			iterator second	= upper_bound(val);
+			return std::pair<iterator, iterator>(first, second);
+		}
+//===================================== MY =====================================
+
+	private:
+
+		iterator find_pos(const value_type &val)
+		{
+			if (mset_.size() == 0)
+				return begin();
+			return iterator(mset_.begin() + binary_search(val, 0, mset_.size()));
+		}
+
+		size_type 		binary_search(const value_type &val, size_type start, size_type size)
+		{
+			if (size == 1)
+				return start;
+
+			size_type half = start + size / 2 + (size % 2);
+			if (compare_(val, mset_[half]))
+				return (binary_search(val, start, half - start));
+			else
+				return (binary_search(val, half, start + size - half));
+		}
 
 	};//enf of multiset class
 }// end of namespace
