@@ -18,19 +18,24 @@ namespace ft {
 */
 
 	template<class T>
-	class less {
-	public:
-
-		less() {};
-
-		less(const less & x) {(void)(x);}
-
-		~less() {};
-
-		less & operator=(const less & x) {(void)(x); return *this;}
-
-		bool  operator()(const T & a, const T & b) const {
+	struct less
+	{
+		bool  operator()(const T &a, const T &b) const
+		{
 			return a < b;
+		}
+	};
+
+/*
+================================================================================
+*/
+
+	template<class Key, class Val>
+	class less_key
+	{
+		bool  operator()(std::pair<const Key, const Val> &a, std::pair<const Key, const Val> &b) const
+		{
+			return a.first < b.first;
 		}
 	};
 

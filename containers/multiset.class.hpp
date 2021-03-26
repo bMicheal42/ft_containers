@@ -22,7 +22,7 @@ namespace ft {
 		typedef size_t												size_type;
 		typedef ptrdiff_t											difference_type;
 		typedef Key*                 								pointer;
-		typedef const Key*                 							const_pointer;
+		typedef const Key*                							const_pointer;
 		typedef Key&                 								reference;
 		typedef const Key&                                          const_reference;
 		typedef ft::multiset_iterator<Key, Key*, Key&>              iterator;

@@ -2,6 +2,7 @@
 //#include "containers/queue.class.hpp"
 #include "containers/list.class.hpp"
 #include "containers/multiset.class.hpp"
+#include "containers/map.class.hpp"
 
 #include <iostream>
 #include <set>
@@ -100,17 +101,8 @@ typedef ft::multiset<int>::iterator It;  // aliasing the iterator type used
 
 int main ()
 {
-	int myints[]= {77,30,16,2,30,30};
-	ft::multiset<int> mymultiset (myints, myints+6);  // 2 16 30 30 30 77
-
-	std::pair<It,It> ret = mymultiset.equal_range(30); //      ^        ^
-
-	mymultiset.erase(ret.first,ret.second);
-
-	std::cout << "mymultiset contains:";
-	for (It it=mymultiset.begin(); it!=mymultiset.end(); ++it)
-		std::cout << ' ' << *it;
-	std::cout << '\n';
-
+	ft::map<int, int> my_map;
+	ft::map<int, int>::iterator it = my_map.begin();
+//	my_map[2];
 	return 0;
 }
