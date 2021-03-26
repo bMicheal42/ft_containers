@@ -9,7 +9,7 @@
 // =============================================================================
 namespace ft {
 
-	template<class Key, class Compare = std::less<Key>, class Allocator = std::allocator<Key> >
+	template<class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> >
 	class multiset
 	{
 	public:
@@ -18,7 +18,7 @@ namespace ft {
 		typedef Key                                     		    value_type;
 		typedef Compare												key_compare;
 		typedef Compare												value_compare;
-		typedef Allocator											allocator_type;
+		typedef Alloc											allocator_type;
 		typedef size_t												size_type;
 		typedef ptrdiff_t											difference_type;
 		typedef Key*                 								pointer;
@@ -32,14 +32,14 @@ namespace ft {
 
 	private:
 
-		ft::vector<Key, Allocator>									mset_;
+		ft::vector<Key, Alloc>										mset_;
 		allocator_type												alloc_;
 		key_compare													compare_;
 
 //======================= CONSTRUCTORS / DESTRUCTORS ===========================
 	public:
 
-		explicit multiset(const Compare& comp = key_compare(), const Allocator& alloc = Allocator())
+		explicit multiset(const Compare& comp = key_compare(), const Alloc& alloc = Alloc())
 			:mset_(), alloc_(alloc), compare_(comp)
         {}
 

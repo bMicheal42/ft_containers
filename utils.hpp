@@ -30,10 +30,10 @@ namespace ft {
 ================================================================================
 */
 
-	template<class Key, class Val>
+	template<class Key, class T>
 	class less_key
 	{
-		bool  operator()(std::pair<const Key, const Val> &a, std::pair<const Key, const Val> &b) const
+		bool  operator()(std::pair<const Key, const T> &a, std::pair<const Key, const T> &b) const
 		{
 			return a.first < b.first;
 		}

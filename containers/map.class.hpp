@@ -4,7 +4,7 @@
 #define const__map__iterator__ ft::multiset_iterator<value_type, const value_type*, const value_type&>
 #define map__reverse__iterator__ fl::reverse_iterator<iterator>
 #define const__map__reverse__iterator__ fl::reverse_iterator<const_iterator>
-#define avl_tree__ ft::multiset <value_type, ft::less_key<key_type, mapped_type>, Alloc>
+#define avl_tree__ ft::multiset <value_type, ft::less_key<Key, T>, Alloc>
 #include "../utils.hpp"
 #include "vector.class.hpp"
 #include "multiset.class.hpp"
@@ -17,7 +17,7 @@
 namespace ft {
 
 	template < class Key, class T, class Compare = ft::less_key<Key, T>,
-	        class Alloc = std::allocator<pair<const Key, T> > >
+	        class Alloc = std::allocator<std::pair<const Key, T> > >
 
 	class map
 	{
