@@ -212,12 +212,13 @@ namespace ft {
 		size_type   count (const value_type& val)
 		{
 			if (this->size() == 0)
-				return this->end();
+				return 0;
 
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
 				return 0;
-			size_type    n = 1;
+
+			size_type    n = 0;
 
 			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->begin(); --it) //равны
 				;

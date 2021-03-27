@@ -3,7 +3,10 @@
 .idea/*
 
 cmake-build-debug/*
+cmake-build-debug-coverage/*
 
 .DS_Store
 
 a.out.dSYM/*
+
+gd
