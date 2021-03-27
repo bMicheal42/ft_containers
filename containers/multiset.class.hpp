@@ -14,16 +14,16 @@ namespace ft {
 	{
 	public:
 
-		typedef Key                                      		    keytype;
-		typedef Key                                     		    value_type;
-		typedef Compare												key_compare;
-		typedef Compare												value_compare;
-		typedef Alloc										     	allocator_type;
-		typedef size_t												size_type;
-		typedef ptrdiff_t											difference_type;
-		typedef Key*                 								pointer;
-		typedef const Key*                							const_pointer;
-		typedef Key&                 								reference;
+		typedef Key                                                 keytype;
+		typedef Key                                                 value_type;
+		typedef Compare                                             key_compare;
+		typedef Compare                                             value_compare;
+		typedef Alloc                                               allocator_type;
+		typedef size_t                                              size_type;
+		typedef ptrdiff_t                                           difference_type;
+		typedef Key*                                                pointer;
+		typedef const Key*                                          const_pointer;
+		typedef Key&                                                reference;
 		typedef const Key&                                          const_reference;
 		typedef ft::multiset_iterator<Key, Key*, Key&>              iterator;
 		typedef ft::multiset_iterator<Key, const Key*, const Key&>  const_iterator;
@@ -32,37 +32,37 @@ namespace ft {
 
 	private:
 
-		ft::vector<Key, Alloc>										mset_;
-		allocator_type												alloc_;
-		value_compare 												compare_;
+		ft::vector<Key, Alloc>                                        mset_;
+		allocator_type                                                alloc_;
+		value_compare                                                 compare_;
 
 //======================= CONSTRUCTORS / DESTRUCTORS ===========================
 	public:
 
 		explicit multiset(const Compare& comp = key_compare(), const Alloc& alloc = Alloc())
 			:mset_(), alloc_(alloc), compare_(comp)
-        {}
+		{}
 
 		template <class InputIterator>
 		multiset (InputIterator first, InputIterator last,
-				  const key_compare& comp = key_compare(),
-				  const allocator_type& alloc = allocator_type())
-				:alloc_(alloc), compare_(comp)
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type())
+			:alloc_(alloc), compare_(comp)
 		{
 			insert(first, last);
 		}
 
 		multiset (const multiset &x)
-				:mset_(x.mset_), alloc_(x.alloc_), compare_(x.compare_)
+			:mset_(x.mset_), alloc_(x.alloc_), compare_(x.compare_)
 		{}
 
 		multiset& operator= (const multiset &x)
 		{
 			if (this != &x)
 			{
-				mset_		=	x.mset_;
-				alloc_ 		= 	x.alloc_;
-				compare_ 	= 	x.compare_;
+				mset_       =    x.mset_;
+				alloc_      =    x.alloc_;
+				compare_    =    x.compare_;
 			}
 			return (*this);
 		}
@@ -74,35 +74,35 @@ namespace ft {
 
 // ================================== ITERATORS ================================
 
-		iterator					begin()					{ return iterator(this->mset_.begin().base()); }
+		iterator                    begin()                 { return iterator(this->mset_.begin().base()); }
 
-		const_iterator				begin() const			{ return const_iterator(this->mset_.begin().base()); }
+		const_iterator              begin() const           { return const_iterator(this->mset_.begin().base()); }
 
-		reverse_iterator			rbegin()				{ return reverse_iterator(this->mset_.end().base()); }
+		reverse_iterator            rbegin()                { return reverse_iterator(this->mset_.end().base()); }
 
-		const_reverse_iterator		rbegin() const			{ return reverse_iterator(this->mset_.end().base()); }
+		const_reverse_iterator      rbegin() const          { return reverse_iterator(this->mset_.end().base()); }
 
-		iterator					end() 					{ return iterator(this->mset_.end().base()); }
+		iterator                    end()                   { return iterator(this->mset_.end().base()); }
 
-		const_iterator				end() const				{ return const_iterator(this->mset_.end().base()); }
+		const_iterator              end() const             { return const_iterator(this->mset_.end().base()); }
 
-		reverse_iterator			rend()					{ return reverse_iterator(this->mset_.begin().base()); }
+		reverse_iterator            rend()                  { return reverse_iterator(this->mset_.begin().base()); }
 
-		const_reverse_iterator		rend() const			{ return reverse_iterator(this->mset_.begin().base()); }
+		const_reverse_iterator      rend() const            { return reverse_iterator(this->mset_.begin().base()); }
 
 // ================================== CAPACITY =================================
 
-		bool empty() const
+		bool        empty() const
 		{
 			return mset_.empty();
 		}
 
-		size_type size() const
+		size_type   size() const
 		{
 			return mset_.size();
 		}
 
-		size_type max_size() const
+		size_type   max_size() const
 		{
 			return mset_.max_size();
 		}
@@ -110,7 +110,7 @@ namespace ft {
 
 		// --------------------------- INSERT ----------------------------------
 
-		iterator insert (const value_type & val)
+		iterator    insert (const value_type & val)
 		{
 			if (mset_.size() == 0)
 				return iterator (mset_.insert(mset_.begin(), val));
@@ -121,14 +121,14 @@ namespace ft {
 			return iterator(mset_.insert(it.getIt(), val));
 		}
 
-		iterator insert (iterator position, const value_type& val)
+		iterator    insert (iterator position, const value_type& val)
 		{
 			(void)position; // thanks for a hint!
 			return insert(val);
 		}
 
 		template <class InputIterator>
-		void insert (InputIterator first, InputIterator last)
+		void        insert (InputIterator first, InputIterator last)
 		{
 			while (first != last)
 			{
@@ -138,12 +138,12 @@ namespace ft {
 		}
 		// --------------------------- ERASE -----------------------------------
 
-		void erase (iterator position)
+		void        erase (iterator position)
 		{
 			mset_.erase(position.getIt());
 		}
 
-		size_type erase (const value_type& val)
+		size_type   erase (const value_type& val)
 		{
 			value_type tmp = val;
 			iterator   it(find_pos(val));
@@ -156,14 +156,14 @@ namespace ft {
 			return i;
 		}
 
-		void erase (iterator first, iterator last)
+		void        erase (iterator first, iterator last)
 		{
 			for (;first != last; --last)
 				erase(first);
 		}
 		// --------------------------- SWAP ------------------------------------
 
-		void swap (multiset &x)
+		void        swap (multiset &x)
 		{
 			mset_.swap(x.mset_);
 			fl::swap(compare_, x.compare_);
@@ -171,7 +171,7 @@ namespace ft {
 		}
 		// ---------------------------- CLEAR ----------------------------------
 
-		void clear()
+		void        clear()
 		{
 			mset_.clear();
 		}
@@ -189,7 +189,7 @@ namespace ft {
 		}
 //================================ OPERATIONS ==================================
 
-		iterator find (const value_type& val)
+		iterator    find (const value_type& val)
 		{
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
@@ -197,12 +197,12 @@ namespace ft {
 			return iterator (find_pos(val));
 		}
 
-		size_type count (const value_type& val)
+		size_type   count (const value_type& val)
 		{
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
 				return 0;
-			size_type	n = 1;
+			size_type    n = 1;
 
 
 			iterator last = it;
@@ -217,7 +217,7 @@ namespace ft {
 			return n;
 		}
 
-		iterator lower_bound (const value_type& val)
+		iterator    lower_bound (const value_type& val)
 		{
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
@@ -233,7 +233,7 @@ namespace ft {
 			return it;
 		}
 
-		iterator upper_bound (const value_type& val)
+		iterator    upper_bound (const value_type& val)
 		{
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
@@ -253,22 +253,22 @@ namespace ft {
 
 		std::pair<iterator,iterator> equal_range (const value_type& val)
 		{
-			iterator first	= lower_bound(val);
-			iterator second	= upper_bound(val);
+			iterator first    = lower_bound(val);
+			iterator second    = upper_bound(val);
 			return std::pair<iterator, iterator>(first, second);
 		}
 //===================================== MY =====================================
 
-//	private:
+//    private:
 
-		iterator find_pos(const value_type &val)
+		iterator    find_pos(const value_type &val)
 		{
 			if (mset_.size() == 0)
 				return begin();
 			return iterator(mset_.begin() + binary_search(val, 0, mset_.size()));
 		}
 
-		size_type 		binary_search(const value_type &val, size_type start, size_type size)
+		size_type   binary_search(const value_type &val, size_type start, size_type size)
 		{
 			if (size == 1)
 				return start;
