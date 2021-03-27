@@ -33,9 +33,14 @@ namespace ft {
 	template<class Key, class T>
 	struct less_key
 	{
-		bool  operator()(std::pair<const Key, const T> &a, std::pair<const Key, const T> &b) const
+		bool  operator()(const std::pair<const Key, T> &a, const std::pair<const Key, T> &b) const
 		{
 			return a.first < b.first;
+		}
+
+		bool  operator()(const Key &a, const Key &b) const
+		{
+			return a < b;
 		}
 	};
 
@@ -77,33 +82,33 @@ namespace ft {
 ================================================================================
 */
 
-	template <typename E1, typename  E2>
-	class pair
-	{
-
-	public:
-		E1 first;
-		E2 second;
-
-		pair() : first(), second() {}
-
-		pair(const E1 &a, const E2 &b) : first(a), second(b) {}
-
-		template <typename C1, typename C2>
-		pair(const pair<C1, C2> &copy) : first(copy.first), second(copy.second) {};
-
-		~pair() {};
-
-		pair &operator=(const pair &add)
-		{
-			if (this != &add)
-			{
-				first = add.first;
-				second = add.second;
-			}
-			return (*this);
-		}
-	}; //end of pair class
+//	template <typename E1, typename  E2>
+//	class pair
+//	{
+//
+//	public:
+//		E1 first;
+//		E2 second;
+//
+//		pair() : first(), second() {}
+//
+//		pair(const E1 &a, const E2 &b) : first(a), second(b) {}
+//
+//		template <typename C1, typename C2>
+//		pair(const pair<C1, C2> &copy) : first(copy.first), second(copy.second) {};
+//
+//		~pair() {};
+//
+//		pair &operator=(const pair &add)
+//		{
+//			if (this != &add)
+//			{
+//				first = add.first;
+//				second = add.second;
+//			}
+//			return (*this);
+//		}
+//	}; //end of pair class
 
 } // end of namespace
 

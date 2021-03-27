@@ -4,7 +4,7 @@
 #define const__map__iterator__          ft::multiset_iterator<value_type, const value_type*, const value_type&>
 #define map__reverse__iterator__        fl::reverse_iterator<iterator>
 #define const__map__reverse__iterator__ fl::reverse_iterator<const_iterator>
-#define avl_tree__                      ft::multiset <value_type, ft::less_key<Key, T>, Alloc>
+#define avl_tree__                      ft::multiset <value_type, Compare, Alloc>
 
 #include "../utils.hpp"
 #include "vector.class.hpp"
@@ -18,7 +18,7 @@
 namespace ft {
 
 	template < class Key, class T, class Compare = ft::less_key<Key, T>,
-			class Alloc = std::allocator<std::pair<const Key, T> > >
+			class Alloc = std::allocator<std::pair<Key, T> > >
 
 	class map
 	{
@@ -27,8 +27,9 @@ namespace ft {
 
 		typedef Key                                                    key_type;
 		typedef T                                                      mapped_type;
-		typedef std::pair<const Key, T>                                value_type;
+		typedef std::pair<Key, T>                                      value_type;
 		typedef Compare                                                key_compare;
+		typedef Compare                                                value_compare;
 		typedef Alloc                                                  allocator_type;
 		typedef size_t                                                 size_type;
 		typedef ptrdiff_t                                              difference_type;
@@ -52,13 +53,14 @@ namespace ft {
 			:map_(), alloc_(alloc), compare_(comp)
 		{}
 
-//        template <class InputIterator>
-//        map (InputIterator first, InputIterator last,
-//             const key_compare& comp = key_compare(),
-//             const allocator_type& alloc = allocator_type())
-//        {
-//
-//        }
+        template <class InputIterator>
+        map (InputIterator first, InputIterator last,
+             const key_compare& comp = key_compare(),
+             const allocator_type& alloc = allocator_type())
+             :alloc_(alloc), compare_(comp)
+        {
+			insert(first, last);
+        }
 
 		map (const map& x)
 			:map_(x.map_), alloc_(x.alloc_), compare_(x.compare_)
@@ -99,45 +101,160 @@ namespace ft {
 		const_reverse_iterator      rend() const             { return map_.rend(); }
 // ================================== CAPACITY =================================
 
-		bool        empty() const
+		bool                        empty() const
 		{
 			return map_.empty();
 		}
 
-		size_type   size() const
+		size_type                   size() const
 		{
 			return map_.size();
 		}
 
-		size_type   max_size() const
+		size_type                   max_size() const
 		{
 			return map_.max_size();
 		}
 // ================================== Modifiers ================================
 
-//        mapped_type& operator[] (const key_type &k)
-//        {
-//            iterator pos(map_.find(value_type(k, 0)));
-//            return    (*pos).second;
-//        }
-
-		pair<iterator,bool> insert (const value_type& val)
+		mapped_type&    operator[] (const key_type &k)
 		{
-			iterator it  = map_.find_pos(val);
-			return (ft::pair<iterator, bool>());
-
+			return (*((this->insert(fl::make_pair(k,mapped_type()))).first)).second;
 		}
 
-//        iterator insert (iterator position, const value_type& val)
-//        {
-//
-//        }
-//
-//        template <class InputIterator>
-//        void insert (InputIterator first, InputIterator last)
-//        {
-//
-//        }
+		std::pair<iterator, bool>   insert (const value_type& val)
+		{
+			iterator pos(map_.find(val));
+			if (pos != this->end())
+				return std::pair<iterator, bool>(pos, false); // нашли элемент
 
+			iterator it(map_.insert(val));
+			return std::pair<iterator, bool>(it, true);
+		}
+
+		iterator                    insert (iterator position, const value_type& val)
+		{
+			(void) position; // thanks for a hint
+
+			iterator pos(map_.find(val));
+			if (pos != this->end())
+				return pos; // нашли элемент
+
+			iterator it(map_.insert(val));
+			return it;
+		}
+
+		template <class InputIterator>
+		void                        insert (InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(*first);
+				++first;
+			}
+		}
+
+		void                        erase (iterator position)
+		{
+			map_.erase(position);
+		}
+
+		size_type                   erase (const key_type& k)
+		{
+			map_.erase(std::pair<key_type, mapped_type>(k, T()));
+			return 1;
+		}
+
+		void                        erase (iterator first, iterator last)
+		{
+			while (first != last)
+			{
+				erase(first);
+				--last;
+			}
+		}
+
+		void                        swap (map& x)
+		{
+			map_.swap(x.map_);
+			fl::swap(compare_, x.compare_);
+			fl::swap(alloc_, x.alloc_);
+		}
+
+		void                        clear()
+		{
+			map_.clear();
+		}
+//================================ OBSERVES ====================================
+
+		key_compare                              key_comp() const
+		{
+			return compare_;
+		}
+
+		value_compare                            value_comp() const
+		{
+			return compare_;
+		}
+//================================ OPERATIONS ==================================
+
+		iterator                                 find (const key_type &k)
+		{
+			if (this->size() == 0)
+				return this->end();
+			return map_.find(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		const_iterator                            find (const key_type &k) const
+		{
+			if (this->size() == 0)
+				return this->end();
+			return map_.find(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		size_type                                 count (const key_type& k)
+		{
+			if (this->size() == 0)
+				return 0;
+
+			iterator it(find(k));
+			if (it == map_.end())
+				return 0;
+			return 1;
+		}
+
+		iterator                                 lower_bound (const key_type& k)
+		{
+			return map_.lower_bound(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		const_iterator                            lower_bound (const key_type& k) const
+		{
+			return map_.lower_bound(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		iterator                                  upper_bound (const key_type& k)
+		{
+			return map_.upper_bound(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		const_iterator                             upper_bound (const key_type& k) const
+		{
+			return map_.upper_bound(std::pair<key_type, mapped_type>(k, T()));
+		}
+
+		std::pair<const_iterator,const_iterator>   equal_range (const key_type& k) const
+		{
+			const_iterator first     = lower_bound(k);
+			const_iterator second    = upper_bound(k);
+			return std::pair<iterator, iterator>(first, second);
+		}
+
+		std::pair<iterator,iterator>               equal_range (const key_type& k)
+		{
+			iterator first     = lower_bound(k);
+			iterator second    = upper_bound(k);
+			return std::pair<iterator, iterator>(first, second);
+		}
 	};// end of class map
 }//end of namespace

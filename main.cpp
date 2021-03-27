@@ -8,6 +8,8 @@
 #include <set>
 #include <vector>
 #include <list>
+#include <map>
+
 #define lib ft
 
 #include <ctime>
@@ -101,9 +103,20 @@
 //
 int main ()
 {
-	ft::map<int, int> my_map;
-	ft::map<int, int>::iterator it = my_map.begin();
-//	my_map[0];
-	my_map.insert(std::pair<int, int>(3, 0));
+	ft::map<char,int> mymap;
+
+	mymap['a']=10;
+	mymap['b']=20;
+	mymap['c']=30;
+
+	std::pair<ft::map<char,int>::iterator,ft::map<char,int>::iterator> ret;
+	ret = mymap.equal_range('b');
+
+	std::cout << "lower bound points to: ";
+	std::cout << ret.first->first << " => " << ret.first->second << '\n';
+
+	std::cout << "upper bound points to: ";
+	std::cout << ret.second->first << " => " << ret.second->second << '\n';
+
 	return 0;
 }

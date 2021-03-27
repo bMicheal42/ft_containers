@@ -16,7 +16,7 @@
 // =============================================================================
 namespace ft {
 
-	template<class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> >
+	template<class Key, class Compare=std::less<Key>, class Alloc=std::allocator<Key> >
 	class multiset
 	{
 	public:
@@ -81,21 +81,21 @@ namespace ft {
 
 // ================================== ITERATORS ================================
 
-		iterator                    begin()                 { return iterator(this->mset_.begin().base()); }
+		iterator                    begin()                 { return iterator(this->mset_.begin()); }
 
-		const_iterator              begin() const           { return const_iterator(this->mset_.begin().base()); }
+		const_iterator              begin() const           { return const_iterator(this->mset_.begin()); }
 
-		reverse_iterator            rbegin()                { return reverse_iterator(this->mset_.end().base()); }
+		reverse_iterator            rbegin()                { return reverse_iterator(this->mset_.rbegin()); }
 
-		const_reverse_iterator      rbegin() const          { return reverse_iterator(this->mset_.end().base()); }
+		const_reverse_iterator      rbegin() const          { return reverse_iterator(this->mset_.rbegin()); }
 
-		iterator                    end()                   { return iterator(this->mset_.end().base()); }
+		iterator                    end()                   { return iterator(this->mset_.end()); }
 
-		const_iterator              end() const             { return const_iterator(this->mset_.end().base()); }
+		const_iterator              end() const             { return const_iterator(this->mset_.end()); }
 
-		reverse_iterator            rend()                  { return reverse_iterator(this->mset_.begin().base()); }
+		reverse_iterator            rend()                  { return reverse_iterator(this->mset_.rend()); }
 
-		const_reverse_iterator      rend() const            { return reverse_iterator(this->mset_.begin().base()); }
+		const_reverse_iterator      rend() const            { return reverse_iterator(this->mset_.rend()); }
 
 // ================================== CAPACITY =================================
 
@@ -198,7 +198,12 @@ namespace ft {
 
 		iterator    find (const value_type& val)
 		{
+			if (this->size() == 0)
+				return this->end();
+
 			iterator it (find_pos(val));
+			if (it == this->end())
+				return this->end();
 			if (compare_(val, *it) || compare_(*it, val))
 				return this->end();
 			return iterator (find_pos(val));
@@ -206,35 +211,38 @@ namespace ft {
 
 		size_type   count (const value_type& val)
 		{
+			if (this->size() == 0)
+				return this->end();
+
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
 				return 0;
 			size_type    n = 1;
 
-
-			iterator last = it;
-			for (; *it == val && it != this->begin(); --it)
+			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->begin(); --it) //равны
 				;
 
-			if (*it != val)
+			if (compare_(val, *it) || compare_(*it, val))
 				++it;
 
-			for (; it != last; ++it, ++n)
+			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->end(); ++it, ++n)
 				;
 			return n;
 		}
 
 		iterator    lower_bound (const value_type& val)
 		{
+			if (this->size() == 0)
+				return this->end();
+
 			iterator it (find_pos(val));
 			if (compare_(val, *it) || compare_(*it, val))
 				return this->end();
 
-			iterator last = it;
-			for (; *it == val && it != this->begin(); --it)
+			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->begin(); --it) //равны
 				;
 
-			if (*it != val)
+			if (compare_(val, *it) || compare_(*it, val))
 				++it;
 
 			return it;
@@ -242,36 +250,34 @@ namespace ft {
 
 		iterator    upper_bound (const value_type& val)
 		{
-			iterator it (find_pos(val));
-			if (compare_(val, *it) || compare_(*it, val))
+			if (this->size() == 0)
 				return this->end();
 
-			iterator last = it;
-			for (; *it == val && it != this->begin(); --it)
+			iterator it (find_pos(val));
+			if (compare_(val, *it) || compare_(*it, val)) //неравны
+				return this->end();
+
+			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->end(); ++it)
 				;
 
-			if (*it != val)
-				++it;
-
-			for (; it != last; ++it)
-				;
-			return ++it;
+			return it;
 		}
 
 		std::pair<iterator,iterator> equal_range (const value_type& val)
 		{
-			iterator first    = lower_bound(val);
+			iterator first     = lower_bound(val);
 			iterator second    = upper_bound(val);
 			return std::pair<iterator, iterator>(first, second);
 		}
 //===================================== MY =====================================
 
-//    private:
+    private:
 
 		iterator    find_pos(const value_type &val)
 		{
 			if (mset_.size() == 0)
 				return begin();
+
 			return iterator(mset_.begin() + binary_search(val, 0, mset_.size()));
 		}
 
