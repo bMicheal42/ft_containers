@@ -9,4 +9,4 @@ cmake-build-debug-coverage/*
 
 a.out.dSYM/*
 
-gd
+gdrive_map_test/*

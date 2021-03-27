@@ -161,8 +161,7 @@ namespace ft {
 
 		size_type                   erase (const key_type& k)
 		{
-			map_.erase(std::pair<key_type, mapped_type>(k, T()));
-			return 1;
+			return map_.erase(std::pair<key_type, mapped_type>(k, T()));
 		}
 
 		void                        erase (iterator first, iterator last)

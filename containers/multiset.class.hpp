@@ -152,6 +152,8 @@ namespace ft {
 
 		size_type   erase (const value_type& val)
 		{
+			if (this->size() == 0)
+				return 0;
 			value_type tmp = val;
 			iterator   it(find_pos(val));
 			size_type  i = 0;
