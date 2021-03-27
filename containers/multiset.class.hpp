@@ -34,7 +34,7 @@ namespace ft {
 
 		ft::vector<Key, Alloc>										mset_;
 		allocator_type												alloc_;
-		key_compare													compare_;
+		value_compare 												compare_;
 
 //======================= CONSTRUCTORS / DESTRUCTORS ===========================
 	public:
@@ -259,7 +259,7 @@ namespace ft {
 		}
 //===================================== MY =====================================
 
-	private:
+//	private:
 
 		iterator find_pos(const value_type &val)
 		{
