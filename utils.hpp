@@ -1,5 +1,8 @@
 #pragma once
 
+#include "utility"
+#include <iterator>
+
 namespace ft {
 
 	template<class InputIterator1, class InputIterator2>
