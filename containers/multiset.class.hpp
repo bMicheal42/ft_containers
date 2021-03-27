@@ -18,7 +18,7 @@ namespace ft {
 		typedef Key                                     		    value_type;
 		typedef Compare												key_compare;
 		typedef Compare												value_compare;
-		typedef Alloc											allocator_type;
+		typedef Alloc										     	allocator_type;
 		typedef size_t												size_type;
 		typedef ptrdiff_t											difference_type;
 		typedef Key*                 								pointer;

@@ -31,7 +31,7 @@ namespace ft {
 */
 
 	template<class Key, class T>
-	class less_key
+	struct less_key
 	{
 		bool  operator()(std::pair<const Key, const T> &a, std::pair<const Key, const T> &b) const
 		{

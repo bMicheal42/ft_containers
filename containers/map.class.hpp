@@ -48,7 +48,7 @@ namespace ft {
 
 //======================= CONSTRUCTORS / DESTRUCTORS ===========================
 	public:
-		explicit map (const key_compare& comp = key_compare(),
+		explicit map (const key_compare &comp = key_compare(),
 					  const allocator_type& alloc = allocator_type())
 			:map_(), alloc_(alloc), compare_(comp)
 		{}

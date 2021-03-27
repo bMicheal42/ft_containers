@@ -364,15 +364,15 @@ namespace ft {
 
 		// ------------------------- SORT --------------------------------------
 		template <class Compare>
-		void sort (Compare comp) {
-			if (size_)
+		void		sort (Compare comp) {
+			if (size_ > 1)
 				merge_sort(*this, comp);
 		}
 
-//		void		sort() {
-//			if (size_)
-//				merge_sort(*this, less);
-//		}
+		void		sort() {
+			if (size_ > 1)
+				merge_sort(*this, ft::less<T>());
+		}
 
 		// ----------------------- REVERSE -------------------------------------
 		void		reverse()
@@ -445,12 +445,12 @@ namespace ft {
 					node1->prev = node2;
 					node2->next = node1;
 				}
-				new_list.sort();
+				new_list.sort(comp);
 				current.merge(new_list);
 				return;
 			}
-			current.sort();
-			new_list.sort();
+			current.sort(comp);
+			new_list.sort(comp);
 
 			current.merge(new_list);
 		}

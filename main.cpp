@@ -12,36 +12,36 @@
 
 #include <ctime>
 
-//void	print_array(ft::multiset<int> set)
-//{
-//	for (ft::multiset<int>::iterator it(set.begin()); it != set.end(); ++it)
-//		std::cout << *it << " ";
-//	std::cout << std::endl;
-//};
-//
-//void	ft_sort_comp_test() {
-//
-//	ft::list<int> mouse;
-//	for (int i = 100000; i > 0; --i)
-//		mouse.push_back(i);
-//
-//	size_t full_time = 0;
-//
-//	unsigned  int time;
-//
-//	for (int i = 0; i < 1; ++i)
-//	{
-//		time = clock();
-//
-//		mouse.sort();
-//
-//		full_time += (clock() - time);
-//		mouse.reverse();
-//	}
-//
-////	mouse.sort();
-//	std::cout << "Average time is: " << full_time / 1 << std::endl;
-//}
+void	print_array(ft::multiset<int> set)
+{
+	for (ft::multiset<int>::iterator it(set.begin()); it != set.end(); ++it)
+		std::cout << *it << " ";
+	std::cout << std::endl;
+};
+
+void	ft_sort_comp_test() {
+
+	ft::list<int> mouse;
+	for (int i = 10000; i > 0; --i)
+		mouse.push_back(i);
+
+	size_t full_time = 0;
+
+	unsigned  int time;
+
+	for (int i = 0; i < 1; ++i)
+	{
+		time = clock();
+
+		mouse.sort();
+
+		full_time += (clock() - time);
+		mouse.reverse();
+	}
+
+//	mouse.sort();
+	std::cout << "Average time is: " << full_time / 1 << std::endl;
+}
 
 //void	binary_iters_test()
 //{
@@ -90,19 +90,19 @@
 //	std::cout << "Average time is: " << full_time << std::endl;
 //}
 
-//int main()
-//{
-////	ft_sort_comp_test();
-////	binary_iters_test();
-//	binary_index_test();
-//}
-
-typedef ft::multiset<int>::iterator It;  // aliasing the iterator type used
-
-int main ()
+int main()
 {
-	ft::map<int, int> my_map;
-	ft::map<int, int>::iterator it = my_map.begin();
-//	my_map[2];
-	return 0;
+	ft_sort_comp_test();
+//	binary_iters_test();
+//	binary_index_test();
 }
+
+//typedef ft::multiset<int>::iterator It;  // aliasing the iterator type used
+//
+//int main ()
+//{
+//	ft::map<int, int> my_map;
+//	ft::map<int, int>::iterator it = my_map.begin();
+//	my_map[0];
+//	return 0;
+//}
