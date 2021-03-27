@@ -1,10 +1,11 @@
 #pragma once
 
-#define map__iterator__ ft::multiset_iterator<value_type, value_type*, value_type&>
-#define const__map__iterator__ ft::multiset_iterator<value_type, const value_type*, const value_type&>
-#define map__reverse__iterator__ fl::reverse_iterator<iterator>
+#define map__iterator__                 ft::multiset_iterator<value_type, value_type*, value_type&>
+#define const__map__iterator__          ft::multiset_iterator<value_type, const value_type*, const value_type&>
+#define map__reverse__iterator__        fl::reverse_iterator<iterator>
 #define const__map__reverse__iterator__ fl::reverse_iterator<const_iterator>
-#define avl_tree__ ft::multiset <value_type, ft::less_key<Key, T>, Alloc>
+#define avl_tree__                      ft::multiset <value_type, ft::less_key<Key, T>, Alloc>
+
 #include "../utils.hpp"
 #include "vector.class.hpp"
 #include "multiset.class.hpp"

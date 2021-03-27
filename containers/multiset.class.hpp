@@ -1,4 +1,11 @@
 #pragma once
+
+#define mset__iterator__                ft::multiset_iterator<Key, Key*, Key&>
+#define const__mset__iterator__         ft::multiset_iterator<Key, const Key*, const Key&>
+#define mset_reverse__iterator__        fl::reverse_iterator<iterator>
+#define const__mset_reverse__iterator__ fl::reverse_iterator<const_iterator>
+
+
 #include <iostream>
 #include "../utils.hpp"
 #include "vector.class.hpp"
@@ -25,10 +32,10 @@ namespace ft {
 		typedef const Key*                                          const_pointer;
 		typedef Key&                                                reference;
 		typedef const Key&                                          const_reference;
-		typedef ft::multiset_iterator<Key, Key*, Key&>              iterator;
-		typedef ft::multiset_iterator<Key, const Key*, const Key&>  const_iterator;
-		typedef fl::reverse_iterator<iterator>                      reverse_iterator;
-		typedef fl::reverse_iterator<const_iterator>                const_reverse_iterator;
+		typedef mset__iterator__                                    iterator;
+		typedef const__mset__iterator__                             const_iterator;
+		typedef mset_reverse__iterator__                            reverse_iterator;
+		typedef const__mset_reverse__iterator__                     const_reverse_iterator;
 
 	private:
 
