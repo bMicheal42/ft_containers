@@ -14,20 +14,23 @@ namespace ft {
 	{
 
 	public:
-		typedef std::bidirectional_iterator_tag						iterator_category;
-		typedef T 													value_type;
-		typedef Pointer												pointer;
-		typedef Reference											reference;
-		typedef ptrdiff_t											difference_type;
-		typedef size_t												size_type;
-		typedef Node												*node_ptr;
+		typedef std::bidirectional_iterator_tag                        iterator_category;
+		typedef T                                                      value_type;
+		typedef Pointer                                                pointer;
+		typedef Reference                                              reference;
+		typedef ptrdiff_t                                              difference_type;
+		typedef size_t                                                 size_type;
+		typedef Node                                                   *node_ptr;
 
 	private:
-		node_ptr													node_;
+		node_ptr                                                       node_;
 
 	public:
 
-		node_ptr getNode() const { return (this->node_); }
+		node_ptr getNode() const
+		{
+			return (this->node_);
+		}
 
 //========================= CONSTRUCTORS / DESTRUCTOR ==========================
 
@@ -40,7 +43,7 @@ namespace ft {
 //================================ OPERATORS ===================================
 
 	// '='
-		list_iterator	&operator=(const list_iterator &other)
+		list_iterator    &operator=(const list_iterator &other)
 		{
 			if (&other != this)
 				node_ = other.node_;
@@ -48,33 +51,42 @@ namespace ft {
 		}
 
 	// '*'
-		reference		operator*() const { return (node_->data); }
+		reference        operator*() const
+		{
+			return (node_->data);
+		}
 
 	// '->'
-		pointer			operator->() const { return &(node_->data); }
-
+		pointer          operator->() const
+		{
+			return &(node_->data);
+		}
 
 	// '++ pre'
-		list_iterator	&operator++() {
+		list_iterator    &operator++()
+		{
 			node_ = node_->next;
 			return (*this);
 		}
 
 	// '++ post'
-		list_iterator	operator++(int) {
+		list_iterator    operator++(int)
+		{
 			list_iterator tmp = *this;
 			node_ = node_->next;
 			return (tmp);
 		}
 
 	// '-- pre'
-		list_iterator	&operator--()	{
+		list_iterator    &operator--()
+		{
 			node_ = node_->prev;
 			return (*this);
 		}
 
 	// '-- post'
-		list_iterator	operator--(int) {
+		list_iterator    operator--(int)
+		{
 			list_iterator tmp = *this;
 			node_ = node_->prev;
 			return (tmp);

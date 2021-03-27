@@ -10,12 +10,12 @@ namespace ft {
 	{
 
 	public:
-		typedef std::random_access_iterator_tag				iterator_category;
-		typedef T											value_type;
-		typedef Pointer										pointer;
-		typedef Reference									reference;
-		typedef ptrdiff_t									difference_type;
-		typedef size_t										size_type;
+		typedef std::random_access_iterator_tag                iterator_category;
+		typedef T                                              value_type;
+		typedef Pointer                                        pointer;
+		typedef Reference                                      reference;
+		typedef ptrdiff_t                                      difference_type;
+		typedef size_t                                         size_type;
 
 // ====================== CONSTRUCTORS / DESTRUCTOR ============================
 		vector_iterator() :current_(0) {}
@@ -26,11 +26,14 @@ namespace ft {
 
 		~vector_iterator() {}
 
-		pointer base() const { return (this->current_); }
+		pointer base() const
+		{
+			return (this->current_);
+		}
 // ============================ OPERATORS ======================================
 
 		// '='
-		vector_iterator		&operator=(vector_iterator const &other)
+		vector_iterator        &operator=(vector_iterator const &other)
 		{
 			if (&other != this)
 				current_ = other.current_;
@@ -38,20 +41,26 @@ namespace ft {
 		}
 
 		// '*'
-		reference			operator*() const { return (*this->current_); }
+		reference              operator*() const
+		{
+			return (*this->current_);
+		}
 
 		// '->'
-		pointer				operator->() { return (*&this->current_); }
+		pointer                operator->()
+		{
+			return (*&this->current_);
+		}
 
 		// '++ pre'
-		vector_iterator 	&operator++()
+		vector_iterator        &operator++()
 		{
 			++this->current_;
 			return (*this);
 		}
 
 		// '++ post'
-		vector_iterator		operator++(int)
+		vector_iterator        operator++(int)
 		{
 			vector_iterator tmp(*this);
 			this->current_++;
@@ -59,14 +68,14 @@ namespace ft {
 		}
 
 		// '-- pre'
-		vector_iterator		&operator--()
+		vector_iterator        &operator--()
 		{
 			--this->current_;
 			return (*this);
 		}
 
 		// '-- post'
-		vector_iterator		operator--(int)
+		vector_iterator        operator--(int)
 		{
 			vector_iterator tmp(*this);
 			this->current_--;
@@ -74,46 +83,47 @@ namespace ft {
 		}
 
 		// '+'
-		vector_iterator		operator+(difference_type const &a) const
+		vector_iterator        operator+(difference_type const &a) const
 		{
 			vector_iterator tmp(*this);
 			return (tmp += a);
 		}
 
 		// '-'
-		vector_iterator		operator-(difference_type const &a) const
+		vector_iterator        operator-(difference_type const &a) const
 		{
 			vector_iterator tmp(*this);
 			return (tmp -= a);
 		}
 
 		// '-' 2 iters
-		difference_type		operator-(vector_iterator const &other)
+		difference_type        operator-(vector_iterator const &other)
 		{
 			return (this->current_ - other.current_);
 		}
 
 		// '+='
-		vector_iterator		&operator+=(difference_type const &a)
+		vector_iterator        &operator+=(difference_type const &a)
 		{
 			this->current_ += a;
 			return (*this);
 		}
 
 		// '-='
-		vector_iterator		&operator-=(difference_type const &a)
+		vector_iterator        &operator-=(difference_type const &a)
 		{
 			this->current_ -= a;
 			return (*this);
 		}
 
 		// '[]'
-		reference			operator[](difference_type index) { return (*(this->current_ + index)); }
+		reference              operator[](difference_type index) { return (*(this->current_ + index)); }
 
 	private:
-		pointer current_;
+		pointer                current_;
 
 	}; /** end of class */
+
 	template<typename TL, typename ptrL, typename refL, typename TR, typename ptrR, typename refR>
 	bool operator==(const vector_iterator<TL, ptrL, refL> &lhs, const vector_iterator<TR, ptrR, refR> &rhs)
 	{
@@ -150,4 +160,4 @@ namespace ft {
 		return (lhs.base() <= rhs.base());
 	}
 
-}
+} // end of namespace
