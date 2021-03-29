@@ -101,12 +101,12 @@ namespace ft {
 
 		iterator                   begin()                { return (size_ == 0 ? iterator(last_) : iterator(last_->next)); }
 		const_iterator             begin() const          { return (size_ == 0 ? const_iterator(last_) : const_iterator(last_->next)); }
-		reverse_iterator           rbegin()               { return (size_ == 0 ? reverse_iterator(last_) : reverse_iterator(last_->prev)); }
-		const_reverse_iterator     rbegin() const         { return (size_ == 0 ? const_reverse_iterator(last_) : const_reverse_iterator(last_->prev)); }
+		reverse_iterator           rbegin()               { return (reverse_iterator(end())); }
+		const_reverse_iterator     rbegin() const         { return (const_reverse_iterator(end())); }
 		iterator                   end()                  { return (iterator(last_)); }
 		const_iterator             end() const            { return (const_iterator(last_)); }
-		reverse_iterator           rend()                 { return (reverse_iterator(last_)); }
-		const_reverse_iterator     rend() const           { return (const_reverse_iterator(last_)); }
+		reverse_iterator           rend()                 { return (reverse_iterator(begin())); }
+		const_reverse_iterator     rend() const           { return (const_reverse_iterator(begin())); }
 
 // =============================== MEMBER FUNCTIONS ===========================
 
