@@ -222,13 +222,26 @@ void	sam() {
 	second.push_back (7.1);
 	second.push_back (1.4);
 
+	for (ft::list<double>::iterator first_ = second.begin(); first_ != second.end(); ++first_)
+		std::cout << *first_ << " y ";
+	std::cout << std::endl;
+
 	first.sort();
 	second.sort();
 
 	it = second.begin();
 	double* ptr = &(*it);
 
+	for (ft::list<double>::iterator first_ = second.begin(); first_ != second.end(); ++first_)
+		std::cout << *first_ << " y ";
+	std::cout << std::endl;
+
 	first.merge(second);
+
+	for (ft::list<double>::iterator first_ = first.begin(); first_ != first.end(); ++first_)
+		std::cout << *first_ << " y ";
+	std::cout << std::endl;
+
 	std::cout << "first.size() = " << first.size() << std::endl;
 	std::cout << "first.front() = " << first.front() << std::endl;
 	std::cout << "first.back() = " << first.back() << std::endl;
@@ -267,14 +280,14 @@ int main(int argc, char **argv) {
 		gettimeofday(&tv, NULL);
 		begintime = tv.tv_usec;
 	}
-//	constructors_test();
-//	iterators_test();
-//	capacity_test_element_access();
-//	modifiers_test();
-//	operations_test();
-//	operations_test2();
-//	relational_operators();
-//	stl_test();
+	constructors_test();
+	iterators_test();
+	capacity_test_element_access();
+	modifiers_test();
+	operations_test();
+	operations_test2();
+	relational_operators();
+	stl_test();
 	sam();
 	if (argc == 2 && strcmp(argv[1], "time") == 0) {
 		gettimeofday(&tv, NULL);

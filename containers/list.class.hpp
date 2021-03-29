@@ -253,8 +253,9 @@ namespace ft {
 			while(tmp != this->end())
 			{
 				if (tmp.getNode()->data == tmp_val)
-					tmp = erase(tmp);
-				++tmp;
+					tmp = erase(tmp++);
+				else
+					++tmp;
 			}
 		}
 
@@ -414,7 +415,7 @@ namespace ft {
 		void        merge_sort(list &current, Compare comp)
 		{
 			iterator save_slow    = split_lists(current);
-			iterator save_end    = current.end();
+			iterator save_end     = current.end();
 
 			list    new_list(save_slow, save_end);
 			while(save_slow != save_end)
@@ -426,8 +427,7 @@ namespace ft {
 
 			if (current.size_ == 1)
 			{
-				if (new_list.size_ > 0)
-					current.merge(new_list);
+				current.merge(new_list);
 				return;
 			}
 
@@ -435,7 +435,7 @@ namespace ft {
 			{
 				node *node1 = current.begin().getNode();
 				node *node2 = node1->next;
-				if (comp(node1->data, node2->data))
+				if (comp(node2->data, node1->data))
 				{
 					node2->next->prev = node2->prev;
 					node2->prev->next = node2->next;
