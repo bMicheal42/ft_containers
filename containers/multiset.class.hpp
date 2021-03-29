@@ -18,6 +18,7 @@ namespace ft {
 	template<class Key, class Compare=std::less<Key>, class Alloc=std::allocator<Key> >
 	class multiset
 	{
+
 	public:
 
 		typedef Key                                                 keytype;
@@ -186,12 +187,12 @@ namespace ft {
 
 //================================ OBSERVES ====================================
 
-		key_compare key_comp() const
+		key_compare     key_comp() const
 		{
 			return compare_;
 		}
 
-		value_compare value_comp() const
+		value_compare   value_comp() const
 		{
 			return compare_;
 		}
@@ -256,7 +257,7 @@ namespace ft {
 				return this->end();
 
 			iterator it (find_pos(val));
-			if (compare_(val, *it) || compare_(*it, val)) //неравны
+			if (compare_(val, *it) || compare_(*it, val))
 				return this->end();
 
 			for (; !compare_(*it, val) && !compare_(val, *it) && it != this->end(); ++it)
@@ -273,7 +274,7 @@ namespace ft {
 		}
 //===================================== MY =====================================
 
-    private:
+	private:
 
 		iterator    find_pos(const value_type &val)
 		{

@@ -46,21 +46,23 @@ namespace ft {
 		avl_tree__                                                      map_;
 		allocator_type                                                  alloc_;
 		key_compare                                                     compare_;
+
 //======================= CONSTRUCTORS / DESTRUCTORS ===========================
+
 	public:
 		explicit map (const key_compare &comp = key_compare(),
 				const allocator_type& alloc = allocator_type())
 			:map_(), alloc_(alloc), compare_(comp)
 		{}
 
-        template <class InputIterator>
-        map (InputIterator first, InputIterator last,
-             const key_compare& comp = key_compare(),
-             const allocator_type& alloc = allocator_type())
-             :alloc_(alloc), compare_(comp)
-        {
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last,
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type())
+			:alloc_(alloc), compare_(comp)
+		{
 			insert(first, last);
-        }
+		}
 
 		map (const map& x)
 			:map_(x.map_), alloc_(x.alloc_), compare_(x.compare_)
@@ -122,6 +124,8 @@ namespace ft {
 			return (*((this->insert(fl::make_pair(k,mapped_type()))).first)).second;
 		}
 
+		// --------------------------- INSERT ----------------------------------
+
 		std::pair<iterator, bool>   insert (const value_type& val)
 		{
 			iterator pos(map_.find(val));
@@ -153,6 +157,8 @@ namespace ft {
 				++first;
 			}
 		}
+
+		// --------------------------- ERASE -----------------------------------
 
 		void                        erase (iterator position)
 		{
