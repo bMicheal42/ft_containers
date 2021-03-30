@@ -61,35 +61,6 @@ namespace ft {
 /*
 ================================================================================
 */
-
-//    template <typename E1, typename  E2>
-//    class pair
-//    {
-//
-//    public:
-//        E1 first;
-//        E2 second;
-//
-//        pair() : first(), second() {}
-//
-//        pair(const E1 &a, const E2 &b) : first(a), second(b) {}
-//
-//        template <typename C1, typename C2>
-//        pair(const pair<C1, C2> &copy) : first(copy.first), second(copy.second) {};
-//
-//        ~pair() {};
-//
-//        pair &operator=(const pair &add)
-//        {
-//            if (this != &add)
-//            {
-//                first = add.first;
-//                second = add.second;
-//            }
-//            return (*this);
-//        }
-//    }; //end of pair class
-
 } // end of namespace
 
 # define fl std // just a joke

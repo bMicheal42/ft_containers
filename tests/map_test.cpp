@@ -1,9 +1,16 @@
+//
+// Created by Gueren Drive on 3/25/21.
+//
+
 #include <iostream>
 #include <vector>
 #include <map>
 
 #include "../containers/map.class.hpp"
 #include "test.hpp"
+
+#define ft ft
+#define con Map
 
 template <class KEY, class VAL>
 void print_map(ft::map<int, Test> & map) {
@@ -334,6 +341,24 @@ void equal_range() {
 	}
 }
 
+void reverse_iterator() {
+	std::cout << "reverse_iterator" << std::endl;
+	std::vector<std::pair<int, Test> > src;
+	for (int i = 0; i < 20; ++i) {
+		src.push_back(std::pair<int, Test>(i, i));
+		src.push_back(std::pair<int, Test>(i, i));
+	}
+
+	ft::map<int, Test>                   def(src.begin(), src.end());
+	ft::map<int, Test>::reverse_iterator rit(def.rbegin());
+
+	while (rit != def.rend()) {
+		std::cout << (*rit).second.some_ << " ";
+		++rit;
+	}
+	std::cout << std::endl;
+}
+
 int main() {
 	// Constructors
 	default_constructor();
@@ -363,5 +388,6 @@ int main() {
 	upper_bound();
 	equal_range();
 	// ------------
+	reverse_iterator();
 	return 0;
 }
